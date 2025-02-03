@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!--<!DOCTYPE html> 
 <html> 
 
 <head> 
@@ -37,4 +37,70 @@
 	</div> 
 </body> 
 
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data Management</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <h1>Student Data Management</h1>
+    <form id="student-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit">Add Student</button>
+    </form>
+    <table id="student-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Student records will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+    <script>
+        document.getElementById('student-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const email = document.getElementById('email').value;
+
+            const apiURL = 'https://www.sqlite-workbench.com/api/yourUsername/yourDatabaseName/';
+            const secret = 'b5cf3ac447b4354117f5e2794d4ed6ea12aff26e';
+            const query = `INSERT INTO students (name, age, email) VALUES ('${name}', ${age}, '${email}')`;
+
+            // Use crypto-js to generate the MD5 hash
+            const check = CryptoJS.MD5(secret + query + secret).toString();
+
+            fetch(apiURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `query=${encodeURIComponent(query)}&check=${encodeURIComponent(check)}&responseType=JSON`
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Optionally, reload the student list
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
 </html>
