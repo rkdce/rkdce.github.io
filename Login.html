@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .form-container {
+            width: 90%;
+            max-width: 400px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+       .tabs {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 10px 20px;
+            display: inline-block;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+
+        .tab:hover, .active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .form {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 0;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            text-align: center;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="tabs">
+            <div class="tab active" onclick="showForm('login')">Login</div>
+            <div class="tab" onclick="showForm('register')">Register</div>
+        </div>
+
+        <div id="loginForm" class="form show">
+            <input type="text" id="loginUsername" placeholder="Username" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button onclick="handleLogin()">Login</button>
+            <p id="loginMessage"></p>
+        </div>
+
+        <div id="registerForm" class="form">
+            <input type="text" id="regUsername" placeholder="Username" required>
+            <input type="email" id="regEmail" placeholder="Email" required>
+            <input type="password" id="regPassword" placeholder="Password" required>
+            <button onclick="handleRegister()">Register</button>
+            <p id="regMessage"></p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxy6bvK8z8mlwVKEp0cyMy14tTxfxyzhuKArA8zGpm9Dhie7aC8U5BEojCYntrIrQ/exec';
+
+        function showForm(formType) {
+            document.querySelectorAll('.form').forEach(f => f.classList.remove('show'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`${formType}Form`).classList.add('show');
+            document.querySelector(`[onclick="showForm('${formType}')"]`).classList.add('active');
+        }
+
+        function hashPassword(password) {
+            return CryptoJS.SHA256(password).toString();
+        }
+
+      async function handleLogin() {
+    const username = document.getElementById('loginUsername').value;
+    const password = hashPassword(document.getElementById('loginPassword').value);
+
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'login',
+                username: username,
+                password: password
+            })
+        });
+        const data = await response.json();
+
+        document.getElementById('loginMessage').textContent = data.message;
+        if (data.status === 'success') {
+            console.log('User data:', data.user); // Debugging: Log the user object
+            localStorage.setItem('user', JSON.stringify(data.user));
+            window.location.href = 'dashboard.html';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+        async function handleRegister() {
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = hashPassword(document.getElementById('regPassword').value);
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'register',
+                        username: username,
+                        email: email,
+                        password: password
+                    })
+                });
+                const data = await response.json();
+
+                document.getElementById('regMessage').textContent = data.message;
+                if (data.status === 'success') {
+                    showForm('register');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
