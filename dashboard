@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .dashboard-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .logout-button {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .logout-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome, <span id="username"></span>!</h1>
+        <button class="logout-button" onclick="handleLogout()">Logout</button>
+    </div>
+
+    <script>
+        // Retrieve the user's information from localStorage
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            // Display the username on the dashboard
+            document.getElementById('username').textContent = user.username;
+        } else {
+            // If no user is logged in, redirect to the login page
+            window.location.href = 'index.html';
+        }
+
+        function handleLogout() {
+            // Clear the user's information from localStorage
+            localStorage.removeItem('user');
+            // Redirect to the login page
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
