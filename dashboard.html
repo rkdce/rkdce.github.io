@@ -5,67 +5,236 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
+        /* General Styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Header Styles */
+        .header {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-
-        .dashboard-container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .logout-button {
-            background-color: #f44336;
+            background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .logout-button:hover {
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .header .logout-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .header .logout-button:hover {
             background-color: #d32f2f;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: left 0.3s ease;
+            padding-top: 60px;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            padding: 15px 20px;
+            border-bottom: 1px solid #444;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #444;
+            cursor: pointer;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Hamburger Icon */
+        .hamburger {
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 0;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.active {
+            margin-left: 250px;
+        }
+
+        /* Floating Text at Bottom */
+        .floating-text {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
+    <!-- Header -->
+    <div class="header">
+        <div class="hamburger" onclick="toggleSidebar()">&#9776;</div>
         <h1>Welcome, <span id="username"></span>!</h1>
+        <h1>Class, <span id="tClass"></span>!</h1>
+        <h1>UserType, <span id="userType"></span>!</h1>
         <button class="logout-button" onclick="handleLogout()">Logout</button>
     </div>
 
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="#" onclick="loadPage('student-details')">Student Details</a></li>
+            <li><a href="#" onclick="loadPage('update-marksheet')">Update Marksheet</a></li>
+            <li><a href="#" onclick="loadPage('load-marksheet')">Load Marksheet</a></li>
+            <li><a href="#" onclick="loadPage('about-me')">About Me</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <p>Last Login: <span id="lastLogin"></span></p>
+        <div id="dynamicContent">
+            <!-- Dynamic content will be loaded here -->
+            <p>This is the main content area. Select an option from the sidebar to load different pages.</p>
+        </div>
+    </div>
+
+    <!-- Floating Text at Bottom -->
+    <div class="floating-text">
+        Made with ❤️ by Your Company
+    </div>
+
+    <!-- JavaScript -->
     <script>
         // Retrieve the user's information from localStorage
-        const user = JSON.parse(localStorage.getItem('user'));
-
-        if (user) {
-            // Display the username on the dashboard
-            document.getElementById('username').textContent = user.username;
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            const user = JSON.parse(userString);
+            document.getElementById('username').textContent = user.username; // Display username
+            document.getElementById('tClass').textContent = user.tClass; // Display class
+            document.getElementById('userType').textContent = user.userType; // Display user type
+            document.getElementById('lastLogin').textContent = new Date().toLocaleString(); // Display last login time
         } else {
-            // If no user is logged in, redirect to the login page
-            window.location.href = 'Login.html';
+            window.location.href = 'index.html'; // Redirect to login page if no user data
         }
 
-        function handleLogout() {
-            // Clear the user's information from localStorage
-            localStorage.removeItem('user');
-            // Redirect to the login page
-            window.location.href = 'index.html';
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
         }
+
+        // Load Page Dynamically
+        function loadPage(page) {
+            console.log(`Attempting to load page: ${page}`);
+            const contentDiv = document.getElementById('dynamicContent');
+
+            // Map page names to their corresponding external HTML files
+            const pageMap = {
+                'student-details': 'student-details.html',
+                'update-marksheet': 'UploadMark_N_7.html',
+                'load-marksheet': 'https://rkdce.github.io/UploadMark_N_7.html',
+                'about-me': 'https://rkdce.github.io/dashboard.html'
+            };
+
+            const filePath = pageMap[page];
+            if (!filePath) {
+                contentDiv.innerHTML = `<p>Error: Page not found</p>`;
+                return;
+            }
+
+            // Fetch the external HTML file
+            fetch(filePath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    contentDiv.innerHTML = html; // Insert the HTML content into the div
+                })
+                .catch(error => {
+                    console.error('Error loading page:', error);
+                    contentDiv.innerHTML = `<p>Error loading page: ${error.message}</p>`;
+                });
+
+            toggleSidebar(); // Auto-hide the sidebar
+        }
+
+        // Logout Functionality
+        function handleLogout() {
+            localStorage.removeItem('user'); // Clear user data
+            window.location.href = 'index.html'; // Redirect to login page
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const hamburger = document.querySelector('.hamburger');
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnHamburger = hamburger.contains(event.target);
+
+            if (!isClickInsideSidebar && !isClickOnHamburger && sidebar.classList.contains('active')) {
+                toggleSidebar();
+            }
+        });
     </script>
 </body>
 </html>
