@@ -1,0 +1,3096 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+	
+  <style>
+  /* General styles */
+  body {
+    font-family: Arial, sans-serif;
+    
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+
+  th, td {
+    border: 0px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  input {
+    padding: 5px;
+    margin: 5px 0;
+  }
+
+  /* Accordion styles (unchanged) */
+  .accordion-toggle {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .accordion-item {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+  }
+
+  .accordion-content {
+    padding: 20px;
+    display: none;
+  }
+
+  .accordion-item.open .accordion-content {
+    display: block;
+  }
+
+  .accordion {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .accordion-table th,
+  .accordion-table td {
+    border: 1px solid #ccc;
+    padding: 12px;
+    text-align: left;
+    vertical-align: middle;
+    min-width: 70px;
+  }
+
+  .accordion-table th {
+    background-color: #f2f2f2;
+  }
+
+  .accordion-table input {
+    width: calc(100%);
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+    font-size: 1em;
+  }
+
+  .accordion-table td {
+    position: relative;
+  }
+
+  .accordion-table input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+
+  /* Responsive design for mobile */
+  @media (max-width: 600px) {
+    body {
+      padding: 10px;
+    }
+
+    table {
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 6px;
+    }
+
+    .info-table {
+      padding: 5px;
+    }
+
+    .photo-cell img {
+      width: 80px;
+      height: 80px;
+    }
+
+    .accordion {
+      width: 100%;
+    }
+
+    .accordion-table th,
+    .accordion-table td {
+      padding: 8px;
+    }
+
+    #searchForm {
+      padding: 15px;
+    }
+
+    #searchForm input[type="text"],
+    #searchForm select {
+      font-size: 14px;
+    }
+
+    #searchForm button {
+      font-size: 14px;
+    }
+  }
+
+  /* Search form styles (unchanged) */
+  #searchForm {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  #searchForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  #searchForm input[type="text"],
+  #searchForm select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  #searchForm button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  #searchButton {
+    background-color: #007bff;
+    color: white;
+  }
+
+  #searchButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+
+  #resetButton {
+    background-color: #6c757d;
+    color: white;
+    margin-left: 10px;
+  }
+
+  #searchForm input:disabled,
+  #searchForm select:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+  }
+</style>
+ <style>
+    .student-info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 16px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .student-info-table th, .student-info-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .student-info-table label {
+      font-weight: bold;
+      color: #444;
+    }
+
+    .student-info-table input {
+      border: none;
+      outline: none;
+      background: #eaeaea;
+      padding: 8px 12px;
+      border-radius: 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .student-info-table img {
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      max-width: 100px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .student-info-table tr:hover {
+      background-color: #f0f4f8;
+    }
+
+    .photo-cell {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .student-info-table, .student-info-table tr, .student-info-table td {
+        display: block;
+        width: 100%;
+      }
+      .photo-cell {
+        text-align: center;
+      }
+      .student-info-table img {
+        max-width: 80px;
+      }
+    }
+  </style>
+<style>
+  /* Unique General styles */
+  .unique-body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  /* Unique Form container */
+  .unique-form-container {
+    max-width: 300px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center children horizontally */
+  }
+
+  /* Unique Form row styling */
+  .unique-form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    width: 100%; /* Ensure form rows take full width */
+  }
+
+  /* Unique Label styling */
+  .unique-form-row .unique-label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+
+  /* Unique Input group styling */
+  .unique-input-group {
+    width: 100%;
+    display: flex;
+    align-items: center; /* Align items vertically */
+  }
+
+  /* Unique Input field styling */
+  .unique-input-group input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  /* Unique Custom checkbox-specific styling */
+  .unique-custom-checkbox {
+    width: 20px; /* Increase checkbox size */
+    height: 20px; /* Increase checkbox size */
+    margin-right: 8px;
+    cursor: pointer;
+    accent-color: #4CAF50; /* Change checkbox color */
+  }
+
+  /* Unique Button styling */
+  .unique-save-button {
+    //display: none; /* Initially hidden */
+    margin: 20px 0; /* Add vertical margin */
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Unique gradient */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .unique-save-button:hover {
+    background: linear-gradient(135deg, #2575fc, #6a11cb); /* Reverse gradient on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+  }
+
+  .unique-save-button:active {
+    transform: translateY(0); /* Reset lift on click */
+  }
+
+  /* Unique Responsive design for mobile */
+  @media (max-width: 600px) {
+    .unique-form-container {
+      padding: 15px;
+    }
+
+    .unique-form-row {
+      margin-bottom: 10px;
+    }
+
+    .unique-input-group input[type="text"],
+    .unique-custom-checkbox {
+      padding: 6px;
+      font-size: 14px;
+    }
+
+    .unique-save-button {
+      width: 100%; /* Full width on mobile */
+      padding: 10px;
+      font-size: 14px;
+    }
+  }
+</style>
+
+  </head>
+  <body>
+    <h1>Student Marksheet</h1>
+      <form id="searchForm">
+    <label for="admissionNumber">Admission Number:</label>
+    <input type="text" id="admissionNumber" name="admissionNumber" required>
+    
+    <label for="examType">Select Exam Type:</label>
+    <select id="examType" name="examType" required>
+	  <option value="">-- Select Exam --</option>
+      <option value="1st Periodic Test">1st Periodic Test</option>
+      <option value="2nd Periodic Test">2nd Periodic Test</option>
+      <option value="Half-Yearly Examination">Half-Yearly Examination</option>
+      <option value="Annual Examination">Annual Examination</option>
+    </select>
+    
+    <button type="button" id="searchButton" onclick="hideSearch()">Search</button>
+    <button type="button" id="resetButton" onclick="resetPage()" style="display:none;">Reset</button>
+  </form>
+
+    <div id="marksTable" style="display:none;">
+			
+
+<table class="student-info-table">
+  <tr>
+    <td><label for="admissionNumberDisplay">Admission Number:</label></td>
+    <td ><input type="text" id="admissionNumberDisplay" name="admissionNumberDisplay" readonly></td>
+    <td><label for="classDisplay">Class:</label></td>
+    <td><input type="text" id="classDisplay" name="classDisplay" readonly></td>
+  </tr>
+
+  <tr>
+    
+    <td rowspan="3" class="photo-cell">
+      <img id="photoDisplay" src="" alt="Student Photo" width="100">
+    </td>
+    <td ><label for="nameDisplay">Name:</label></td>
+    <td colspan="2"><input type="text" id="nameDisplay" name="nameDisplay" style="width:100%" readonly></td>
+  </tr>
+
+  <tr>
+    <td><label for="fatherNameDisplay">Father's Name:</label></td>
+    <td colspan="2"><input type="text" id="fatherNameDisplay" name="fatherNameDisplay" style="width:100%" readonly></td>
+  </tr>
+
+  <tr>
+    <td><label for="motherNameDisplay">Mother's Name:</label></td>
+    <td colspan="2"><input type="text" id="motherNameDisplay" name="motherNameDisplay" style="width:100%" readonly></td>
+  </tr>
+
+  <tr>
+    <td><label for="dobDisplay">D.O.B:</label></td>
+    <td><input type="text" id="dobDisplay" name="dobDisplay" readonly></td>
+    <td><label for="rollNumberDisplay">Roll Number:</label></td>
+    <td><input type="text" id="rollNumberDisplay" name="rollNumberDisplay" ></td>
+  </tr>
+</table>
+    
+    
+    
+    
+    
+	
+	
+					
+    <div class="accordion">
+    <!-- English Accordion Item -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>English</span>
+        <button class="accordion-toggle">+</button>
+      </div>
+      <div class="accordion-content">
+        <table class="accordion-table">
+          <tr>
+            <th>Reading Value</th>
+            <td><input type="number" id="englishReadingValue"></td>
+            <th>Reading Grade</th>
+            <td><input type="text" id="englishReadingGrade"></td>
+          </tr>
+		
+          <tr>
+            <th>Writing Value</th>
+            <td><input type="number" id="englishWritingValue"></td>
+            <th>Writing Grade</th>
+            <td><input type="text" id="englishWritingGrade"></td>
+          </tr>
+          <tr>
+            <th>Spelling Value</th>
+            <td><input type="number" id="englishSpellingValue"></td>
+            <th>Spelling Grade</th>
+            <td><input type="text" id="englishSpellingGrade"></td>
+          </tr>
+          <tr>
+            <th>Handwriting Value</th>
+            <td><input type="number" id="englishHandwritingValue"></td>
+            <th>Handwriting Grade</th>
+            <td><input type="text" id="englishHandwritingGrade"></td>
+          </tr>
+          <tr>
+            <th>Listening Value</th>
+            <td><input type="number" id="englishListeningValue"></td>
+            <th>Listening Grade</th>
+            <td><input type="text" id="englishListeningGrade"></td>
+          </tr>
+          <tr>
+            <th>Total Value</th>
+            <td><input type="number" id="englishTotalValue"></td>
+            <th>Total Grade</th>
+            <td><input type="text" id="englishTotalGrade"></td>
+          </tr>
+		  <tr>
+            <th>Project Value</th>
+            <td><input type="number" id="englishProjectValue"></td>
+            <th>Project Grade</th>
+            <td><input type="text" id="englishProjectGrade"></td>
+          </tr>
+          <tr>
+            <th>Assignment Value</th>
+            <td><input type="number" id="englishAssignmentValue"></td>
+            <th>Assignment Grade</th>
+            <td><input type="text" id="englishAssignmentGrade"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Hindi Accordion Item -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Hindi</span>
+        <button class="accordion-toggle">+</button>
+      </div>
+      <div class="accordion-content">
+        <table class="accordion-table">
+          <tr>
+            <th>Reading Value</th>
+            <td><input type="number" id="hindiReadingValue"></td>
+            <th>Reading Grade</th>
+            <td><input type="text" id="hindiReadingGrade"></td>
+          </tr>
+          <tr>
+            <th>Writing Value</th>
+            <td><input type="number" id="hindiWritingValue"></td>
+            <th>Writing Grade</th>
+            <td><input type="text" id="hindiWritingGrade"></td>
+          </tr>
+          <tr>
+            <th>Spelling Value</th>
+            <td><input type="number" id="hindiSpellingValue"></td>
+            <th>Spelling Grade</th>
+            <td><input type="text" id="hindiSpellingGrade"></td>
+          </tr>
+          <tr>
+            <th>Handwriting Value</th>
+            <td><input type="number" id="hindiHandwritingValue"></td>
+            <th>Handwriting Grade</th>
+            <td><input type="text" id="hindiHandwritingGrade"></td>
+          </tr>
+          <tr>
+            <th>Listening Value</th>
+            <td><input type="number" id="hindiListeningValue"></td>
+            <th>Listening Grade</th>
+            <td><input type="text" id="hindiListeningGrade"></td>
+          </tr>
+          <tr>
+            <th>Total Value</th>
+            <td><input type="number" id="hindiTotalValue"></td>
+            <th>Total Grade</th>
+            <td><input type="text" id="hindiTotalGrade"></td>
+          </tr>
+		   <tr>
+            <th>Project Value</th>
+            <td><input type="number" id="hindiProjectValue"></td>
+            <th>Project Grade</th>
+            <td><input type="text" id="hindiProjectGrade"></td>
+          </tr>
+          <tr>
+            <th>Assignment Value</th>
+            <td><input type="number" id="hindiAssignmentValue"></td>
+            <th>Assignment Grade</th>
+            <td><input type="text" id="hindiAssignmentGrade"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Bengali Accordion Item -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Bengali</span>
+        <button class="accordion-toggle">+</button>
+      </div>
+      <div class="accordion-content">
+        <table class="accordion-table">
+          <tr>
+            <th>Reading Value</th>
+            <td><input type="number" id="bengaliReadingValue"></td>
+            <th>Reading Grade</th>
+            <td><input type="text" id="bengaliReadingGrade"></td>
+          </tr>
+          <tr>
+            <th>Writing Value</th>
+            <td><input type="number" id="bengaliWritingValue"></td>
+            <th>Writing Grade</th>
+            <td><input type="text" id="bengaliWritingGrade"></td>
+          </tr>
+          <tr>
+            <th>Spelling Value</th>
+            <td><input type="number" id="bengaliSpellingValue"></td>
+            <th>Spelling Grade</th>
+            <td><input type="text" id="bengaliSpellingGrade"></td>
+          </tr>
+          <tr>
+            <th>Handwriting Value</th>
+            <td><input type="number" id="bengaliHandwritingValue"></td>
+            <th>Handwriting Grade</th>
+            <td><input type="text" id="bengaliHandwritingGrade"></td>
+          </tr>
+          <tr>
+            <th>Listening Value</th>
+            <td><input type="number" id="bengaliListeningValue"></td>
+            <th>Listening Grade</th>
+            <td><input type="text" id="bengaliListeningGrade"></td>
+          </tr>
+          <tr>
+            <th>Total Value</th>
+            <td><input type="number" id="bengaliTotalValue"></td>
+            <th>Total Grade</th>
+            <td><input type="text" id="bengaliTotalGrade"></td>
+          </tr>
+		   <tr>
+            <th>Project Value</th>
+            <td><input type="number" id="bengaliProjectValue"></td>
+            <th>Project Grade</th>
+            <td><input type="text" id="bengaliProjectGrade"></td>
+          </tr>
+          <tr>
+            <th>Assignment Value</th>
+            <td><input type="number" id="bengaliAssignmentValue"></td>
+            <th>Assignment Grade</th>
+            <td><input type="text" id="bengaliAssignmentGrade"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Maths Accordion Item -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Maths</span>
+        <button class="accordion-toggle">+</button>
+      </div>
+      <div class="accordion-content">
+        <table class="accordion-table">
+          <tr>
+            <th>FNC Value</th>
+            <td><input type="number" id="mathsFNCValue"></td>
+            <th>FNC Grade</th>
+            <td><input type="text" id="mathsFNCGrade"></td>
+          </tr>
+          <tr>
+            <th>UBC Value</th>
+            <td><input type="number" id="mathsUBCValue"></td>
+            <th>UBC Grade</th>
+            <td><input type="text" id="mathsUBCGrade"></td>
+          </tr>
+          <tr>
+            <th>AC Value</th>
+            <td><input type="number" id="mathsACValue"></td>
+            <th>AC Grade</th>
+            <td><input type="text" id="mathsACGrade"></td>
+          </tr>
+          <tr>
+            <th>PSA Value</th>
+            <td><input type="number" id="mathsPSAValue"></td>
+            <th>PSA Grade</th>
+            <td><input type="text" id="mathsPSAGrade"></td>
+          </tr>
+		  <tr>
+            <th>IA Value</th>
+            <td><input type="number" id="mathsIAValue"></td>
+            <th>IA Grade</th>
+            <td><input type="text" id="mathsIAGrade"></td>
+          </tr>
+          <tr>
+            <th>Total Value</th>
+            <td><input type="number" id="mathsTotalValue"></td>
+            <th>Total Grade</th>
+            <td><input type="text" id="mathsTotalGrade"></td>
+          </tr>
+		   <tr>
+            <th>Project Value</th>
+            <td><input type="number" id="mathsProjectValue"></td>
+            <th>Project Grade</th>
+            <td><input type="text" id="mathsProjectGrade"></td>
+          </tr>
+          <tr>
+            <th>Assignment Value</th>
+            <td><input type="number" id="mathsAssignmentValue"></td>
+            <th>Assignment Grade</th>
+            <td><input type="text" id="mathsAssignmentGrade"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- EVS Accordion Item -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>EVS</span>
+        <button class="accordion-toggle">+</button>
+      </div>
+      <div class="accordion-content">
+        <table class="accordion-table">
+          <tr>
+            <th>Observation Value</th>
+            <td><input type="number" id="evsObservationValue"></td>
+            <th>Observation Grade</th>
+            <td><input type="text" id="evsObservationGrade"></td>
+          </tr>
+          <tr>
+            <th>Identification Value</th>
+            <td><input type="number" id="evsIdentificationValue"></td>
+            <th>Identification Grade</th>
+            <td><input type="text" id="evsIdentificationGrade"></td>
+          </tr>
+          <tr>
+            <th>Discovery Facts Value</th>
+            <td><input type="number" id="evsDiscoveryFactsValue"></td>
+            <th>Discovery Facts Grade</th>
+            <td><input type="text" id="evsDiscoveryFactsGrade"></td>
+          </tr>
+          <tr>
+            <th>Group Act Value</th>
+            <td><input type="number" id="evsGroupActValue"></td>
+            <th>Group Act Grade</th>
+            <td><input type="text" id="evsGroupActGrade"></td>
+          </tr>
+		   <tr>
+            <th>IA Value</th>
+            <td><input type="number" id="evsIAValue"></td>
+            <th>IA Grade</th>
+            <td><input type="text" id="evsIAGrade"></td>
+          </tr>
+          <tr>
+            <th>Total Value</th>
+            <td><input type="number" id="evsTotalValue"></td>
+            <th>Total Grade</th>
+            <td><input type="text" id="evsTotalGrade"></td>
+          </tr>
+		  <tr>
+            <th>Project Value</th>
+            <td><input type="number" id="evsProjectValue"></td>
+            <th>Project Grade</th>
+            <td><input type="text" id="evsProjectGrade"></td>
+          </tr>
+          <tr>
+            <th>Assignment Value</th>
+            <td><input type="number" id="evsAssignmentValue"></td>
+            <th>Assignment Grade</th>
+            <td><input type="text" id="evsAssignmentGrade"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+
+	<!-- Social Science Accordion Item -->
+		<div class="accordion-item">
+		  <div class="accordion-header">
+			<span>Social Science</span>
+			<button class="accordion-toggle">+</button>
+		  </div>
+		  <div class="accordion-content">
+			<table class="accordion-table">
+			  <tr>
+				<th>Observation Value</th>
+				<td><input type="number" id="socialScienceObservationValue"></td>
+				<th>Observation Grade</th>
+				<td><input type="text" id="socialScienceObservationGrade"></td>
+			  </tr>
+			  <tr>
+				<th>Identification Value</th>
+				<td><input type="number" id="socialScienceIdentificationValue"></td>
+				<th>Identification Grade</th>
+				<td><input type="text" id="socialScienceIdentificationGrade"></td>
+			  </tr>
+			  <tr>
+				<th>Discovery Facts Value</th>
+				<td><input type="number" id="socialScienceDiscoveryFactsValue"></td>
+				<th>Discovery Facts Grade</th>
+				<td><input type="text" id="socialScienceDiscoveryFactsGrade"></td>
+			  </tr>
+			  <tr>
+				<th>Group Act Value</th>
+				<td><input type="number" id="socialScienceGroupActValue"></td>
+				<th>Group Act Grade</th>
+				<td><input type="text" id="socialScienceGroupActGrade"></td>
+			  </tr>
+			  <tr>
+				<th>IA Value</th>
+				<td><input type="number" id="socialScienceIAValue"></td>
+				<th>IA Grade</th>
+				<td><input type="text" id="socialScienceIAGrade"></td>
+			  </tr>
+			  <tr>
+				<th>Total Value</th>
+				<td><input type="number" id="socialScienceTotalValue"></td>
+				<th>Total Grade</th>
+				<td><input type="text" id="socialScienceTotalGrade"></td>
+			  </tr>
+			    <tr>
+				<th>Project Value</th>
+				<td><input type="number" id="socialScienceProjectValue"></td>
+				<th>Project Grade</th>
+				<td><input type="text" id="socialScienceProjectGrade"></td>
+			  </tr>
+			  <tr>
+				<th>Assignment Value</th>
+				<td><input type="number" id="socialScienceAssignmentValue"></td>
+				<th>Assignment Grade</th>
+				<td><input type="text" id="socialScienceAssignmentGrade"></td>
+			  </tr>
+			</table>
+		  </div>
+		</div>
+
+    <!-- Computer Accordion Item -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <span>Computer</span>
+        <button class="accordion-toggle">+</button>
+      </div>
+      <div class="accordion-content">
+        <table class="accordion-table">
+          <tr>
+            <th>Theory Value</th>
+            <td><input type="number" id="computerTheoryValue"></td>
+            <th>Theory Grade</th>
+            <td><input type="text" id="computerTheoryGrade"></td>
+          </tr>
+          <tr>
+            <th>Practical Value</th>
+            <td><input type="number" id="computerPracticalValue"></td>
+            <th>Practical Grade</th>
+            <td><input type="text" id="computerPracticalGrade"></td>
+          </tr>
+          <tr>
+            <th>Total Value</th>
+            <td><input type="number" id="computerTotalValue"></td>
+            <th>Total Grade</th>
+            <td><input type="text" id="computerTotalGrade"></td>
+          </tr>
+		  <tr>
+            <th>Project Value</th>
+            <td><input type="number" id="computerProjectValue"></td>
+            <th>Project Grade</th>
+            <td><input type="text" id="computerProjectGrade"></td>
+          </tr>
+          <tr>
+            <th>Assignment Value</th>
+            <td><input type="number" id="computerAssignmentValue"></td>
+            <th>Assignment Grade</th>
+            <td><input type="text" id="computerAssignmentGrade"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+ 
+    
+	<br><hr><h1 style="text-align: center;">Final Assessment</h1><hr><br>
+	<div class="accordion">
+		  <div class="accordion-item">
+		<div class="accordion-header">
+		  <span>English</span>
+		  <button class="accordion-toggle">+</button>
+		</div>
+		<div class="accordion-content">
+		  <table class="accordion-table">
+			<tr>
+			  <th>1st PT Value</th>
+			  <td><input type="number" id="english1stPT"></td>
+			  <th rowspan="2">PT (10%) Value</th>
+			  <td rowspan="2"><input type="number" id="englishPT10Percent" readonly></td>
+			</tr>
+		  
+			<tr>
+			<th>2nd PT Value</th>
+			  <td><input type="number" id="english2ndPT"></td>
+			  
+			</tr>
+			<tr>
+			<th>1st PT Project</th>
+			  <td><input type="number" id="english1stPTProject"></td>
+			  <th rowspan="2">Project (10%)</th>
+			  <td rowspan="2"><input type="number" id="englishProject10Percent" readonly></td>
+			</tr>
+			<tr>
+			 <th>2nd PT Project</th>
+			  <td><input type="number" id="english2ndPTProject"></td>
+			</tr>
+			<tr>
+			<th>1st PT Assignment</th>
+			  <td><input type="number" id="english1stPTAssignment"></td>
+			  <th rowspan="2">Assignment (10%)</th>
+			  <td rowspan="2"><input type="number" id="englishAssignment10Percent" readonly></td>
+			</tr>
+			<tr>
+			<th>2nd PT Assignment</th>
+			  <td><input type="number" id="english2ndPTAssignment"></td>
+			</tr>
+			<tr>
+			  <th>Half-Yearly (HY)</th>
+			  <td><input type="number" id="englishHY"></td>
+			  <th>HY (20%)</th>
+			  <td><input type="number" id="englishHY20Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>Annual Exam</th>
+			  <td><input type="number" id="englishAnnual"></td>
+			  <th>Annual (50%)</th>
+			  <td><input type="number" id="englishAnnual50Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th colspan="2">Final Total</th>
+			  <td colspan="2"><input type="number" id="englishFinalTotal" readonly></td>
+			</tr>
+			<tr>  
+			  <th colspan="2">Final Total Grade</th>
+			  <td colspan="2"><input type="text" id="englishFinalTotalGrade" readonly></td>
+			</tr>
+		  </table>
+		</div>
+	  </div>
+	</div>
+	
+	
+	<div class="accordion">
+	  <div class="accordion-item">
+		<div class="accordion-header">
+		  <span>Hindi</span>
+		  <button class="accordion-toggle">+</button>
+		</div>
+		<div class="accordion-content">
+		  <table class="accordion-table">
+			<tr>
+			  <th>1st PT Value</th>
+			  <td><input type="number" id="hindi1stPT"></td>
+			  <th rowspan="2">PT (10%) Value</th>
+			  <td rowspan="2"><input type="number" id="hindiPT10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Value</th>
+			  <td><input type="number" id="hindi2ndPT"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Project</th>
+			  <td><input type="number" id="hindi1stPTProject"></td>
+			  <th rowspan="2">Project (10%)</th>
+			  <td rowspan="2"><input type="number" id="hindiProject10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Project</th>
+			  <td><input type="number" id="hindi2ndPTProject"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Assignment</th>
+			  <td><input type="number" id="hindi1stPTAssignment"></td>
+			  <th rowspan="2">Assignment (10%)</th>
+			  <td rowspan="2"><input type="number" id="hindiAssignment10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Assignment</th>
+			  <td><input type="number" id="hindi2ndPTAssignment"></td>
+			</tr>
+			<tr>
+			  <th>Half-Yearly (HY)</th>
+			  <td><input type="number" id="hindiHY"></td>
+			  <th>HY (20%)</th>
+			  <td><input type="number" id="hindiHY20Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>Annual Exam</th>
+			  <td><input type="number" id="hindiAnnual"></td>
+			  <th>Annual (50%)</th>
+			  <td><input type="number" id="hindiAnnual50Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th colspan="2">Final Total</th>
+			  <td colspan="2"><input type="number" id="hindiFinalTotal" readonly></td>
+			</tr>
+			<tr>  
+			  <th colspan="2">Final Total Grade</th>
+			  <td colspan="2"><input type="text" id="hindiFinalTotalGrade" readonly></td>
+			</tr>
+		  </table>
+		</div>
+	  </div>
+	</div>
+	
+	<div class="accordion">
+	  <div class="accordion-item">
+		<div class="accordion-header">
+		  <span>Bengali</span>
+		  <button class="accordion-toggle">+</button>
+		</div>
+		<div class="accordion-content">
+		  <table class="accordion-table">
+			<tr>
+			  <th>1st PT Value</th>
+			  <td><input type="number" id="bengali1stPT"></td>
+			  <th rowspan="2">PT (10%) Value</th>
+			  <td rowspan="2"><input type="number" id="bengaliPT10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Value</th>
+			  <td><input type="number" id="bengali2ndPT"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Project</th>
+			  <td><input type="number" id="bengali1stPTProject"></td>
+			  <th rowspan="2">Project (10%)</th>
+			  <td rowspan="2"><input type="number" id="bengaliProject10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Project</th>
+			  <td><input type="number" id="bengali2ndPTProject"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Assignment</th>
+			  <td><input type="number" id="bengali1stPTAssignment"></td>
+			  <th rowspan="2">Assignment (10%)</th>
+			  <td rowspan="2"><input type="number" id="bengaliAssignment10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Assignment</th>
+			  <td><input type="number" id="bengali2ndPTAssignment"></td>
+			</tr>
+			<tr>
+			  <th>Half-Yearly (HY)</th>
+			  <td><input type="number" id="bengaliHY"></td>
+			  <th>HY (20%)</th>
+			  <td><input type="number" id="bengaliHY20Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>Annual Exam</th>
+			  <td><input type="number" id="bengaliAnnual"></td>
+			  <th>Annual (50%)</th>
+			  <td><input type="number" id="bengaliAnnual50Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th colspan="2">Final Total</th>
+			  <td colspan="2"><input type="number" id="bengaliFinalTotal" readonly></td>
+			</tr>
+			<tr>  
+			  <th colspan="2">Final Total Grade</th>
+			  <td colspan="2"><input type="text" id="bengaliFinalTotalGrade" readonly></td>
+			</tr>
+		  </table>
+		</div>
+	  </div>
+	</div>
+	
+	<div class="accordion">
+	  <div class="accordion-item">
+		<div class="accordion-header">
+		  <span>Maths</span>
+		  <button class="accordion-toggle">+</button>
+		</div>
+		<div class="accordion-content">
+		  <table class="accordion-table">
+			<tr>
+			  <th>1st PT Value</th>
+			  <td><input type="number" id="maths1stPT"></td>
+			  <th rowspan="2">PT (10%) Value</th>
+			  <td rowspan="2"><input type="number" id="mathsPT10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Value</th>
+			  <td><input type="number" id="maths2ndPT"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Project</th>
+			  <td><input type="number" id="maths1stPTProject"></td>
+			  <th rowspan="2">Project (10%)</th>
+			  <td rowspan="2"><input type="number" id="mathsProject10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Project</th>
+			  <td><input type="number" id="maths2ndPTProject"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Assignment</th>
+			  <td><input type="number" id="maths1stPTAssignment"></td>
+			  <th rowspan="2">Assignment (10%)</th>
+			  <td rowspan="2"><input type="number" id="mathsAssignment10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Assignment</th>
+			  <td><input type="number" id="maths2ndPTAssignment"></td>
+			</tr>
+			<tr>
+			  <th>Half-Yearly (HY)</th>
+			  <td><input type="number" id="mathsHY"></td>
+			  <th>HY (20%)</th>
+			  <td><input type="number" id="mathsHY20Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>Annual Exam</th>
+			  <td><input type="number" id="mathsAnnual"></td>
+			  <th>Annual (50%)</th>
+			  <td><input type="number" id="mathsAnnual50Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th colspan="2">Final Total</th>
+			  <td colspan="2"><input type="number" id="mathsFinalTotal" readonly></td>
+			</tr>
+			<tr>  
+			  <th colspan="2">Final Total Grade</th>
+			  <td colspan="2"><input type="text" id="mathsFinalTotalGrade" readonly></td>
+			</tr>
+		  </table>
+		</div>
+	  </div>
+	</div>	
+	
+	
+	<div class="accordion">
+	  <div class="accordion-item">
+		<div class="accordion-header">
+		  <span>EVS</span>
+		  <button class="accordion-toggle">+</button>
+		</div>
+		<div class="accordion-content">
+		  <table class="accordion-table">
+			<tr>
+			  <th>1st PT Value</th>
+			  <td><input type="number" id="evs1stPT"></td>
+			  <th rowspan="2">PT (10%) Value</th>
+			  <td rowspan="2"><input type="number" id="evsPT10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Value</th>
+			  <td><input type="number" id="evs2ndPT"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Project</th>
+			  <td><input type="number" id="evs1stPTProject"></td>
+			  <th rowspan="2">Project (10%)</th>
+			  <td rowspan="2"><input type="number" id="evsProject10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Project</th>
+			  <td><input type="number" id="evs2ndPTProject"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Assignment</th>
+			  <td><input type="number" id="evs1stPTAssignment"></td>
+			  <th rowspan="2">Assignment (10%)</th>
+			  <td rowspan="2"><input type="number" id="evsAssignment10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Assignment</th>
+			  <td><input type="number" id="evs2ndPTAssignment"></td>
+			</tr>
+			<tr>
+			  <th>Half-Yearly (HY)</th>
+			  <td><input type="number" id="evsHY"></td>
+			  <th>HY (20%)</th>
+			  <td><input type="number" id="evsHY20Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>Annual Exam</th>
+			  <td><input type="number" id="evsAnnual"></td>
+			  <th>Annual (50%)</th>
+			  <td><input type="number" id="evsAnnual50Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th colspan="2">Final Total</th>
+			  <td colspan="2"><input type="number" id="evsFinalTotal" readonly></td>
+			</tr>
+			<tr>  
+			  <th colspan="2">Final Total Grade</th>
+			  <td colspan="2"><input type="text" id="evsFinalTotalGrade" readonly></td>
+			</tr>
+		  </table>
+		</div>
+	  </div>
+	</div>
+	
+	<div class="accordion">
+	  <div class="accordion-item">
+		<div class="accordion-header">
+		  <span>Social Science</span>
+		  <button class="accordion-toggle">+</button>
+		</div>
+		<div class="accordion-content">
+		  <table class="accordion-table">
+			<tr>
+			  <th>1st PT Value</th>
+			  <td><input type="number" id="socialScience1stPT"></td>
+			  <th rowspan="2">PT (10%) Value</th>
+			  <td rowspan="2"><input type="number" id="socialSciencePT10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Value</th>
+			  <td><input type="number" id="socialScience2ndPT"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Project</th>
+			  <td><input type="number" id="socialScience1stPTProject"></td>
+			  <th rowspan="2">Project (10%)</th>
+			  <td rowspan="2"><input type="number" id="socialScienceProject10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Project</th>
+			  <td><input type="number" id="socialScience2ndPTProject"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Assignment</th>
+			  <td><input type="number" id="socialScience1stPTAssignment"></td>
+			  <th rowspan="2">Assignment (10%)</th>
+			  <td rowspan="2"><input type="number" id="socialScienceAssignment10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Assignment</th>
+			  <td><input type="number" id="socialScience2ndPTAssignment"></td>
+			</tr>
+			<tr>
+			  <th>Half-Yearly (HY)</th>
+			  <td><input type="number" id="socialScienceHY"></td>
+			  <th>HY (20%)</th>
+			  <td><input type="number" id="socialScienceHY20Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>Annual Exam</th>
+			  <td><input type="number" id="socialScienceAnnual"></td>
+			  <th>Annual (50%)</th>
+			  <td><input type="number" id="socialScienceAnnual50Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th colspan="2">Final Total</th>
+			  <td colspan="2"><input type="number" id="socialScienceFinalTotal" readonly></td>
+			</tr>
+			<tr>  
+			  <th colspan="2">Final Total Grade</th>
+			  <td colspan="2"><input type="text" id="socialScienceFinalTotalGrade" readonly></td>
+			</tr>
+		  </table>
+		</div>
+	  </div>
+	</div>
+
+	<div class="accordion">
+	  <div class="accordion-item">
+		<div class="accordion-header">
+		  <span>Computer</span>
+		  <button class="accordion-toggle">+</button>
+		</div>
+		<div class="accordion-content">
+		  <table class="accordion-table">
+			<tr>
+			  <th>1st PT Value</th>
+			  <td><input type="number" id="computer1stPT"></td>
+			  <th rowspan="2">PT (10%) Value</th>
+			  <td rowspan="2"><input type="number" id="computerPT10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Value</th>
+			  <td><input type="number" id="computer2ndPT"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Project</th>
+			  <td><input type="number" id="computer1stPTProject"></td>
+			  <th rowspan="2">Project (10%)</th>
+			  <td rowspan="2"><input type="number" id="computerProject10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Project</th>
+			  <td><input type="number" id="computer2ndPTProject"></td>
+			</tr>
+			<tr>
+			  <th>1st PT Assignment</th>
+			  <td><input type="number" id="computer1stPTAssignment"></td>
+			  <th rowspan="2">Assignment (10%)</th>
+			  <td rowspan="2"><input type="number" id="computerAssignment10Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>2nd PT Assignment</th>
+			  <td><input type="number" id="computer2ndPTAssignment"></td>
+			</tr>
+			<tr>
+			  <th>Half-Yearly (HY)</th>
+			  <td><input type="number" id="computerHY"></td>
+			  <th>HY (20%)</th>
+			  <td><input type="number" id="computerHY20Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th>Annual Exam</th>
+			  <td><input type="number" id="computerAnnual"></td>
+			  <th>Annual (50%)</th>
+			  <td><input type="number" id="computerAnnual50Percent" readonly></td>
+			</tr>
+			<tr>
+			  <th colspan="2">Final Total</th>
+			  <td colspan="2"><input type="number" id="computerFinalTotal" readonly></td>
+			</tr>
+			<tr>  
+			  <th colspan="2">Final Total Grade</th>
+			  <td colspan="2"><input type="text" id="computerFinalTotalGrade" readonly></td>
+			</tr>
+		  </table>
+		</div>
+	  </div>
+	</div>	
+	
+
+
+   <br><hr><h2>Overall Results</h2><hr><br>
+	<div class="accordion">
+		  <div class="accordion-item">
+			<div class="accordion-header">
+			  <span>Overall Results</span>
+			  <button class="accordion-toggle">+</button>
+			</div>
+			<div class="accordion-content">
+		     <table class="accordion-table">
+				<tr>
+				  <th>Overall Marks</th>
+				  <td><input type="number" id="overallMarks" readonly></td>
+				</tr>
+				<tr>
+				  <th>Full Subject Marks</th>
+				  <td><input type="number" id="fullSubjectMarks" readonly></td>
+				</tr>
+				<tr>
+				  <th>Percentage</th>
+				  <td><input type="number" id="percentage" readonly></td>
+				</tr>
+				<tr>
+				  <th>Overall Grade</th>
+				  <td><input type="text" id="overallGrade" readonly></td>
+				</tr>
+			  </table>
+			  
+			  <br><br>
+			  <h2 style="text-align: center;">Attendance & Promotion Record</h2>
+
+
+    <table class="accordion-table">
+        <tr>
+            <th>Total Present</th>
+            <th>Total No. of Days</th>
+            </tr>
+            
+        <tr>
+            <td><input type="number" id="totalPresent" placeholder="Enter Total Present"></td>
+            <td><input type="number" id="totalDays" placeholder="Enter Total No. of Days"></td>
+            </tr>
+            <tr>
+            <th>Promotion Status</th>
+            <th>Select Class</th>
+        </tr>
+        <tr>
+            <td>
+                <select style="width: calc(100%);height: 100%;box-sizing: border-box;padding: 0;margin: 0;border: none;background-color: transparent;text-align: center;" id="promotionStatus">
+                    <option value="">-- Select Status --</option>
+                    <option value="Promoted to Class">Promoted to Class</option>
+                    <option value="Deetained in Class">Detained in Class</option>
+                </select>
+            </td>
+            <td>
+                <select style="width: calc(100%);height: 100%;box-sizing: border-box;padding: 0;margin: 0;border: none;background-color: transparent;text-align: center;" id="selectClass">
+                    <option value="">-- Select Class --</option>
+                    <option value="Nursery">Nursery</option>
+                    <option value="LKG">KG1</option>
+                    <option value="UKG">KG2</option>
+                    <option value="I">I</option>
+                    <option value="II">II</option>
+                    <option value="III">III</option>
+                    <option value="IV">IV</option>
+                    <option value="V">V</option>
+                    <option value="VI">VI</option>
+                    <option value="VII">VII</option>
+                    <option value="VIII">VIII</option>
+                    <option value="IX">IX</option>
+                    <option value="X">X</option>
+                    <option value="XI">XI</option>
+                    <option value="XII">XII</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+			  
+			  
+			  
+			</div>
+		</div>
+	</div>
+	
+	
+	 <!-- <button id="saveButton" style="display:none;" onclick="saveMarks()">Save Marks</button> -->
+	<br><br>
+		<div class="unique-form-container">
+		  <div class="unique-form-row">
+			<div class="unique-input-group">
+			  <label class="unique-label">Status:</label>
+			 
+			   <select style="width: calc(100%);height: 30px;box-sizing: border-box;padding: 0;margin: 0;background-color: transparent;text-align: center;" id="statusDisplay">
+                    <option value="Unchecked">Unchecked</option>
+                    <option value="Checked">Checked</option>
+                </select>
+			  
+			  
+			</div>
+		  </div>
+
+		  <div class="unique-form-row">
+			<label for="teacherNameDisplay" class="unique-label">Teacher Name:</label>
+			<div class="unique-input-group">
+			  <input type="text" id="teacherNameDisplay" name="teacherNameDisplay">
+			</div>
+		  </div>
+
+		  <!--<div class="unique-form-row">
+			<label for="examTypeDisplay" class="unique-label">Exam Type:</label>
+			<div class="unique-input-group">
+			  <input type="text" id="examTypeDisplay" name="examTypeDisplay">
+			</div>
+		  </div> -->
+
+		  <!-- Centered Save Button -->
+		  <button id="saveButton" class="unique-save-button" onclick="saveUserMarks()">Save Marks</button>
+		</div>
+		<br><br><br><br>
+</div>
+
+  
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwrCfBvBxekppTDp_H0VEquecRBpDJgd0kvJHD_5KYQLZbAYl3vk0prsmAImbyrSnN1/exec";
+ function hideSearch() {
+  // Hide the search button
+  document.getElementById('searchButton').style.display = "none";
+
+  // Show the reset button after search
+  document.getElementById('resetButton').style.display = "inline-block";
+  
+  document.getElementById('admissionNumber').readOnly = true;
+  document.getElementById('examType').readOnly = true;
+	
+
+     // Get the values dynamically from the DOM
+    const classDisplay = document.getElementById('classDisplay').className; // Get class of studentElement
+    const tClass = document.getElementById('tClass').className;       // Get class of anotherElement
+    const userType = document.getElementById('userType').value;               // Get userType value
+
+    // Check if the classes match
+    const classesMatch = classDisplay === tClass;
+
+    
+  // Call the searchStudent function
+  searchStudent();
+
+}
+
+function saveUserMarks()
+{
+	// Check permission and class match condition
+    if (userType === 'User' && classesMatch) {
+        // If the user is a 'user' and classes match, call the function
+        saveMarks();
+    } else if (userType === 'Admin') {
+        // If the user is an 'admin', call the function regardless of class match
+        saveMarks();
+    } else {
+        // If the conditions are not met, show a pop-up message
+        alert("You are not the class teacher.");
+    }
+}
+
+
+
+
+function resetPage() {
+  // Clear input and select values
+  document.getElementById('admissionNumber').value = "";
+  document.getElementById('examType').value = "1st Periodic Test";
+
+  // Re-enable input fields and select dropdown
+  document.getElementById('admissionNumber').readOnly = false;
+document.getElementById('examType').readOnly = false;
+
+  // Show the search button again
+  document.getElementById('searchButton').style.display = "inline-block";
+
+  // Hide the reset button
+  document.getElementById('resetButton').style.display = "none";
+
+  // Hide the marksTable div
+  document.getElementById('marksTable').style.display = "none";
+  
+  // Hide the saveButton 
+  document.getElementById('saveButton').style.display = "none";
+  
+}
+
+  </script>
+
+ <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+      accordionHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+          const content = this.nextElementSibling;
+          const toggle = this.querySelector('.accordion-toggle');
+
+          // Close all other accordion items
+          accordionHeaders.forEach(otherHeader => {
+            const otherContent = otherHeader.nextElementSibling;
+            const otherToggle = otherHeader.querySelector('.accordion-toggle');
+
+            if (otherHeader !== this) {
+              otherContent.style.display = 'none';
+              otherToggle.textContent = '+';
+            }
+          });
+
+          // Toggle the current header
+          if (content.style.display === 'block') {
+            content.style.display = 'none';
+            toggle.textContent = '+';
+          } else {
+            content.style.display = 'block';
+            toggle.textContent = '-';
+          }
+        });
+      });
+    });
+  </script>
+    <script>
+     function searchStudent() {
+  var admissionNumber = document.getElementById('admissionNumber').value;
+  var examType = document.getElementById('examType').value;
+  
+  var params = new URLSearchParams({
+    action: 'search',
+    admissionNumber: admissionNumber,
+    examType: examType
+  });
+  
+  fetch(`${GAS_URL}?${params}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data) {
+	    //document.getElementById('examTypeDisplay').textContent = data[0] || '';
+	//	document.getElementById('admissionNumberDisplay').textContent = data[1] || '';
+        document.getElementById('examTypeDisplay').value = data[0] || '';
+		document.getElementById('admissionNumberDisplay').value = data[1] || '';
+		document.getElementById('classDisplay').value = data[2] || '';
+		document.getElementById('nameDisplay').value = data[3] || '';
+		document.getElementById('fatherNameDisplay').value = data[4] || '';
+		document.getElementById('motherNameDisplay').value = data[5] || '';
+		document.getElementById('dobDisplay').value = data[6] || '';
+		document.getElementById('rollNumberDisplay').value = data[7] || '';
+		document.getElementById('teacherNameDisplay').value = data[9] || '';
+		//document.getElementById('statusDisplay').value = data[10] || '';
+
+		// Set image source for display
+		const imageId = data[8] || '';
+		if (imageId) {
+		  const imageUrl = `https://drive.google.com/thumbnail?id=${imageId}&sz=w95-h95`;
+		  document.getElementById('photoDisplay').src = imageUrl;
+		}
+		// English
+		document.getElementById('englishReadingValue').value = data[11] || '';
+		document.getElementById('englishReadingGrade').value = data[12] || '';
+		document.getElementById('englishWritingValue').value = data[13] || '';
+		document.getElementById('englishWritingGrade').value = data[14] || '';
+		document.getElementById('englishSpellingValue').value = data[15] || '';
+		document.getElementById('englishSpellingGrade').value = data[16] || '';
+		document.getElementById('englishHandwritingValue').value = data[17] || '';
+		document.getElementById('englishHandwritingGrade').value = data[18] || '';
+		document.getElementById('englishListeningValue').value = data[19] || '';
+		document.getElementById('englishListeningGrade').value = data[20] || '';
+		document.getElementById('englishTotalValue').value = data[21] || '';
+		document.getElementById('englishTotalGrade').value = data[22] || '';
+		document.getElementById('englishProjectValue').value = data[23] || ''; // New Project Value
+		document.getElementById('englishProjectGrade').value = data[24] || ''; // New Project Grade
+		document.getElementById('englishAssignmentValue').value = data[25] || ''; // New Assignment Value
+		document.getElementById('englishAssignmentGrade').value = data[26] || ''; // New Assignment Grade
+
+		// Hindi
+		document.getElementById('hindiReadingValue').value = data[27] || '';
+		document.getElementById('hindiReadingGrade').value = data[28] || '';
+		document.getElementById('hindiWritingValue').value = data[29] || '';
+		document.getElementById('hindiWritingGrade').value = data[30] || '';
+		document.getElementById('hindiSpellingValue').value = data[31] || '';
+		document.getElementById('hindiSpellingGrade').value = data[32] || '';
+		document.getElementById('hindiHandwritingValue').value = data[33] || '';
+		document.getElementById('hindiHandwritingGrade').value = data[34] || '';
+		document.getElementById('hindiListeningValue').value = data[35] || '';
+		document.getElementById('hindiListeningGrade').value = data[36] || '';
+		document.getElementById('hindiTotalValue').value = data[37] || '';
+		document.getElementById('hindiTotalGrade').value = data[38] || '';
+		document.getElementById('hindiProjectValue').value = data[39] || ''; // New Project Value
+		document.getElementById('hindiProjectGrade').value = data[40] || ''; // New Project Grade
+		document.getElementById('hindiAssignmentValue').value = data[41] || ''; // New Assignment Value
+		document.getElementById('hindiAssignmentGrade').value = data[42] || ''; // New Assignment Grade
+
+		// Bengali
+		document.getElementById('bengaliReadingValue').value = data[43] || '';
+		document.getElementById('bengaliReadingGrade').value = data[44] || '';
+		document.getElementById('bengaliWritingValue').value = data[45] || '';
+		document.getElementById('bengaliWritingGrade').value = data[46] || '';
+		document.getElementById('bengaliSpellingValue').value = data[47] || '';
+		document.getElementById('bengaliSpellingGrade').value = data[48] || '';
+		document.getElementById('bengaliHandwritingValue').value = data[49] || '';
+		document.getElementById('bengaliHandwritingGrade').value = data[50] || '';
+		document.getElementById('bengaliListeningValue').value = data[51] || '';
+		document.getElementById('bengaliListeningGrade').value = data[52] || '';
+		document.getElementById('bengaliTotalValue').value = data[53] || '';
+		document.getElementById('bengaliTotalGrade').value = data[54] || '';
+		document.getElementById('bengaliProjectValue').value = data[55] || ''; // New Project Value
+		document.getElementById('bengaliProjectGrade').value = data[56] || ''; // New Project Grade
+		document.getElementById('bengaliAssignmentValue').value = data[57] || ''; // New Assignment Value
+		document.getElementById('bengaliAssignmentGrade').value = data[58] || ''; // New Assignment Grade
+
+		// Maths
+		document.getElementById('mathsFNCValue').value = data[59] || '';
+		document.getElementById('mathsFNCGrade').value = data[60] || '';
+		document.getElementById('mathsUBCValue').value = data[61] || '';
+		document.getElementById('mathsUBCGrade').value = data[62] || '';
+		document.getElementById('mathsACValue').value = data[63] || '';
+		document.getElementById('mathsACGrade').value = data[64] || '';
+		document.getElementById('mathsPSAValue').value = data[65] || '';
+		document.getElementById('mathsPSAGrade').value = data[66] || '';
+		document.getElementById('mathsIAValue').value = data[67] || '';
+		document.getElementById('mathsIAGrade').value = data[68] || '';
+		document.getElementById('mathsTotalValue').value = data[69] || '';
+		document.getElementById('mathsTotalGrade').value = data[70] || '';
+		document.getElementById('mathsProjectValue').value = data[71] || ''; // New Project Value
+		document.getElementById('mathsProjectGrade').value = data[72] || ''; // New Project Grade
+		document.getElementById('mathsAssignmentValue').value = data[73] || ''; // New Assignment Value
+		document.getElementById('mathsAssignmentGrade').value = data[74] || ''; // New Assignment Grade
+
+		// EVS
+		document.getElementById('evsObservationValue').value = data[75] || '';
+		document.getElementById('evsObservationGrade').value = data[76] || '';
+		document.getElementById('evsIdentificationValue').value = data[77] || '';
+		document.getElementById('evsIdentificationGrade').value = data[78] || '';
+		document.getElementById('evsDiscoveryFactsValue').value = data[79] || '';
+		document.getElementById('evsDiscoveryFactsGrade').value = data[80] || '';
+		document.getElementById('evsGroupActValue').value = data[81] || '';
+		document.getElementById('evsGroupActGrade').value = data[82] || '';
+		document.getElementById('evsIAValue').value = data[83] || '';
+		document.getElementById('evsIAGrade').value = data[84] || '';
+		document.getElementById('evsTotalValue').value = data[85] || '';
+		document.getElementById('evsTotalGrade').value = data[86] || '';
+		document.getElementById('evsProjectValue').value = data[87] || ''; // New Project Value
+		document.getElementById('evsProjectGrade').value = data[88] || ''; // New Project Grade
+		document.getElementById('evsAssignmentValue').value = data[89] || ''; // New Assignment Value
+		document.getElementById('evsAssignmentGrade').value = data[90] || ''; // New Assignment Grade
+
+		// Social Science (SST)
+		document.getElementById('socialScienceObservationValue').value = data[91] || '';
+		document.getElementById('socialScienceObservationGrade').value = data[92] || '';
+		document.getElementById('socialScienceIdentificationValue').value = data[93] || '';
+		document.getElementById('socialScienceIdentificationGrade').value = data[94] || '';
+		document.getElementById('socialScienceDiscoveryFactsValue').value = data[95] || '';
+		document.getElementById('socialScienceDiscoveryFactsGrade').value = data[96] || '';
+		document.getElementById('socialScienceGroupActValue').value = data[97] || '';
+		document.getElementById('socialScienceGroupActGrade').value = data[98] || '';
+		document.getElementById('socialScienceIAValue').value = data[99] || '';
+		document.getElementById('socialScienceIAGrade').value = data[100] || '';
+		document.getElementById('socialScienceTotalValue').value = data[101] || '';
+		document.getElementById('socialScienceTotalGrade').value = data[102] || '';
+		document.getElementById('socialScienceProjectValue').value = data[103] || ''; // New Project Value
+		document.getElementById('socialScienceProjectGrade').value = data[104] || ''; // New Project Grade
+		document.getElementById('socialScienceAssignmentValue').value = data[105] || ''; // New Assignment Value
+		document.getElementById('socialScienceAssignmentGrade').value = data[106] || ''; // New Assignment Grade
+
+		// Computer
+		document.getElementById('computerTheoryValue').value = data[107] || '';
+		document.getElementById('computerTheoryGrade').value = data[108] || '';
+		document.getElementById('computerPracticalValue').value = data[109] || '';
+		document.getElementById('computerPracticalGrade').value = data[110] || '';
+		document.getElementById('computerTotalValue').value = data[111] || '';
+		document.getElementById('computerTotalGrade').value = data[112] || '';
+		document.getElementById('computerProjectValue').value = data[113] || ''; // New Project Value
+		document.getElementById('computerProjectGrade').value = data[114] || ''; // New Project Grade
+		document.getElementById('computerAssignmentValue').value = data[115] || ''; // New Assignment Value
+		document.getElementById('computerAssignmentGrade').value = data[116] || ''; // New Assignment Grade
+
+
+		// English
+		document.getElementById('english1stPT').value = data[119] || '';
+		document.getElementById('english2ndPT').value = data[120] || '';
+		document.getElementById('englishPT10Percent').value = data[121] || '';
+		document.getElementById('english1stPTProject').value = data[122] || '';
+		document.getElementById('english2ndPTProject').value = data[123] || '';
+		document.getElementById('englishProject10Percent').value = data[124] || '';
+		document.getElementById('english1stPTAssignment').value = data[125] || '';
+		document.getElementById('english2ndPTAssignment').value = data[126] || '';
+		document.getElementById('englishAssignment10Percent').value = data[127] || '';
+		document.getElementById('englishHY').value = data[128] || '';
+		document.getElementById('englishHY20Percent').value = data[129] || '';
+		document.getElementById('englishAnnual').value = data[130] || '';
+		document.getElementById('englishAnnual50Percent').value = data[131] || '';
+		document.getElementById('englishFinalTotal').value = data[132] || '';
+		document.getElementById('englishFinalTotalGrade').value = data[133] || '';
+
+		// Hindi
+		document.getElementById('hindi1stPT').value = data[134] || '';
+		document.getElementById('hindi2ndPT').value = data[135] || '';
+		document.getElementById('hindiPT10Percent').value = data[136] || '';
+		document.getElementById('hindi1stPTProject').value = data[137] || '';
+		document.getElementById('hindi2ndPTProject').value = data[138] || '';
+		document.getElementById('hindiProject10Percent').value = data[139] || '';
+		document.getElementById('hindi1stPTAssignment').value = data[140] || '';
+		document.getElementById('hindi2ndPTAssignment').value = data[141] || '';
+		document.getElementById('hindiAssignment10Percent').value = data[142] || '';
+		document.getElementById('hindiHY').value = data[143] || '';
+		document.getElementById('hindiHY20Percent').value = data[144] || '';
+		document.getElementById('hindiAnnual').value = data[145] || '';
+		document.getElementById('hindiAnnual50Percent').value = data[146] || '';
+		document.getElementById('hindiFinalTotal').value = data[147] || '';
+		document.getElementById('hindiFinalTotalGrade').value = data[148] || '';
+
+		// Bengali
+		document.getElementById('bengali1stPT').value = data[149] || '';
+		document.getElementById('bengali2ndPT').value = data[150] || '';
+		document.getElementById('bengaliPT10Percent').value = data[151] || '';
+		document.getElementById('bengali1stPTProject').value = data[152] || '';
+		document.getElementById('bengali2ndPTProject').value = data[153] || '';
+		document.getElementById('bengaliProject10Percent').value = data[154] || '';
+		document.getElementById('bengali1stPTAssignment').value = data[155] || '';
+		document.getElementById('bengali2ndPTAssignment').value = data[156] || '';
+		document.getElementById('bengaliAssignment10Percent').value = data[157] || '';
+		document.getElementById('bengaliHY').value = data[158] || '';
+		document.getElementById('bengaliHY20Percent').value = data[159] || '';
+		document.getElementById('bengaliAnnual').value = data[160] || '';
+		document.getElementById('bengaliAnnual50Percent').value = data[161] || '';
+		document.getElementById('bengaliFinalTotal').value = data[162] || '';
+		document.getElementById('bengaliFinalTotalGrade').value = data[163] || '';
+
+		// Maths
+		document.getElementById('maths1stPT').value = data[164] || '';
+		document.getElementById('maths2ndPT').value = data[165] || '';
+		document.getElementById('mathsPT10Percent').value = data[166] || '';
+		document.getElementById('maths1stPTProject').value = data[167] || '';
+		document.getElementById('maths2ndPTProject').value = data[168] || '';
+		document.getElementById('mathsProject10Percent').value = data[169] || '';
+		document.getElementById('maths1stPTAssignment').value = data[170] || '';
+		document.getElementById('maths2ndPTAssignment').value = data[171] || '';
+		document.getElementById('mathsAssignment10Percent').value = data[172] || '';
+		document.getElementById('mathsHY').value = data[173] || '';
+		document.getElementById('mathsHY20Percent').value = data[174] || '';
+		document.getElementById('mathsAnnual').value = data[175] || '';
+		document.getElementById('mathsAnnual50Percent').value = data[176] || '';
+		document.getElementById('mathsFinalTotal').value = data[177] || '';
+		document.getElementById('mathsFinalTotalGrade').value = data[178] || '';
+
+		// EVS
+		document.getElementById('evs1stPT').value = data[179] || '';
+		document.getElementById('evs2ndPT').value = data[180] || '';
+		document.getElementById('evsPT10Percent').value = data[181] || '';
+		document.getElementById('evs1stPTProject').value = data[182] || '';
+		document.getElementById('evs2ndPTProject').value = data[183] || '';
+		document.getElementById('evsProject10Percent').value = data[184] || '';
+		document.getElementById('evs1stPTAssignment').value = data[185] || '';
+		document.getElementById('evs2ndPTAssignment').value = data[186] || '';
+		document.getElementById('evsAssignment10Percent').value = data[187] || '';
+		document.getElementById('evsHY').value = data[188] || '';
+		document.getElementById('evsHY20Percent').value = data[189] || '';
+		document.getElementById('evsAnnual').value = data[190] || '';
+		document.getElementById('evsAnnual50Percent').value = data[191] || '';
+		document.getElementById('evsFinalTotal').value = data[192] || '';
+		document.getElementById('evsFinalTotalGrade').value = data[193] || '';
+
+		// Social Science
+		document.getElementById('socialScience1stPT').value = data[194] || '';
+		document.getElementById('socialScience2ndPT').value = data[195] || '';
+		document.getElementById('socialSciencePT10Percent').value = data[196] || '';
+		document.getElementById('socialScience1stPTProject').value = data[197] || '';
+		document.getElementById('socialScience2ndPTProject').value = data[198] || '';
+		document.getElementById('socialScienceProject10Percent').value = data[199] || '';
+		document.getElementById('socialScience1stPTAssignment').value = data[200] || '';
+		document.getElementById('socialScience2ndPTAssignment').value = data[201] || '';
+		document.getElementById('socialScienceAssignment10Percent').value = data[202] || '';
+		document.getElementById('socialScienceHY').value = data[203] || '';
+		document.getElementById('socialScienceHY20Percent').value = data[204] || '';
+		document.getElementById('socialScienceAnnual').value = data[205] || '';
+		document.getElementById('socialScienceAnnual50Percent').value = data[206] || '';
+		document.getElementById('socialScienceFinalTotal').value = data[207] || '';
+		document.getElementById('socialScienceFinalTotalGrade').value = data[208] || '';
+
+		// Computer
+		document.getElementById('computer1stPT').value = data[209] || '';
+		document.getElementById('computer2ndPT').value = data[210] || '';
+		document.getElementById('computerPT10Percent').value = data[211] || '';
+		document.getElementById('computer1stPTProject').value = data[212] || '';
+		document.getElementById('computer2ndPTProject').value = data[213] || '';
+		document.getElementById('computerProject10Percent').value = data[214] || '';
+		document.getElementById('computer1stPTAssignment').value = data[215] || '';
+		document.getElementById('computer2ndPTAssignment').value = data[216] || '';
+		document.getElementById('computerAssignment10Percent').value = data[217] || '';
+		document.getElementById('computerHY').value = data[218] || '';
+		document.getElementById('computerHY20Percent').value = data[219] || '';
+		document.getElementById('computerAnnual').value = data[220] || '';
+		document.getElementById('computerAnnual50Percent').value = data[221] || '';
+		document.getElementById('computerFinalTotal').value = data[222] || '';
+		document.getElementById('computerFinalTotalGrade').value = data[223] || '';
+		
+		document.getElementById('overallMarks').value = data[224] || '';
+		document.getElementById('fullSubjectMarks').value = data[225] || '';
+		document.getElementById('percentage').value = data[226] || '';
+		document.getElementById('overallGrade').value = data[227] || '';
+		document.getElementById('totalPresent').value = data[228] || '';
+		document.getElementById('totalDays').value = data[229] || '';
+		document.getElementById('promotionStatus').value = data[230] || '';
+		document.getElementById('selectClass').value = data[231] || '';
+		
+
+				
+        document.getElementById('marksTable').style.display = 'block';
+        document.getElementById('saveButton').style.display = 'block';
+      } else {
+        alert('No matching student found.');
+      }
+    });
+}
+      
+    </script>
+	
+	
+	<script>
+function saveMarks() {
+  var admissionNumber = document.getElementById('admissionNumber').value;
+  var examType = document.getElementById('examType').value;
+  var statusDisplay = document.getElementById('statusDisplay').value;
+  var teacherNameDisplay = document.getElementById('teacherNameDisplay').value;
+
+	// English
+	var englishReadingValue = document.getElementById('englishReadingValue').value;
+	var englishReadingGrade = document.getElementById('englishReadingGrade').value;
+	var englishWritingValue = document.getElementById('englishWritingValue').value;
+	var englishWritingGrade = document.getElementById('englishWritingGrade').value;
+	var englishSpellingValue = document.getElementById('englishSpellingValue').value;
+	var englishSpellingGrade = document.getElementById('englishSpellingGrade').value;
+	var englishHandwritingValue = document.getElementById('englishHandwritingValue').value;
+	var englishHandwritingGrade = document.getElementById('englishHandwritingGrade').value;
+	var englishListeningValue = document.getElementById('englishListeningValue').value;
+	var englishListeningGrade = document.getElementById('englishListeningGrade').value;
+	var englishTotalValue = document.getElementById('englishTotalValue').value;
+	var englishTotalGrade = document.getElementById('englishTotalGrade').value;
+	var englishProjectValue = document.getElementById('englishProjectValue').value; 
+	var englishProjectGrade = document.getElementById('englishProjectGrade').value; 
+	var englishAssignmentValue = document.getElementById('englishAssignmentValue').value; 
+	var englishAssignmentGrade = document.getElementById('englishAssignmentGrade').value; 
+
+	// Hindi
+	var hindiReadingValue = document.getElementById('hindiReadingValue').value;
+	var hindiReadingGrade = document.getElementById('hindiReadingGrade').value;
+	var hindiWritingValue = document.getElementById('hindiWritingValue').value;
+	var hindiWritingGrade = document.getElementById('hindiWritingGrade').value;
+	var hindiSpellingValue = document.getElementById('hindiSpellingValue').value;
+	var hindiSpellingGrade = document.getElementById('hindiSpellingGrade').value;
+	var hindiHandwritingValue = document.getElementById('hindiHandwritingValue').value;
+	var hindiHandwritingGrade = document.getElementById('hindiHandwritingGrade').value;
+	var hindiListeningValue = document.getElementById('hindiListeningValue').value;
+	var hindiListeningGrade = document.getElementById('hindiListeningGrade').value;
+	var hindiTotalValue = document.getElementById('hindiTotalValue').value;
+	var hindiTotalGrade = document.getElementById('hindiTotalGrade').value;
+	var hindiProjectValue = document.getElementById('hindiProjectValue').value; // New Project Value
+	var hindiProjectGrade = document.getElementById('hindiProjectGrade').value; // New Project Grade
+	var hindiAssignmentValue = document.getElementById('hindiAssignmentValue').value; // New Assignment Value
+	var hindiAssignmentGrade = document.getElementById('hindiAssignmentGrade').value; // New Assignment Grade
+
+	// Bengali
+	var bengaliReadingValue = document.getElementById('bengaliReadingValue').value;
+	var bengaliReadingGrade = document.getElementById('bengaliReadingGrade').value;
+	var bengaliWritingValue = document.getElementById('bengaliWritingValue').value;
+	var bengaliWritingGrade = document.getElementById('bengaliWritingGrade').value;
+	var bengaliSpellingValue = document.getElementById('bengaliSpellingValue').value;
+	var bengaliSpellingGrade = document.getElementById('bengaliSpellingGrade').value;
+	var bengaliHandwritingValue = document.getElementById('bengaliHandwritingValue').value;
+	var bengaliHandwritingGrade = document.getElementById('bengaliHandwritingGrade').value;
+	var bengaliListeningValue = document.getElementById('bengaliListeningValue').value;
+	var bengaliListeningGrade = document.getElementById('bengaliListeningGrade').value;
+	var bengaliTotalValue = document.getElementById('bengaliTotalValue').value;
+	var bengaliTotalGrade = document.getElementById('bengaliTotalGrade').value;
+	var bengaliProjectValue = document.getElementById('bengaliProjectValue').value; // New Project Value
+	var bengaliProjectGrade = document.getElementById('bengaliProjectGrade').value; // New Project Grade
+	var bengaliAssignmentValue = document.getElementById('bengaliAssignmentValue').value; // New Assignment Value
+	var bengaliAssignmentGrade = document.getElementById('bengaliAssignmentGrade').value; // New Assignment Grade
+
+	// Maths
+	var mathsFNCValue = document.getElementById('mathsFNCValue').value;
+	var mathsFNCGrade = document.getElementById('mathsFNCGrade').value;
+	var mathsUBCValue = document.getElementById('mathsUBCValue').value;
+	var mathsUBCGrade = document.getElementById('mathsUBCGrade').value;
+	var mathsACValue = document.getElementById('mathsACValue').value;
+	var mathsACGrade = document.getElementById('mathsACGrade').value;
+	var mathsPSAValue = document.getElementById('mathsPSAValue').value;
+	var mathsPSAGrade = document.getElementById('mathsPSAGrade').value;
+	var mathsIAValue = document.getElementById('mathsIAValue').value;
+	var mathsIAGrade = document.getElementById('mathsIAGrade').value;
+	var mathsTotalValue = document.getElementById('mathsTotalValue').value;
+	var mathsTotalGrade = document.getElementById('mathsTotalGrade').value;
+	var mathsProjectValue = document.getElementById('mathsProjectValue').value; // New Project Value
+	var mathsProjectGrade = document.getElementById('mathsProjectGrade').value; // New Project Grade
+	var mathsAssignmentValue = document.getElementById('mathsAssignmentValue').value; // New Assignment Value
+	var mathsAssignmentGrade = document.getElementById('mathsAssignmentGrade').value; // New Assignment Grade
+
+	// EVS
+	var evsObservationValue = document.getElementById('evsObservationValue').value;
+	var evsObservationGrade = document.getElementById('evsObservationGrade').value;
+	var evsIdentificationValue = document.getElementById('evsIdentificationValue').value;
+	var evsIdentificationGrade = document.getElementById('evsIdentificationGrade').value;
+	var evsDiscoveryFactsValue = document.getElementById('evsDiscoveryFactsValue').value;
+	var evsDiscoveryFactsGrade = document.getElementById('evsDiscoveryFactsGrade').value;
+	var evsGroupActValue = document.getElementById('evsGroupActValue').value;
+	var evsGroupActGrade = document.getElementById('evsGroupActGrade').value;
+	var evsIAValue = document.getElementById('evsIAValue').value;
+	var evsIAGrade = document.getElementById('evsIAGrade').value;
+	var evsTotalValue = document.getElementById('evsTotalValue').value;
+	var evsTotalGrade = document.getElementById('evsTotalGrade').value;
+	var evsProjectValue = document.getElementById('evsProjectValue').value; // New Project Value
+	var evsProjectGrade = document.getElementById('evsProjectGrade').value; // New Project Grade
+	var evsAssignmentValue = document.getElementById('evsAssignmentValue').value; // New Assignment Value
+	var evsAssignmentGrade = document.getElementById('evsAssignmentGrade').value; // New Assignment Grade
+
+	// SST
+	var socialScienceObservationValue = document.getElementById('socialScienceObservationValue').value;
+	var socialScienceObservationGrade = document.getElementById('socialScienceObservationGrade').value;
+	var socialScienceIdentificationValue = document.getElementById('socialScienceIdentificationValue').value;
+	var socialScienceIdentificationGrade = document.getElementById('socialScienceIdentificationGrade').value;
+	var socialScienceDiscoveryFactsValue = document.getElementById('socialScienceDiscoveryFactsValue').value;
+	var socialScienceDiscoveryFactsGrade = document.getElementById('socialScienceDiscoveryFactsGrade').value;
+	var socialScienceGroupActValue = document.getElementById('socialScienceGroupActValue').value;
+	var socialScienceGroupActGrade = document.getElementById('socialScienceGroupActGrade').value;
+	var socialScienceIAValue = document.getElementById('socialScienceIAValue').value;
+	var socialScienceIAGrade = document.getElementById('socialScienceIAGrade').value;
+	var socialScienceTotalValue = document.getElementById('socialScienceTotalValue').value;
+	var socialScienceTotalGrade = document.getElementById('socialScienceTotalGrade').value;
+	var socialScienceProjectValue = document.getElementById('socialScienceProjectValue').value; // New Project Value
+	var socialScienceProjectGrade = document.getElementById('socialScienceProjectGrade').value; // New Project Grade
+	var socialScienceAssignmentValue = document.getElementById('socialScienceAssignmentValue').value; // New Assignment Value
+	var socialScienceAssignmentGrade = document.getElementById('socialScienceAssignmentGrade').value; // New Assignment Grade
+
+	// Computer
+	var computerTheoryValue = document.getElementById('computerTheoryValue').value;
+	var computerTheoryGrade = document.getElementById('computerTheoryGrade').value;
+	var computerPracticalValue = document.getElementById('computerPracticalValue').value;
+	var computerPracticalGrade = document.getElementById('computerPracticalGrade').value;
+	var computerTotalValue = document.getElementById('computerTotalValue').value;
+	var computerTotalGrade = document.getElementById('computerTotalGrade').value;
+	var computerProjectValue = document.getElementById('computerProjectValue').value; // New Project Value
+	var computerProjectGrade = document.getElementById('computerProjectGrade').value; // New Project Grade
+	var computerAssignmentValue = document.getElementById('computerAssignmentValue').value; // New Assignment Value
+	var computerAssignmentGrade = document.getElementById('computerAssignmentGrade').value; // New Assignment Grade
+
+	// Final Assessment English
+	var english1stPT = document.getElementById('english1stPT').value;
+	var english2ndPT = document.getElementById('english2ndPT').value;
+	var englishPT10Percent = document.getElementById('englishPT10Percent').value;
+	var english1stPTProject = document.getElementById('english1stPTProject').value;
+	var english2ndPTProject = document.getElementById('english2ndPTProject').value;
+	var englishProject10Percent = document.getElementById('englishProject10Percent').value;
+	var english1stPTAssignment = document.getElementById('english1stPTAssignment').value;
+	var english2ndPTAssignment = document.getElementById('english2ndPTAssignment').value;
+	var englishAssignment10Percent = document.getElementById('englishAssignment10Percent').value;
+	var englishHY = document.getElementById('englishHY').value;
+	var englishHY20Percent = document.getElementById('englishHY20Percent').value;
+	var englishAnnual = document.getElementById('englishAnnual').value;
+	var englishAnnual50Percent = document.getElementById('englishAnnual50Percent').value;
+	var englishFinalTotal = document.getElementById('englishFinalTotal').value;
+	var englishFinalTotalGrade = document.getElementById('englishFinalTotalGrade').value;
+
+	// Hindi
+	var hindi1stPT = document.getElementById('hindi1stPT').value;
+	var hindi2ndPT = document.getElementById('hindi2ndPT').value;
+	var hindiPT10Percent = document.getElementById('hindiPT10Percent').value;
+	var hindi1stPTProject = document.getElementById('hindi1stPTProject').value;
+	var hindi2ndPTProject = document.getElementById('hindi2ndPTProject').value;
+	var hindiProject10Percent = document.getElementById('hindiProject10Percent').value;
+	var hindi1stPTAssignment = document.getElementById('hindi1stPTAssignment').value;
+	var hindi2ndPTAssignment = document.getElementById('hindi2ndPTAssignment').value;
+	var hindiAssignment10Percent = document.getElementById('hindiAssignment10Percent').value;
+	var hindiHY = document.getElementById('hindiHY').value;
+	var hindiHY20Percent = document.getElementById('hindiHY20Percent').value;
+	var hindiAnnual = document.getElementById('hindiAnnual').value;
+	var hindiAnnual50Percent = document.getElementById('hindiAnnual50Percent').value;
+	var hindiFinalTotal = document.getElementById('hindiFinalTotal').value;
+	var hindiFinalTotalGrade = document.getElementById('hindiFinalTotalGrade').value;
+
+	// Bengali
+	var bengali1stPT = document.getElementById('bengali1stPT').value;
+	var bengali2ndPT = document.getElementById('bengali2ndPT').value;
+	var bengaliPT10Percent = document.getElementById('bengaliPT10Percent').value;
+	var bengali1stPTProject = document.getElementById('bengali1stPTProject').value;
+	var bengali2ndPTProject = document.getElementById('bengali2ndPTProject').value;
+	var bengaliProject10Percent = document.getElementById('bengaliProject10Percent').value;
+	var bengali1stPTAssignment = document.getElementById('bengali1stPTAssignment').value;
+	var bengali2ndPTAssignment = document.getElementById('bengali2ndPTAssignment').value;
+	var bengaliAssignment10Percent = document.getElementById('bengaliAssignment10Percent').value;
+	var bengaliHY = document.getElementById('bengaliHY').value;
+	var bengaliHY20Percent = document.getElementById('bengaliHY20Percent').value;
+	var bengaliAnnual = document.getElementById('bengaliAnnual').value;
+	var bengaliAnnual50Percent = document.getElementById('bengaliAnnual50Percent').value;
+	var bengaliFinalTotal = document.getElementById('bengaliFinalTotal').value;
+	var bengaliFinalTotalGrade = document.getElementById('bengaliFinalTotalGrade').value;
+
+	// Maths
+	var maths1stPT = document.getElementById('maths1stPT').value;
+	var maths2ndPT = document.getElementById('maths2ndPT').value;
+	var mathsPT10Percent = document.getElementById('mathsPT10Percent').value;
+	var maths1stPTProject = document.getElementById('maths1stPTProject').value;
+	var maths2ndPTProject = document.getElementById('maths2ndPTProject').value;
+	var mathsProject10Percent = document.getElementById('mathsProject10Percent').value;
+	var maths1stPTAssignment = document.getElementById('maths1stPTAssignment').value;
+	var maths2ndPTAssignment = document.getElementById('maths2ndPTAssignment').value;
+	var mathsAssignment10Percent = document.getElementById('mathsAssignment10Percent').value;
+	var mathsHY = document.getElementById('mathsHY').value;
+	var mathsHY20Percent = document.getElementById('mathsHY20Percent').value;
+	var mathsAnnual = document.getElementById('mathsAnnual').value;
+	var mathsAnnual50Percent = document.getElementById('mathsAnnual50Percent').value;
+	var mathsFinalTotal = document.getElementById('mathsFinalTotal').value;
+	var mathsFinalTotalGrade = document.getElementById('mathsFinalTotalGrade').value;
+
+	// EVS
+	var evs1stPT = document.getElementById('evs1stPT').value;
+	var evs2ndPT = document.getElementById('evs2ndPT').value;
+	var evsPT10Percent = document.getElementById('evsPT10Percent').value;
+	var evs1stPTProject = document.getElementById('evs1stPTProject').value;
+	var evs2ndPTProject = document.getElementById('evs2ndPTProject').value;
+	var evsProject10Percent = document.getElementById('evsProject10Percent').value;
+	var evs1stPTAssignment = document.getElementById('evs1stPTAssignment').value;
+	var evs2ndPTAssignment = document.getElementById('evs2ndPTAssignment').value;
+	var evsAssignment10Percent = document.getElementById('evsAssignment10Percent').value;
+	var evsHY = document.getElementById('evsHY').value;
+	var evsHY20Percent = document.getElementById('evsHY20Percent').value;
+	var evsAnnual = document.getElementById('evsAnnual').value;
+	var evsAnnual50Percent = document.getElementById('evsAnnual50Percent').value;
+	var evsFinalTotal = document.getElementById('evsFinalTotal').value;
+	var evsFinalTotalGrade = document.getElementById('evsFinalTotalGrade').value;
+
+	// Social Science
+	var socialScience1stPT = document.getElementById('socialScience1stPT').value;
+	var socialScience2ndPT = document.getElementById('socialScience2ndPT').value;
+	var socialSciencePT10Percent = document.getElementById('socialSciencePT10Percent').value;
+	var socialScience1stPTProject = document.getElementById('socialScience1stPTProject').value;
+	var socialScience2ndPTProject = document.getElementById('socialScience2ndPTProject').value;
+	var socialScienceProject10Percent = document.getElementById('socialScienceProject10Percent').value;
+	var socialScience1stPTAssignment = document.getElementById('socialScience1stPTAssignment').value;
+	var socialScience2ndPTAssignment = document.getElementById('socialScience2ndPTAssignment').value;
+	var socialScienceAssignment10Percent = document.getElementById('socialScienceAssignment10Percent').value;
+	var socialScienceHY = document.getElementById('socialScienceHY').value;
+	var socialScienceHY20Percent = document.getElementById('socialScienceHY20Percent').value;
+	var socialScienceAnnual = document.getElementById('socialScienceAnnual').value;
+	var socialScienceAnnual50Percent = document.getElementById('socialScienceAnnual50Percent').value;
+	var socialScienceFinalTotal = document.getElementById('socialScienceFinalTotal').value;
+	var socialScienceFinalTotalGrade = document.getElementById('socialScienceFinalTotalGrade').value;
+
+	// Computer
+	var computer1stPT = document.getElementById('computer1stPT').value;
+	var computer2ndPT = document.getElementById('computer2ndPT').value;
+	var computerPT10Percent = document.getElementById('computerPT10Percent').value;
+	var computer1stPTProject = document.getElementById('computer1stPTProject').value;
+	var computer2ndPTProject = document.getElementById('computer2ndPTProject').value;
+	var computerProject10Percent = document.getElementById('computerProject10Percent').value;
+	var computer1stPTAssignment = document.getElementById('computer1stPTAssignment').value;
+	var computer2ndPTAssignment = document.getElementById('computer2ndPTAssignment').value;
+	var computerAssignment10Percent = document.getElementById('computerAssignment10Percent').value;
+	var computerHY = document.getElementById('computerHY').value;
+	var computerHY20Percent = document.getElementById('computerHY20Percent').value;
+	var computerAnnual = document.getElementById('computerAnnual').value;
+	var computerAnnual50Percent = document.getElementById('computerAnnual50Percent').value;
+	var computerFinalTotal = document.getElementById('computerFinalTotal').value;
+	var computerFinalTotalGrade = document.getElementById('computerFinalTotalGrade').value;
+	
+	//Overall
+	var overallMarks = document.getElementById('overallMarks').value;
+	var fullSubjectMarks = document.getElementById('fullSubjectMarks').value;
+	var percentage = document.getElementById('percentage').value;
+	var overallGrade = document.getElementById('overallGrade').value;
+	
+	var totalPresent = document.getElementById('totalPresent').value;
+	var totalDays = document.getElementById('totalDays').value;
+	var promotionStatus = document.getElementById('promotionStatus').value;
+	var selectClass = document.getElementById('selectClass').value;
+	
+
+
+  // Encode the parameters to ensure special characters are handled correctly
+  var params = new URLSearchParams({
+    action: 'save',
+    examType: examType,
+	admissionNumber: admissionNumber,
+	teacherNameDisplay: teacherNameDisplay,
+	statusDisplay: statusDisplay,
+ 
+		englishReadingValue: englishReadingValue,
+		englishReadingGrade: englishReadingGrade,
+		englishWritingValue: englishWritingValue,
+		englishWritingGrade: englishWritingGrade,
+		englishSpellingValue: englishSpellingValue,
+		englishSpellingGrade: englishSpellingGrade,
+		englishHandwritingValue: englishHandwritingValue,
+		englishHandwritingGrade: englishHandwritingGrade,
+		englishListeningValue: englishListeningValue,
+		englishListeningGrade: englishListeningGrade,
+		englishTotalValue: englishTotalValue,
+		englishTotalGrade: englishTotalGrade,
+		englishProjectValue: englishProjectValue,
+		englishProjectGrade: englishProjectGrade,
+		englishAssignmentValue: englishAssignmentValue,
+		englishAssignmentGrade: englishAssignmentGrade,
+
+		hindiReadingValue: hindiReadingValue,
+		hindiReadingGrade: hindiReadingGrade,
+		hindiWritingValue: hindiWritingValue,
+		hindiWritingGrade: hindiWritingGrade,
+		hindiSpellingValue: hindiSpellingValue,
+		hindiSpellingGrade: hindiSpellingGrade,
+		hindiHandwritingValue: hindiHandwritingValue,
+		hindiHandwritingGrade: hindiHandwritingGrade,
+		hindiListeningValue: hindiListeningValue,
+		hindiListeningGrade: hindiListeningGrade,
+		hindiTotalValue: hindiTotalValue,
+		hindiTotalGrade: hindiTotalGrade,
+		hindiProjectValue: hindiProjectValue,
+		hindiProjectGrade: hindiProjectGrade,
+		hindiAssignmentValue: hindiAssignmentValue,
+		hindiAssignmentGrade: hindiAssignmentGrade,
+
+		bengaliReadingValue: bengaliReadingValue,
+		bengaliReadingGrade: bengaliReadingGrade,
+		bengaliWritingValue: bengaliWritingValue,
+		bengaliWritingGrade: bengaliWritingGrade,
+		bengaliSpellingValue: bengaliSpellingValue,
+		bengaliSpellingGrade: bengaliSpellingGrade,
+		bengaliHandwritingValue: bengaliHandwritingValue,
+		bengaliHandwritingGrade: bengaliHandwritingGrade,
+		bengaliListeningValue: bengaliListeningValue,
+		bengaliListeningGrade: bengaliListeningGrade,
+		bengaliTotalValue: bengaliTotalValue,
+		bengaliTotalGrade: bengaliTotalGrade,
+		bengaliProjectValue: bengaliProjectValue,
+		bengaliProjectGrade: bengaliProjectGrade,
+		bengaliAssignmentValue: bengaliAssignmentValue,
+		bengaliAssignmentGrade: bengaliAssignmentGrade,
+
+		mathsFNCValue: mathsFNCValue,
+		mathsFNCGrade: mathsFNCGrade,
+		mathsUBCValue: mathsUBCValue,
+		mathsUBCGrade: mathsUBCGrade,
+		mathsACValue: mathsACValue,
+		mathsACGrade: mathsACGrade,
+		mathsPSAValue: mathsPSAValue,
+		mathsPSAGrade: mathsPSAGrade,
+		mathsIAValue: mathsIAValue,
+		mathsIAGrade: mathsIAGrade,
+		mathsTotalValue: mathsTotalValue,
+		mathsTotalGrade: mathsTotalGrade,
+		mathsProjectValue: mathsProjectValue,
+		mathsProjectGrade: mathsProjectGrade,
+		mathsAssignmentValue: mathsAssignmentValue,
+		mathsAssignmentGrade: mathsAssignmentGrade,
+
+		evsObservationValue: evsObservationValue,
+		evsObservationGrade: evsObservationGrade,
+		evsIdentificationValue: evsIdentificationValue,
+		evsIdentificationGrade: evsIdentificationGrade,
+		evsDiscoveryFactsValue: evsDiscoveryFactsValue,
+		evsDiscoveryFactsGrade: evsDiscoveryFactsGrade,
+		evsGroupActValue: evsGroupActValue,
+		evsGroupActGrade: evsGroupActGrade,
+		evsIAValue: evsIAValue,
+		evsIAGrade: evsIAGrade,
+		evsTotalValue: evsTotalValue,
+		evsTotalGrade: evsTotalGrade,
+		evsProjectValue: evsProjectValue,
+		evsProjectGrade: evsProjectGrade,
+		evsAssignmentValue: evsAssignmentValue,
+		evsAssignmentGrade: evsAssignmentGrade,
+
+		socialScienceObservationValue: socialScienceObservationValue,
+		socialScienceObservationGrade: socialScienceObservationGrade,
+		socialScienceIdentificationValue: socialScienceIdentificationValue,
+		socialScienceIdentificationGrade: socialScienceIdentificationGrade,
+		socialScienceDiscoveryFactsValue: socialScienceDiscoveryFactsValue,
+		socialScienceDiscoveryFactsGrade: socialScienceDiscoveryFactsGrade,
+		socialScienceGroupActValue: socialScienceGroupActValue,
+		socialScienceGroupActGrade: socialScienceGroupActGrade,
+		socialScienceIAValue: socialScienceIAValue,
+		socialScienceIAGrade: socialScienceIAGrade,
+		socialScienceTotalValue: socialScienceTotalValue,
+		socialScienceTotalGrade: socialScienceTotalGrade,
+		socialScienceProjectValue: socialScienceProjectValue,
+		socialScienceProjectGrade: socialScienceProjectGrade,
+		socialScienceAssignmentValue: socialScienceAssignmentValue,
+		socialScienceAssignmentGrade: socialScienceAssignmentGrade,
+
+		computerTheoryValue: computerTheoryValue,
+		computerTheoryGrade: computerTheoryGrade,
+		computerPracticalValue: computerPracticalValue,
+		computerPracticalGrade: computerPracticalGrade,
+		computerTotalValue: computerTotalValue,
+		computerTotalGrade: computerTotalGrade,
+		computerProjectValue: computerProjectValue,
+		computerProjectGrade: computerProjectGrade,
+		computerAssignmentValue: computerAssignmentValue,
+		computerAssignmentGrade: computerAssignmentGrade,
+		
+	
+	  english1stPT: english1stPT,
+	  english2ndPT: english2ndPT,
+	  englishPT10Percent: englishPT10Percent,
+	  english1stPTProject: english1stPTProject,
+	  english2ndPTProject: english2ndPTProject,
+	  englishProject10Percent: englishProject10Percent,
+	  english1stPTAssignment: english1stPTAssignment,
+	  english2ndPTAssignment: english2ndPTAssignment,
+	  englishAssignment10Percent: englishAssignment10Percent,
+	  englishHY: englishHY,
+	  englishHY20Percent: englishHY20Percent,
+	  englishAnnual: englishAnnual,
+	  englishAnnual50Percent: englishAnnual50Percent,
+	  englishFinalTotal: englishFinalTotal,
+	  englishFinalTotalGrade: englishFinalTotalGrade,
+
+	  hindi1stPT: hindi1stPT,
+	  hindi2ndPT: hindi2ndPT,
+	  hindiPT10Percent: hindiPT10Percent,
+	  hindi1stPTProject: hindi1stPTProject,
+	  hindi2ndPTProject: hindi2ndPTProject,
+	  hindiProject10Percent: hindiProject10Percent,
+	  hindi1stPTAssignment: hindi1stPTAssignment,
+	  hindi2ndPTAssignment: hindi2ndPTAssignment,
+	  hindiAssignment10Percent: hindiAssignment10Percent,
+	  hindiHY: hindiHY,
+	  hindiHY20Percent: hindiHY20Percent,
+	  hindiAnnual: hindiAnnual,
+	  hindiAnnual50Percent: hindiAnnual50Percent,
+	  hindiFinalTotal: hindiFinalTotal,
+	  hindiFinalTotalGrade: hindiFinalTotalGrade,
+
+	  bengali1stPT: bengali1stPT,
+	  bengali2ndPT: bengali2ndPT,
+	  bengaliPT10Percent: bengaliPT10Percent,
+	  bengali1stPTProject: bengali1stPTProject,
+	  bengali2ndPTProject: bengali2ndPTProject,
+	  bengaliProject10Percent: bengaliProject10Percent,
+	  bengali1stPTAssignment: bengali1stPTAssignment,
+	  bengali2ndPTAssignment: bengali2ndPTAssignment,
+	  bengaliAssignment10Percent: bengaliAssignment10Percent,
+	  bengaliHY: bengaliHY,
+	  bengaliHY20Percent: bengaliHY20Percent,
+	  bengaliAnnual: bengaliAnnual,
+	  bengaliAnnual50Percent: bengaliAnnual50Percent,
+	  bengaliFinalTotal: bengaliFinalTotal,
+	  bengaliFinalTotalGrade: bengaliFinalTotalGrade,
+
+	  maths1stPT: maths1stPT,
+	  maths2ndPT: maths2ndPT,
+	  mathsPT10Percent: mathsPT10Percent,
+	  maths1stPTProject: maths1stPTProject,
+	  maths2ndPTProject: maths2ndPTProject,
+	  mathsProject10Percent: mathsProject10Percent,
+	  maths1stPTAssignment: maths1stPTAssignment,
+	  maths2ndPTAssignment: maths2ndPTAssignment,
+	  mathsAssignment10Percent: mathsAssignment10Percent,
+	  mathsHY: mathsHY,
+	  mathsHY20Percent: mathsHY20Percent,
+	  mathsAnnual: mathsAnnual,
+	  mathsAnnual50Percent: mathsAnnual50Percent,
+	  mathsFinalTotal: mathsFinalTotal,
+	  mathsFinalTotalGrade: mathsFinalTotalGrade,
+
+	  evs1stPT: evs1stPT,
+	  evs2ndPT: evs2ndPT,
+	  evsPT10Percent: evsPT10Percent,
+	  evs1stPTProject: evs1stPTProject,
+	  evs2ndPTProject: evs2ndPTProject,
+	  evsProject10Percent: evsProject10Percent,
+	  evs1stPTAssignment: evs1stPTAssignment,
+	  evs2ndPTAssignment: evs2ndPTAssignment,
+	  evsAssignment10Percent: evsAssignment10Percent,
+	  evsHY: evsHY,
+	  evsHY20Percent: evsHY20Percent,
+	  evsAnnual: evsAnnual,
+	  evsAnnual50Percent: evsAnnual50Percent,
+	  evsFinalTotal: evsFinalTotal,
+	  evsFinalTotalGrade: evsFinalTotalGrade,
+
+	  socialScience1stPT: socialScience1stPT,
+	  socialScience2ndPT: socialScience2ndPT,
+	  socialSciencePT10Percent: socialSciencePT10Percent,
+	  socialScience1stPTProject: socialScience1stPTProject,
+	  socialScience2ndPTProject: socialScience2ndPTProject,
+	  socialScienceProject10Percent: socialScienceProject10Percent,
+	  socialScience1stPTAssignment: socialScience1stPTAssignment,
+	  socialScience2ndPTAssignment: socialScience2ndPTAssignment,
+	  socialScienceAssignment10Percent: socialScienceAssignment10Percent,
+	  socialScienceHY: socialScienceHY,
+	  socialScienceHY20Percent: socialScienceHY20Percent,
+	  socialScienceAnnual: socialScienceAnnual,
+	  socialScienceAnnual50Percent: socialScienceAnnual50Percent,
+	  socialScienceFinalTotal: socialScienceFinalTotal,
+	  socialScienceFinalTotalGrade: socialScienceFinalTotalGrade,
+
+	  computer1stPT: computer1stPT,
+	  computer2ndPT: computer2ndPT,
+	  computerPT10Percent: computerPT10Percent,
+	  computer1stPTProject: computer1stPTProject,
+	  computer2ndPTProject: computer2ndPTProject,
+	  computerProject10Percent: computerProject10Percent,
+	  computer1stPTAssignment: computer1stPTAssignment,
+	  computer2ndPTAssignment: computer2ndPTAssignment,
+	  computerAssignment10Percent: computerAssignment10Percent,
+	  computerHY: computerHY,
+	  computerHY20Percent: computerHY20Percent,
+	  computerAnnual: computerAnnual,
+	  computerAnnual50Percent: computerAnnual50Percent,
+	  computerFinalTotal: computerFinalTotal,
+	  computerFinalTotalGrade: computerFinalTotalGrade,
+
+	  overallMarks: overallMarks,
+	  fullSubjectMarks: fullSubjectMarks,
+	  percentage: percentage,
+	  overallGrade: overallGrade,
+	  
+	  totalPresent: totalPresent,
+	  totalDays: totalDays,
+	  promotionStatus: promotionStatus,
+	  selectClass: selectClass
+	 
+	
+	
+  });
+
+  fetch(`${GAS_URL}?${params}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Marks updated successfully!');
+      } else {
+        alert('Failed to update marks. Error: ' + data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while saving marks.');
+    });
+}
+</script>
+
+
+
+
+
+
+  <script>
+    function calculateEnglishTotal() {
+      const inputs = [
+        'englishReadingValue',
+        'englishWritingValue',
+        'englishSpellingValue',
+        'englishHandwritingValue',
+        'englishListeningValue'
+      ];
+
+      // Check if any input is blank
+      if (inputs.some(id => document.getElementById(id).value === '')) {
+        document.getElementById('englishTotalValue').value = '';
+        document.getElementById('englishTotalGrade').value = '';
+        return;
+      }
+
+      // Get the input values and convert them to numbers
+      const values = inputs.map(id => Number(document.getElementById(id).value) || 0);
+
+      // Calculate the total value
+      const totalValue = values.reduce((a, b) => a + b, 0);
+      document.getElementById('englishTotalValue').value = totalValue;
+
+      // Get the exam type and determine the divisor
+      const examType = document.getElementById('examType').value;
+      let divisor;
+      if (examType === '1st Periodic Test' || examType === '2nd Periodic Test') {
+        divisor = 50;
+        if (totalValue > 50) alert("Total value exceeds 50 for Periodic Tests!");
+      } else {
+        divisor = 100;
+        if (totalValue > 100) alert("Total value exceeds 100 for Half-Yearly or Annual Exams!");
+      }
+
+      // Calculate the percentage
+      const percentage = (totalValue / divisor) * 100;
+
+      // Assign grade based on percentage
+      let grade = '';
+      if (percentage >= 90) grade = 'A+';
+      else if (percentage >= 75) grade = 'A';
+      else if (percentage >= 55) grade = 'B';
+      else if (percentage >= 35) grade = 'C';
+      else grade = 'D';
+
+      document.getElementById('englishTotalGrade').value = grade;
+    }
+
+    // Add event listeners for English calculator
+    document.querySelectorAll('#englishReadingValue, #englishWritingValue, #englishSpellingValue, #englishHandwritingValue, #englishListeningValue, #examType')
+      .forEach(input => input.addEventListener('input', calculateEnglishTotal));
+ 
+ 
+ 
+ 
+ function calculateHindiTotal() {
+      const inputs = [
+        'hindiReadingValue',
+        'hindiWritingValue',
+        'hindiSpellingValue',
+        'hindiHandwritingValue',
+        'hindiListeningValue'
+      ];
+
+      if (inputs.some(id => document.getElementById(id).value === '')) {
+        document.getElementById('hindiTotalValue').value = '';
+        document.getElementById('hindiTotalGrade').value = '';
+        return;
+      }
+
+      const [readingValue, writingValue, spellingValue, handwritingValue, listeningValue] = inputs.map(id => Number(document.getElementById(id).value) || 0);
+
+      const totalValue = readingValue + writingValue + spellingValue + handwritingValue + listeningValue;
+      document.getElementById('hindiTotalValue').value = totalValue;
+
+      const examType = document.getElementById('examType').value;
+      let divisor;
+      if (examType === '1st Periodic Test' || examType === '2nd Periodic Test') {
+        divisor = 50;
+        if (totalValue > 50) alert("Total value exceeds 50 for Periodic Tests!");
+      } else {
+        divisor = 100;
+        if (totalValue > 100) alert("Total value exceeds 100 for Half-Yearly or Annual Exams!");
+      }
+
+      const percentage = (totalValue / divisor) * 100;
+
+      let grade = '';
+      if (percentage >= 90) grade = 'A+';
+      else if (percentage >= 75) grade = 'A';
+      else if (percentage >= 55) grade = 'B';
+      else if (percentage >= 35) grade = 'C';
+      else grade = 'D';
+
+      document.getElementById('hindiTotalGrade').value = grade;
+    }
+
+    document.querySelectorAll('#hindiReadingValue, #hindiWritingValue, #hindiSpellingValue, #hindiHandwritingValue, #hindiListeningValue, #examType')
+      .forEach(input => input.addEventListener('input', calculateHindiTotal));
+ 
+ 
+    function calculateBengaliTotal() {
+      const inputs = [
+        'bengaliReadingValue',
+        'bengaliWritingValue',
+        'bengaliSpellingValue',
+        'bengaliHandwritingValue',
+        'bengaliListeningValue'
+      ];
+
+      // Check if any input is blank
+      if (inputs.some(id => document.getElementById(id).value === '')) {
+        document.getElementById('bengaliTotalValue').value = '';
+        document.getElementById('bengaliTotalGrade').value = '';
+        return;
+      }
+
+      // Get the input values and convert them to numbers
+      const [readingValue, writingValue, spellingValue, handwritingValue, listeningValue] = inputs.map(id => Number(document.getElementById(id).value) || 0);
+
+      // Calculate the total value
+      const totalValue = readingValue + writingValue + spellingValue + handwritingValue + listeningValue;
+      document.getElementById('bengaliTotalValue').value = totalValue;
+
+      // Get the exam type and determine the divisor
+      const examType = document.getElementById('examType').value;
+      let divisor;
+      if (examType === '1st Periodic Test' || examType === '2nd Periodic Test') {
+        divisor = 50;
+        if (totalValue > 50) alert("Total value exceeds 50 for Periodic Tests!");
+      } else {
+        divisor = 100;
+        if (totalValue > 100) alert("Total value exceeds 100 for Half-Yearly or Annual Exams!");
+      }
+
+      // Calculate the percentage
+      const percentage = (totalValue / divisor) * 100;
+
+      // Assign grade based on percentage
+      let grade = '';
+      if (percentage >= 90) grade = 'A+';
+      else if (percentage >= 80) grade = 'A';
+      else if (percentage >= 70) grade = 'B+';
+      else if (percentage >= 60) grade = 'B';
+      else if (percentage >= 50) grade = 'C+';
+      else if (percentage >= 40) grade = 'C';
+      else grade = 'F';
+
+      document.getElementById('bengaliTotalGrade').value = grade;
+    }
+
+    // Run the calculation when inputs or exam type change
+    document.querySelectorAll('#bengaliReadingValue, #bengaliWritingValue, #bengaliSpellingValue, #bengaliHandwritingValue, #bengaliListeningValue, #examType')
+      .forEach(input => input.addEventListener('input', calculateBengaliTotal));
+  
+  
+  
+  
+  function calculateMathsTotal() {
+      const inputs = [
+        'mathsFNCValue',
+        'mathsUBCValue',
+        'mathsACValue',
+        'mathsPSAValue',
+        'mathsIAValue'
+      ];
+
+      if (inputs.some(id => document.getElementById(id).value === '')) {
+        document.getElementById('mathsTotalValue').value = '';
+        document.getElementById('mathsTotalGrade').value = '';
+        return;
+      }
+
+      const [fncValue, ubcValue, acValue, psaValue, iaValue] = inputs.map(id => Number(document.getElementById(id).value) || 0);
+      const totalValue = fncValue + ubcValue + acValue + psaValue + iaValue;
+      document.getElementById('mathsTotalValue').value = totalValue;
+
+      const examType = document.getElementById('examType').value;
+      let divisor;
+      if (examType === '1st Periodic Test' || examType === '2nd Periodic Test') {
+        divisor = 50;
+        if (totalValue > 50) alert("Total value exceeds 50 for Periodic Tests!");
+      } else {
+        divisor = 100;
+        if (totalValue > 100) alert("Total value exceeds 100 for Half-Yearly or Annual Exams!");
+      }
+
+      const percentage = (totalValue / divisor) * 100;
+
+      let grade = '';
+      if (percentage >= 90) grade = 'A+';
+      else if (percentage >= 75) grade = 'A';
+      else if (percentage >= 55) grade = 'B';
+      else if (percentage >= 35) grade = 'C';
+      else grade = 'D';
+
+      document.getElementById('mathsTotalGrade').value = grade;
+    }
+
+    document.querySelectorAll('#mathsFNCValue, #mathsUBCValue, #mathsACValue, #mathsPSAValue, #mathsIAValue, #examType')
+      .forEach(input => input.addEventListener('input', calculateMathsTotal));
+	  
+	  
+	  function calculateEVSTotal() {
+  const inputs = [
+    'evsObservationValue',
+    'evsIdentificationValue',
+    'evsDiscoveryFactsValue',
+    'evsGroupActValue',
+    'evsIAValue'
+  ];
+
+  // Check if any input is blank
+  if (inputs.some(id => document.getElementById(id).value === '')) {
+    document.getElementById('evsTotalValue').value = '';
+    document.getElementById('evsTotalGrade').value = '';
+    return;
+  }
+
+  // Get the input values and convert them to numbers
+  const [observation, identification, discoveryFacts, groupAct, ia] = inputs.map(id => Number(document.getElementById(id).value) || 0);
+
+  // Calculate the total value
+  const totalValue = observation + identification + discoveryFacts + groupAct + ia;
+  document.getElementById('evsTotalValue').value = totalValue;
+
+  // Get the exam type and determine the divisor
+  const examType = document.getElementById('examType').value;
+  let divisor;
+  if (examType === '1st Periodic Test' || examType === '2nd Periodic Test') {
+    divisor = 50;
+    if (totalValue > 50) alert("Total value exceeds 50 for Periodic Tests!");
+  } else {
+    divisor = 100;
+    if (totalValue > 100) alert("Total value exceeds 100 for Half-Yearly or Annual Exams!");
+  }
+
+  // Calculate the percentage
+  const percentage = (totalValue / divisor) * 100;
+
+  // Assign grade based on percentage
+  let grade = '';
+  if (percentage >= 90) grade = 'A+';
+  else if (percentage >= 75) grade = 'A';
+  else if (percentage >= 55) grade = 'B';
+  else if (percentage >= 35) grade = 'C';
+  else grade = 'D';
+
+  document.getElementById('evsTotalGrade').value = grade;
+}
+
+// Run the calculation when inputs or exam type change
+document.querySelectorAll('#evsObservationValue, #evsIdentificationValue, #evsDiscoveryFactsValue, #evsGroupActValue, #evsIAValue, #examType')
+  .forEach(input => input.addEventListener('input', calculateEVSTotal));
+
+
+function calculateSocialScienceTotal() {
+  const inputs = [
+    'socialScienceObservationValue',
+    'socialScienceIdentificationValue',
+    'socialScienceDiscoveryFactsValue',
+    'socialScienceGroupActValue',
+    'socialScienceIAValue'
+  ];
+
+  // Check if any input is blank
+  if (inputs.some(id => document.getElementById(id).value === '')) {
+    document.getElementById('socialScienceTotalValue').value = '';
+    document.getElementById('socialScienceTotalGrade').value = '';
+    return;
+  }
+
+  // Get the input values and convert them to numbers
+  const [observation, identification, discoveryFacts, groupAct, ia] = inputs.map(id => Number(document.getElementById(id).value) || 0);
+
+  // Calculate the total value
+  const totalValue = observation + identification + discoveryFacts + groupAct + ia;
+  document.getElementById('socialScienceTotalValue').value = totalValue;
+
+  // Get the exam type and determine the divisor
+  const examType = document.getElementById('examType').value;
+  let divisor;
+  if (examType === '1st Periodic Test' || examType === '2nd Periodic Test') {
+    divisor = 50;
+    if (totalValue > 50) alert("Total value exceeds 50 for Periodic Tests!");
+  } else {
+    divisor = 100;
+    if (totalValue > 100) alert("Total value exceeds 100 for Half-Yearly or Annual Exams!");
+  }
+
+  // Calculate the percentage
+  const percentage = (totalValue / divisor) * 100;
+
+  // Assign grade based on percentage
+  let grade = '';
+  if (percentage >= 90) grade = 'A+';
+  else if (percentage >= 75) grade = 'A';
+  else if (percentage >= 55) grade = 'B';
+  else if (percentage >= 35) grade = 'C';
+  else grade = 'D';
+
+  document.getElementById('socialScienceTotalGrade').value = grade;
+}
+
+// Run the calculation when inputs or exam type change
+document.querySelectorAll('#socialScienceObservationValue, #socialScienceIdentificationValue, #socialScienceDiscoveryFactsValue, #socialScienceGroupActValue, #socialScienceIAValue, #examType')
+  .forEach(input => input.addEventListener('input', calculateSocialScienceTotal));
+
+
+
+function calculateComputerTotal() {
+  const inputs = [
+    'computerTheoryValue',
+    'computerPracticalValue'
+  ];
+
+  // Check if any input is blank
+  if (inputs.some(id => document.getElementById(id).value === '')) {
+    document.getElementById('computerTotalValue').value = '';
+    document.getElementById('computerTotalGrade').value = '';
+    return;
+  }
+
+  // Get the input values and convert them to numbers
+  const [theory, practical] = inputs.map(id => Number(document.getElementById(id).value) || 0);
+
+  // Calculate the total value
+  const totalValue = theory + practical;
+  document.getElementById('computerTotalValue').value = totalValue;
+
+  // Get the exam type and determine the divisor
+  const examType = document.getElementById('examType').value;
+  let divisor;
+  if (examType === '1st Periodic Test' || examType === '2nd Periodic Test') {
+    divisor = 50;
+    if (totalValue > 50) alert("Total value exceeds 50 for Periodic Tests!");
+  } else {
+    divisor = 100;
+    if (totalValue > 100) alert("Total value exceeds 100 for Half-Yearly or Annual Exams!");
+  }
+
+  // Calculate the percentage
+  const percentage = (totalValue / divisor) * 100;
+
+  // Assign grade based on percentage
+  let grade = '';
+  if (percentage >= 90) grade = 'A+';
+  else if (percentage >= 75) grade = 'A';
+  else if (percentage >= 55) grade = 'B';
+  else if (percentage >= 35) grade = 'C';
+  else grade = 'D';
+
+  document.getElementById('computerTotalGrade').value = grade;
+}
+
+// Run the calculation when inputs or exam type change
+document.querySelectorAll('#computerTheoryValue, #computerPracticalValue, #examType')
+  .forEach(input => input.addEventListener('input', calculateComputerTotal));
+  </script>
+  
+  
+  
+  <script>
+  
+
+  
+  
+  
+</script>
+  
+  <script>
+  
+  function calculateEnglishMarks() {
+    // Get input values
+    const english1stPT = parseFloat(document.getElementById('english1stPT').value) || 0;
+    const english2ndPT = parseFloat(document.getElementById('english2ndPT').value) || 0;
+    const english1stPTProject = parseFloat(document.getElementById('english1stPTProject').value) || 0;
+    const english2ndPTProject = parseFloat(document.getElementById('english2ndPTProject').value) || 0;
+    const english1stPTAssignment = parseFloat(document.getElementById('english1stPTAssignment').value) || 0;
+    const english2ndPTAssignment = parseFloat(document.getElementById('english2ndPTAssignment').value) || 0;
+    const englishHY = parseFloat(document.getElementById('englishHY').value) || 0;
+    const englishAnnual = parseFloat(document.getElementById('englishAnnual').value) || 0;
+
+    // Calculate PT10Percent
+    const englishPT10Percent = (english1stPT + english2ndPT) / 10;
+    document.getElementById('englishPT10Percent').value = english1stPT && english2ndPT ? englishPT10Percent.toFixed(1) : '';
+
+    // Calculate Project10Percent
+    const englishProject10Percent = (english1stPTProject + english2ndPTProject) / 10;
+    document.getElementById('englishProject10Percent').value = english1stPTProject && english2ndPTProject ? englishProject10Percent.toFixed(1) : '';
+
+    // Calculate Assignment10Percent
+    const englishAssignment10Percent = (english1stPTAssignment + english2ndPTAssignment) / 10;
+    document.getElementById('englishAssignment10Percent').value = english1stPTAssignment && english2ndPTAssignment ? englishAssignment10Percent.toFixed(2) : '';
+
+    // Calculate HY20Percent
+    const englishHY20Percent = englishHY * 0.2;
+    document.getElementById('englishHY20Percent').value = englishHY ? englishHY20Percent.toFixed(1) : '';
+
+    // Calculate Annual50Percent
+    const englishAnnual50Percent = englishAnnual * 0.5;
+    document.getElementById('englishAnnual50Percent').value = englishAnnual ? englishAnnual50Percent.toFixed(1) : '';
+
+    // Calculate FinalTotal
+    const englishFinalTotal = englishPT10Percent + englishProject10Percent + englishAssignment10Percent + englishHY20Percent + englishAnnual50Percent;
+    document.getElementById('englishFinalTotal').value = englishFinalTotal.toFixed(2);
+
+    // Calculate FinalTotalGrade
+    const englishFinalTotalGrade = calculateGrade(englishFinalTotal);
+    document.getElementById('englishFinalTotalGrade').value = englishFinalTotalGrade;
+  }
+  
+  
+  // Function to calculate marks for Hindi
+  function calculateHindiMarks() {
+    const hindi1stPT = parseFloat(document.getElementById('hindi1stPT').value) || 0;
+    const hindi2ndPT = parseFloat(document.getElementById('hindi2ndPT').value) || 0;
+    const hindi1stPTProject = parseFloat(document.getElementById('hindi1stPTProject').value) || 0;
+    const hindi2ndPTProject = parseFloat(document.getElementById('hindi2ndPTProject').value) || 0;
+    const hindi1stPTAssignment = parseFloat(document.getElementById('hindi1stPTAssignment').value) || 0;
+    const hindi2ndPTAssignment = parseFloat(document.getElementById('hindi2ndPTAssignment').value) || 0;
+    const hindiHY = parseFloat(document.getElementById('hindiHY').value) || 0;
+    const hindiAnnual = parseFloat(document.getElementById('hindiAnnual').value) || 0;
+
+    const hindiPT10Percent = (hindi1stPT + hindi2ndPT) / 10;
+    document.getElementById('hindiPT10Percent').value = hindi1stPT && hindi2ndPT ? hindiPT10Percent.toFixed(1) : '';
+
+    const hindiProject10Percent = (hindi1stPTProject + hindi2ndPTProject) / 10;
+    document.getElementById('hindiProject10Percent').value = hindi1stPTProject && hindi2ndPTProject ? hindiProject10Percent.toFixed(1) : '';
+
+    const hindiAssignment10Percent = (hindi1stPTAssignment + hindi2ndPTAssignment) / 10;
+    document.getElementById('hindiAssignment10Percent').value = hindi1stPTAssignment && hindi2ndPTAssignment ? hindiAssignment10Percent.toFixed(2) : '';
+
+    const hindiHY20Percent = hindiHY * 0.2;
+    document.getElementById('hindiHY20Percent').value = hindiHY ? hindiHY20Percent.toFixed(1) : '';
+
+    const hindiAnnual50Percent = hindiAnnual * 0.5;
+    document.getElementById('hindiAnnual50Percent').value = hindiAnnual ? hindiAnnual50Percent.toFixed(1) : '';
+
+    const hindiFinalTotal = hindiPT10Percent + hindiProject10Percent + hindiAssignment10Percent + hindiHY20Percent + hindiAnnual50Percent;
+    document.getElementById('hindiFinalTotal').value = hindiFinalTotal.toFixed(2);
+
+    const hindiFinalTotalGrade = calculateGrade(hindiFinalTotal);
+    document.getElementById('hindiFinalTotalGrade').value = hindiFinalTotalGrade;
+  }
+
+  // Function to calculate marks for Bengali
+  function calculateBengaliMarks() {
+    const bengali1stPT = parseFloat(document.getElementById('bengali1stPT').value) || 0;
+    const bengali2ndPT = parseFloat(document.getElementById('bengali2ndPT').value) || 0;
+    const bengali1stPTProject = parseFloat(document.getElementById('bengali1stPTProject').value) || 0;
+    const bengali2ndPTProject = parseFloat(document.getElementById('bengali2ndPTProject').value) || 0;
+    const bengali1stPTAssignment = parseFloat(document.getElementById('bengali1stPTAssignment').value) || 0;
+    const bengali2ndPTAssignment = parseFloat(document.getElementById('bengali2ndPTAssignment').value) || 0;
+    const bengaliHY = parseFloat(document.getElementById('bengaliHY').value) || 0;
+    const bengaliAnnual = parseFloat(document.getElementById('bengaliAnnual').value) || 0;
+
+    const bengaliPT10Percent = (bengali1stPT + bengali2ndPT) / 10;
+    document.getElementById('bengaliPT10Percent').value = bengali1stPT && bengali2ndPT ? bengaliPT10Percent.toFixed(1) : '';
+
+    const bengaliProject10Percent = (bengali1stPTProject + bengali2ndPTProject) / 10;
+    document.getElementById('bengaliProject10Percent').value = bengali1stPTProject && bengali2ndPTProject ? bengaliProject10Percent.toFixed(1) : '';
+
+    const bengaliAssignment10Percent = (bengali1stPTAssignment + bengali2ndPTAssignment) / 10;
+    document.getElementById('bengaliAssignment10Percent').value = bengali1stPTAssignment && bengali2ndPTAssignment ? bengaliAssignment10Percent.toFixed(2) : '';
+
+    const bengaliHY20Percent = bengaliHY * 0.2;
+    document.getElementById('bengaliHY20Percent').value = bengaliHY ? bengaliHY20Percent.toFixed(1) : '';
+
+    const bengaliAnnual50Percent = bengaliAnnual * 0.5;
+    document.getElementById('bengaliAnnual50Percent').value = bengaliAnnual ? bengaliAnnual50Percent.toFixed(1) : '';
+
+    const bengaliFinalTotal = bengaliPT10Percent + bengaliProject10Percent + bengaliAssignment10Percent + bengaliHY20Percent + bengaliAnnual50Percent;
+    document.getElementById('bengaliFinalTotal').value = bengaliFinalTotal.toFixed(2);
+
+    const bengaliFinalTotalGrade = calculateGrade(bengaliFinalTotal);
+    document.getElementById('bengaliFinalTotalGrade').value = bengaliFinalTotalGrade;
+  }
+
+  // Function to calculate marks for Maths
+  function calculateMathsMarks() {
+    const maths1stPT = parseFloat(document.getElementById('maths1stPT').value) || 0;
+    const maths2ndPT = parseFloat(document.getElementById('maths2ndPT').value) || 0;
+    const maths1stPTProject = parseFloat(document.getElementById('maths1stPTProject').value) || 0;
+    const maths2ndPTProject = parseFloat(document.getElementById('maths2ndPTProject').value) || 0;
+    const maths1stPTAssignment = parseFloat(document.getElementById('maths1stPTAssignment').value) || 0;
+    const maths2ndPTAssignment = parseFloat(document.getElementById('maths2ndPTAssignment').value) || 0;
+    const mathsHY = parseFloat(document.getElementById('mathsHY').value) || 0;
+    const mathsAnnual = parseFloat(document.getElementById('mathsAnnual').value) || 0;
+
+    const mathsPT10Percent = (maths1stPT + maths2ndPT) / 10;
+    document.getElementById('mathsPT10Percent').value = maths1stPT && maths2ndPT ? mathsPT10Percent.toFixed(1) : '';
+
+    const mathsProject10Percent = (maths1stPTProject + maths2ndPTProject) / 10;
+    document.getElementById('mathsProject10Percent').value = maths1stPTProject && maths2ndPTProject ? mathsProject10Percent.toFixed(1) : '';
+
+    const mathsAssignment10Percent = (maths1stPTAssignment + maths2ndPTAssignment) / 10;
+    document.getElementById('mathsAssignment10Percent').value = maths1stPTAssignment && maths2ndPTAssignment ? mathsAssignment10Percent.toFixed(2) : '';
+
+    const mathsHY20Percent = mathsHY * 0.2;
+    document.getElementById('mathsHY20Percent').value = mathsHY ? mathsHY20Percent.toFixed(1) : '';
+
+    const mathsAnnual50Percent = mathsAnnual * 0.5;
+    document.getElementById('mathsAnnual50Percent').value = mathsAnnual ? mathsAnnual50Percent.toFixed(1) : '';
+
+    const mathsFinalTotal = mathsPT10Percent + mathsProject10Percent + mathsAssignment10Percent + mathsHY20Percent + mathsAnnual50Percent;
+    document.getElementById('mathsFinalTotal').value = mathsFinalTotal.toFixed(2);
+
+    const mathsFinalTotalGrade = calculateGrade(mathsFinalTotal);
+    document.getElementById('mathsFinalTotalGrade').value = mathsFinalTotalGrade;
+  }
+
+  // Function to calculate marks for EVS
+  function calculateEvsMarks() {
+    const evs1stPT = parseFloat(document.getElementById('evs1stPT').value) || 0;
+    const evs2ndPT = parseFloat(document.getElementById('evs2ndPT').value) || 0;
+    const evs1stPTProject = parseFloat(document.getElementById('evs1stPTProject').value) || 0;
+    const evs2ndPTProject = parseFloat(document.getElementById('evs2ndPTProject').value) || 0;
+    const evs1stPTAssignment = parseFloat(document.getElementById('evs1stPTAssignment').value) || 0;
+    const evs2ndPTAssignment = parseFloat(document.getElementById('evs2ndPTAssignment').value) || 0;
+    const evsHY = parseFloat(document.getElementById('evsHY').value) || 0;
+    const evsAnnual = parseFloat(document.getElementById('evsAnnual').value) || 0;
+
+    const evsPT10Percent = (evs1stPT + evs2ndPT) / 10;
+    document.getElementById('evsPT10Percent').value = evs1stPT && evs2ndPT ? evsPT10Percent.toFixed(1) : '';
+
+    const evsProject10Percent = (evs1stPTProject + evs2ndPTProject) / 10;
+    document.getElementById('evsProject10Percent').value = evs1stPTProject && evs2ndPTProject ? evsProject10Percent.toFixed(1) : '';
+
+    const evsAssignment10Percent = (evs1stPTAssignment + evs2ndPTAssignment) / 10;
+    document.getElementById('evsAssignment10Percent').value = evs1stPTAssignment && evs2ndPTAssignment ? evsAssignment10Percent.toFixed(2) : '';
+
+    const evsHY20Percent = evsHY * 0.2;
+    document.getElementById('evsHY20Percent').value = evsHY ? evsHY20Percent.toFixed(1) : '';
+
+    const evsAnnual50Percent = evsAnnual * 0.5;
+    document.getElementById('evsAnnual50Percent').value = evsAnnual ? evsAnnual50Percent.toFixed(1) : '';
+
+    const evsFinalTotal = evsPT10Percent + evsProject10Percent + evsAssignment10Percent + evsHY20Percent + evsAnnual50Percent;
+    document.getElementById('evsFinalTotal').value = evsFinalTotal.toFixed(2);
+
+    const evsFinalTotalGrade = calculateGrade(evsFinalTotal);
+    document.getElementById('evsFinalTotalGrade').value = evsFinalTotalGrade;
+  }
+
+  // Function to calculate marks for Social Science
+  function calculateSocialScienceMarks() {
+    const socialScience1stPT = parseFloat(document.getElementById('socialScience1stPT').value) || 0;
+    const socialScience2ndPT = parseFloat(document.getElementById('socialScience2ndPT').value) || 0;
+    const socialScience1stPTProject = parseFloat(document.getElementById('socialScience1stPTProject').value) || 0;
+    const socialScience2ndPTProject = parseFloat(document.getElementById('socialScience2ndPTProject').value) || 0;
+    const socialScience1stPTAssignment = parseFloat(document.getElementById('socialScience1stPTAssignment').value) || 0;
+    const socialScience2ndPTAssignment = parseFloat(document.getElementById('socialScience2ndPTAssignment').value) || 0;
+    const socialScienceHY = parseFloat(document.getElementById('socialScienceHY').value) || 0;
+    const socialScienceAnnual = parseFloat(document.getElementById('socialScienceAnnual').value) || 0;
+
+    const socialSciencePT10Percent = (socialScience1stPT + socialScience2ndPT) / 10;
+    document.getElementById('socialSciencePT10Percent').value = socialScience1stPT && socialScience2ndPT ? socialSciencePT10Percent.toFixed(1) : '';
+
+    const socialScienceProject10Percent = (socialScience1stPTProject + socialScience2ndPTProject) / 10;
+    document.getElementById('socialScienceProject10Percent').value = socialScience1stPTProject && socialScience2ndPTProject ? socialScienceProject10Percent.toFixed(1) : '';
+
+    const socialScienceAssignment10Percent = (socialScience1stPTAssignment + socialScience2ndPTAssignment) / 10;
+    document.getElementById('socialScienceAssignment10Percent').value = socialScience1stPTAssignment && socialScience2ndPTAssignment ? socialScienceAssignment10Percent.toFixed(2) : '';
+
+    const socialScienceHY20Percent = socialScienceHY * 0.2;
+    document.getElementById('socialScienceHY20Percent').value = socialScienceHY ? socialScienceHY20Percent.toFixed(1) : '';
+
+    const socialScienceAnnual50Percent = socialScienceAnnual * 0.5;
+    document.getElementById('socialScienceAnnual50Percent').value = socialScienceAnnual ? socialScienceAnnual50Percent.toFixed(1) : '';
+
+    const socialScienceFinalTotal = socialSciencePT10Percent + socialScienceProject10Percent + socialScienceAssignment10Percent + socialScienceHY20Percent + socialScienceAnnual50Percent;
+    document.getElementById('socialScienceFinalTotal').value = socialScienceFinalTotal.toFixed(2);
+
+    const socialScienceFinalTotalGrade = calculateGrade(socialScienceFinalTotal);
+    document.getElementById('socialScienceFinalTotalGrade').value = socialScienceFinalTotalGrade;
+  }
+
+  // Function to calculate marks for Computer
+  function calculateComputerMarks() {
+    const computer1stPT = parseFloat(document.getElementById('computer1stPT').value) || 0;
+    const computer2ndPT = parseFloat(document.getElementById('computer2ndPT').value) || 0;
+    const computer1stPTProject = parseFloat(document.getElementById('computer1stPTProject').value) || 0;
+    const computer2ndPTProject = parseFloat(document.getElementById('computer2ndPTProject').value) || 0;
+    const computer1stPTAssignment = parseFloat(document.getElementById('computer1stPTAssignment').value) || 0;
+    const computer2ndPTAssignment = parseFloat(document.getElementById('computer2ndPTAssignment').value) || 0;
+    const computerHY = parseFloat(document.getElementById('computerHY').value) || 0;
+    const computerAnnual = parseFloat(document.getElementById('computerAnnual').value) || 0;
+
+    const computerPT10Percent = (computer1stPT + computer2ndPT) / 10;
+    document.getElementById('computerPT10Percent').value = computer1stPT && computer2ndPT ? computerPT10Percent.toFixed(1) : '';
+
+    const computerProject10Percent = (computer1stPTProject + computer2ndPTProject) / 10;
+    document.getElementById('computerProject10Percent').value = computer1stPTProject && computer2ndPTProject ? computerProject10Percent.toFixed(1) : '';
+
+    const computerAssignment10Percent = (computer1stPTAssignment + computer2ndPTAssignment) / 10;
+    document.getElementById('computerAssignment10Percent').value = computer1stPTAssignment && computer2ndPTAssignment ? computerAssignment10Percent.toFixed(2) : '';
+
+    const computerHY20Percent = computerHY * 0.2;
+    document.getElementById('computerHY20Percent').value = computerHY ? computerHY20Percent.toFixed(1) : '';
+
+    const computerAnnual50Percent = computerAnnual * 0.5;
+    document.getElementById('computerAnnual50Percent').value = computerAnnual ? computerAnnual50Percent.toFixed(1) : '';
+
+    const computerFinalTotal = computerPT10Percent + computerProject10Percent + computerAssignment10Percent + computerHY20Percent + computerAnnual50Percent;
+    document.getElementById('computerFinalTotal').value = computerFinalTotal.toFixed(2);
+
+    const computerFinalTotalGrade = calculateGrade(computerFinalTotal);
+    document.getElementById('computerFinalTotalGrade').value = computerFinalTotalGrade;
+  }
+
+  // Function to calculate grade based on FinalTotal
+  function calculateGrade(finalTotal) {
+    if (finalTotal >= 90) return 'A';
+    else if (finalTotal >= 80) return 'B';
+    else if (finalTotal >= 70) return 'C';
+    else if (finalTotal >= 60) return 'D';
+    else return 'F';
+  }
+
+  // Attach event listeners to input fields for each subject
+  const subjects = ['english','hindi', 'bengali', 'maths', 'evs','socialScience', 'computer'];
+  subjects.forEach(subject => {
+    document.getElementById(`${subject}1stPT`).addEventListener('input', eval(`calculate${subject.charAt(0).toUpperCase() + subject.slice(1)}Marks`));
+    document.getElementById(`${subject}2ndPT`).addEventListener('input', eval(`calculate${subject.charAt(0).toUpperCase() + subject.slice(1)}Marks`));
+    document.getElementById(`${subject}1stPTProject`).addEventListener('input', eval(`calculate${subject.charAt(0).toUpperCase() + subject.slice(1)}Marks`));
+    document.getElementById(`${subject}2ndPTProject`).addEventListener('input', eval(`calculate${subject.charAt(0).toUpperCase() + subject.slice(1)}Marks`));
+    document.getElementById(`${subject}1stPTAssignment`).addEventListener('input', eval(`calculate${subject.charAt(0).toUpperCase() + subject.slice(1)}Marks`));
+    document.getElementById(`${subject}2ndPTAssignment`).addEventListener('input', eval(`calculate${subject.charAt(0).toUpperCase() + subject.slice(1)}Marks`));
+    document.getElementById(`${subject}HY`).addEventListener('input', eval(`calculate${subject.charAt(0).toUpperCase() + subject.slice(1)}Marks`));
+    document.getElementById(`${subject}Annual`).addEventListener('input', eval(`calculate${subject.charAt(0).toUpperCase() + subject.slice(1)}Marks`));
+  });
+</script>
+  
+<script>
+    // Function to calculate overall marks, percentage, and grade
+    function calculateOverallResults() {
+      // Get final totals for all subjects
+      const englishFinalTotal = parseFloat(document.getElementById('englishFinalTotal').value) || 0;
+      const hindiFinalTotal = parseFloat(document.getElementById('hindiFinalTotal').value) || 0;
+      const bengaliFinalTotal = parseFloat(document.getElementById('bengaliFinalTotal').value) || 0;
+      const mathsFinalTotal = parseFloat(document.getElementById('mathsFinalTotal').value) || 0;
+      const evsFinalTotal = parseFloat(document.getElementById('evsFinalTotal').value) || 0;
+      const socialScienceFinalTotal = parseFloat(document.getElementById('socialScienceFinalTotal').value) || 0;
+      const computerFinalTotal = parseFloat(document.getElementById('computerFinalTotal').value) || 0;
+
+      // Array of all subject final totals
+      const subjectTotals = [
+        englishFinalTotal,
+        hindiFinalTotal,
+        bengaliFinalTotal,
+        mathsFinalTotal,
+        evsFinalTotal,
+        socialScienceFinalTotal,
+        computerFinalTotal,
+      ];
+
+      // Filter out subjects with 0 marks (not entered)
+      const enteredSubjects = subjectTotals.filter((total) => total > 0);
+      const numberOfSubjects = enteredSubjects.length;
+
+      // Calculate overall marks
+      const overallMarks = enteredSubjects.reduce((sum, total) => sum + total, 0);
+
+      // Calculate full subject marks based on the number of subjects
+      let fullSubjectMarks;
+      switch (numberOfSubjects) {
+        case 4:
+          fullSubjectMarks = 400; // 4 subjects
+          break;
+        case 5:
+          fullSubjectMarks = 500; // 5 subjects
+          break;
+        case 6:
+          fullSubjectMarks = 600; // 6 subjects
+          break;
+        case 7:
+          fullSubjectMarks = 700; // 7 subjects
+          break;
+        default:
+          fullSubjectMarks = 0; // No subjects entered
+      }
+
+      // Calculate percentage
+      const percentage = fullSubjectMarks > 0 ? (overallMarks / fullSubjectMarks) * 100 : 0;
+
+      // Calculate grade based on percentage
+      const grade = calculateGrade(percentage);
+
+      // Display results
+      document.getElementById('overallMarks').value = overallMarks.toFixed(2);
+      document.getElementById('fullSubjectMarks').value = fullSubjectMarks;
+      document.getElementById('percentage').value = percentage.toFixed(2);
+      document.getElementById('overallGrade').value = grade;
+    }
+
+    // Function to calculate grade based on percentage
+    function calculateGrade(percentage) {
+      if (percentage >= 90) return 'A+';
+      else if (percentage >= 75) return 'A';
+      else if (percentage >= 55) return 'B';
+      else if (percentage >= 35) return 'C';
+      else return 'D';
+    }
+
+    // Attach the function to input fields (optional)
+    const inputFields = [
+      'english1stPT', 'english2ndPT', 'english1stPTProject', 'english2ndPTProject', 'english1stPTAssignment', 'english2ndPTAssignment', 'englishHY', 'englishAnnual',
+      'hindi1stPT', 'hindi2ndPT', 'hindi1stPTProject', 'hindi2ndPTProject', 'hindi1stPTAssignment', 'hindi2ndPTAssignment', 'hindiHY', 'hindiAnnual',
+      'bengali1stPT', 'bengali2ndPT', 'bengali1stPTProject', 'bengali2ndPTProject', 'bengali1stPTAssignment', 'bengali2ndPTAssignment', 'bengaliHY', 'bengaliAnnual',
+      'maths1stPT', 'maths2ndPT', 'maths1stPTProject', 'maths2ndPTProject', 'maths1stPTAssignment', 'maths2ndPTAssignment', 'mathsHY', 'mathsAnnual',
+      'evs1stPT', 'evs2ndPT', 'evs1stPTProject', 'evs2ndPTProject', 'evs1stPTAssignment', 'evs2ndPTAssignment', 'evsHY', 'evsAnnual',
+      'socialScience1stPT', 'socialScience2ndPT', 'socialScience1stPTProject', 'socialScience2ndPTProject', 'socialScience1stPTAssignment', 'socialScience2ndPTAssignment', 'socialScienceHY', 'socialScienceAnnual',
+      'computer1stPT', 'computer2ndPT', 'computer1stPTProject', 'computer2ndPTProject', 'computer1stPTAssignment', 'computer2ndPTAssignment', 'computerHY', 'computerAnnual',
+    ];
+
+    inputFields.forEach((field) => {
+      document.getElementById(field).addEventListener('input', calculateOverallResults);
+    });
+  </script>
+ 
+ 
+  </body>
+</html>
+  
