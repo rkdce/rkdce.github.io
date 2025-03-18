@@ -237,7 +237,6 @@
         });
     </script>
 
-    
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwrCfBvBxekppTDp_H0VEquecRBpDJgd0kvJHD_5KYQLZbAYl3vk0prsmAImbyrSnN1/exec";
  function hideSearch() {
@@ -251,14 +250,7 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbwrCfBvBxekppTDp_H0VEqu
   document.getElementById('examType').readOnly = true;
 	
 
-     // Get the values dynamically from the DOM
-    const classDisplay = document.getElementById('classDisplay').className; // Get class of studentElement
-    const tClass = document.getElementById('tClass').className;       // Get class of anotherElement
-    const userType = document.getElementById('userType').value;               // Get userType value
-
-    // Check if the classes match
-    const classesMatch = classDisplay === tClass;
-
+  
     
   // Call the searchStudent function
   searchStudent();
@@ -267,17 +259,27 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbwrCfBvBxekppTDp_H0VEqu
 
 function saveUserMarks()
 {
+
+   // Get the values dynamically from the DOM
+   // const classDisplay = document.getElementById('classDisplay').className; // Get class of studentElement
+   // const tClass = document.getElementById('tClass').className;       // Get class of anotherElement
+   // const userType = document.getElementById('userType').value;               // Get userType value
+
+    // Check if the classes match
+  //  const classesMatch = classDisplay === tClass;
+
+
 	// Check permission and class match condition
-    if (userType === 'User' && classesMatch) {
+  //  if (userType === 'User' && classesMatch) {
         // If the user is a 'user' and classes match, call the function
-        saveMarks();
-    } else if (userType === 'Admin') {
+   //     saveMarks();
+    //} else if (userType === 'Admin') {
         // If the user is an 'admin', call the function regardless of class match
         saveMarks();
-    } else {
+ //   } else {
         // If the conditions are not met, show a pop-up message
-        alert("You are not the class teacher.");
-    }
+      //  alert("You are not the class teacher.");
+ //   }
 }
 
 
@@ -357,7 +359,7 @@ document.getElementById('examType').readOnly = false;
       if (data) {
 	    //document.getElementById('examTypeDisplay').textContent = data[0] || '';
 	//	document.getElementById('admissionNumberDisplay').textContent = data[1] || '';
-        document.getElementById('examTypeDisplay').value = data[0] || '';
+      //  document.getElementById('examTypeDisplay').value = data[0] || '';
 		document.getElementById('admissionNumberDisplay').value = data[1] || '';
 		document.getElementById('classDisplay').value = data[2] || '';
 		document.getElementById('nameDisplay').value = data[3] || '';
@@ -1885,8 +1887,6 @@ document.querySelectorAll('#computerTheoryValue, #computerPracticalValue, #examT
       document.getElementById(field).addEventListener('input', calculateOverallResults);
     });
   </script>
- 
-
 
     
 </body>
