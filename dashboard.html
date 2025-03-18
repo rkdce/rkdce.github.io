@@ -237,6 +237,8 @@
         });
     </script>
 
+ 
+
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwrCfBvBxekppTDp_H0VEquecRBpDJgd0kvJHD_5KYQLZbAYl3vk0prsmAImbyrSnN1/exec";
  function hideSearch() {
@@ -311,36 +313,40 @@ document.getElementById('examType').readOnly = false;
   </script>
 
  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const accordionHeaders = document.querySelectorAll('.accordion-header');
+    <script>
+ function initializeAccordion() {
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
 
-      accordionHeaders.forEach(header => {
+    accordionHeaders.forEach(header => {
         header.addEventListener('click', function() {
-          const content = this.nextElementSibling;
-          const toggle = this.querySelector('.accordion-toggle');
+            const content = this.nextElementSibling;
+            const toggle = this.querySelector('.accordion-toggle');
 
-          // Close all other accordion items
-          accordionHeaders.forEach(otherHeader => {
-            const otherContent = otherHeader.nextElementSibling;
-            const otherToggle = otherHeader.querySelector('.accordion-toggle');
+            // Close all other accordion items
+            accordionHeaders.forEach(otherHeader => {
+                const otherContent = otherHeader.nextElementSibling;
+                const otherToggle = otherHeader.querySelector('.accordion-toggle');
 
-            if (otherHeader !== this) {
-              otherContent.style.display = 'none';
-              otherToggle.textContent = '+';
+                if (otherHeader !== this) {
+                    otherContent.style.display = 'none';
+                    otherToggle.textContent = '+';
+                }
+            });
+
+            // Toggle the current header
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                toggle.textContent = '+';
+            } else {
+                content.style.display = 'block';
+                toggle.textContent = '-';
             }
-          });
-
-          // Toggle the current header
-          if (content.style.display === 'block') {
-            content.style.display = 'none';
-            toggle.textContent = '+';
-          } else {
-            content.style.display = 'block';
-            toggle.textContent = '-';
-          }
         });
-      });
     });
+}
+// Call initializeAccordion on initial page load
+document.addEventListener('DOMContentLoaded', initializeAccordion);
+  </script>
   </script>
     <script>
      function searchStudent() {
@@ -1887,7 +1893,7 @@ document.querySelectorAll('#computerTheoryValue, #computerPracticalValue, #examT
       document.getElementById(field).addEventListener('input', calculateOverallResults);
     });
   </script>
-
-    
+ 
+     
 </body>
 </html>
