@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .header .logout-button {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .header .logout-button:hover {
+            background-color: #ff6b81;
+        }
+
+        /* Main Content */
+        .main-content {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Cards */
+        .card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #999;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Welcome, <span id="username"></span>!</h1>
+        <p>Class: <span id="tClass"></span> | Role: <span id="userType"></span></p>
+        <button class="logout-button" onclick="handleLogout()">Logout</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="card" onclick="window.location.href='UploadMarkNto7HCS1.html'">
+            <h2>Upload Mark</h2>
+            <p>Class:Nursery To VII</p>
+        </div>
+        <div class="card" ">
+            <h2>Upload Mark</h2>
+            <p>Comming Soon...</p>
+        </div>
+       
+        <div class="card" onclick="window.location.href='aboutme.html'">
+            <h2>About Me</h2>
+            <p>Developer:Rajesh Kumar Das</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2025 Rajesh Kumar Das. All rights reserved.
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Retrieve the user's information from localStorage
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            const user = JSON.parse(userString);
+            document.getElementById('username').textContent = user.username; // Display username
+            document.getElementById('tClass').textContent = user.tClass; // Display class
+            document.getElementById('userType').textContent = user.userType; // Display user type
+        } else {
+            window.location.href = 'LoginHCS1.html'; // Redirect to login page if no user data
+        }
+
+        // Logout Functionality
+        function handleLogout() {
+            localStorage.removeItem('user'); // Clear user data
+            window.location.href = 'LoginHCS1.html'; // Redirect to login page
+        }
+    </script>
+</body>
+</html>
