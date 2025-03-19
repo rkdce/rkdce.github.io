@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .form-container {
+            width: 90%;
+            max-width: 400px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tabs {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 10px 20px;
+            display: inline-block;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+
+        .tab:hover, .active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .form {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 0;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            text-align: center;
+            color: red;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            background-color: white;
+            appearance: none; /* Removes default arrow in some browsers */
+            -webkit-appearance: none; /* Removes default arrow in Safari */
+            -moz-appearance: none; /* Removes default arrow in Firefox */
+        }
+
+        /* Add a custom arrow for the select box */
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .select-wrapper::after {
+            content: "▼";
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #555;
+            font-size: 12px;
+        }
+
+        /* Loader styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #4CAF50;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <div class="tabs">
+        <div class="tab active" onclick="showForm('login')">Login</div>
+        <div class="tab" onclick="showForm('register')">Register</div>
+    </div>
+
+    <div id="loginForm" class="form show">
+        <input type="text" id="loginUsername" placeholder="Username" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button onclick="handleLogin()">Login</button>
+        <p id="loginMessage"></p>
+    </div>
+
+    <div id="registerForm" class="form">
+        <div class="select-wrapper">
+            <select id="regUserType" required>
+                <option value="">-- Select Class --</option>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
+        <input type="text" id="regUsername" placeholder="Username" required>
+        <div class="select-wrapper">
+            <select id="regTeacherClass" required>
+                <option value="">-- Select Class --</option>
+                <option value="Nursery">Nursery</option>
+                <option value="LKG">KG1</option>
+                <option value="UKG">KG2</option>
+                <option value="I">I</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V">V</option>
+                <option value="VI">VI</option>
+                <option value="VII">VII</option>
+                <option value="VIII">VIII</option>
+                <option value="IX">IX</option>
+                <option value="X">X</option>
+                <option value="XI">XI</option>
+                <option value="XII">XII</option>
+            </select>
+        </div>
+        <input type="text" id="regPhone" placeholder="Mobile No." required>
+        <input type="email" id="regEmail" placeholder="Email" required>
+        <input type="password" id="regPassword" placeholder="Password" required>
+        <button onclick="handleRegister()">Register</button>
+        <p id="regMessage"></p>
+    </div>
+</div>
+
+<div id="loader" class="loader" style="display: none;">
+    <div class="spinner"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxfSK8eBZghG7aTNzlNtsG9B14qbdQoCovAb8z6APLuURxNQObn8EpvJogS4RJzxC1d/exec';
+
+    function showForm(formType) {
+        document.querySelectorAll('.form').forEach(f => f.classList.remove('show'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(`${formType}Form`).classList.add('show');
+        document.querySelector(`[onclick="showForm('${formType}')"]`).classList.add('active');
+    }
+
+    function hashPassword(password) {
+        return CryptoJS.SHA256(password).toString();
+    }
+
+    async function handleLogin() {
+        const username = document.getElementById('loginUsername').value;
+        const password = hashPassword(document.getElementById('loginPassword').value);
+
+        try {
+            document.getElementById('loader').style.display = 'flex'; // Show loader
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({
+                    action: 'login',
+                    username: username,
+                    password: password
+                })
+            });
+            const data = await response.json();
+
+            document.getElementById('loginMessage').textContent = data.message;
+            if (data.status === 'success') {
+                console.log('User data:', data.user); // Debugging: Log the user object
+                localStorage.setItem('user', JSON.stringify(data.user));
+                window.location.href = 'dashboard.html';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            document.getElementById('loader').style.display = 'none'; // Hide loader
+        }
+    }
+
+    async function handleRegister() {
+        const username = document.getElementById('regUsername').value;
+        const email = document.getElementById('regEmail').value;
+        const password = hashPassword(document.getElementById('regPassword').value);
+        const userType = document.getElementById('regUserType').value;
+        const tClass = document.getElementById('regTeacherClass').value;
+        const tPhone = document.getElementById('regPhone').value;
+
+        try {
+            document.getElementById('loader').style.display = 'flex'; // Show loader
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({
+                    action: 'register',
+                    userType: userType,
+                    username: username,
+                    tClass: tClass,
+                    tPhone: tPhone,
+                    email: email,
+                    password: password,
+                })
+            });
+            const data = await response.json();
+
+            document.getElementById('regMessage').textContent = data.message;
+            if (data.status === 'success') {
+                showForm('register');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            document.getElementById('loader').style.display = 'none'; // Hide loader
+        }
+    }
+</script>
+</body>
+</html>
