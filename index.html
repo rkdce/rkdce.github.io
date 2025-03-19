@@ -4,200 +4,359 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content=
-        "width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <title>Landing Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RKD Computer Education</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f9;
+            color: #333;
+        }
 
-   
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2c3e50;
+            padding: 1rem 2rem;
+            color: white;
+        }
+
+        nav .heading {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        nav .navbar ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav .navbar ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav .navbar ul li a:hover {
+            color: #1abc9c;
+        }
+
+        .sideMenuButton {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Side Navigation Bar (Responsive) */
+        .sideNavigationBar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #2c3e50;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sideNavigationBar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sideNavigationBar a:hover {
+            color: #1abc9c;
+        }
+
+        .sideNavigationBar .closeButton {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 2rem;
+            margin-left: 50px;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4rem 2rem;
+            background-color: #1abc9c;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .hero button {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #34495e;
+        }
+
+        .hero img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        /* Courses Section */
+        .courses {
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .courses .title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .courses .boxes {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .courses .box {
+            background-color: white;
+            padding: 1.5rem;
+            margin: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 30%;
+            transition: transform 0.3s ease;
+        }
+
+        .courses .box:hover {
+            transform: translateY(-10px);
+        }
+
+        .courses .box .topic {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .courses .box p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 4rem 2rem;
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .contact .title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .contactMenu {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .contactMenu .input1,
+        .contactMenu .input3 {
+            width: 45%;
+        }
+
+        .contactMenu .input1 input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .contactMenu .input1 button {
+            background-color: #1abc9c;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contactMenu .input1 button:hover {
+            background-color: #16a085;
+        }
+
+        .contactMenu .input3 .content1 {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #34495e;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        footer a {
+            color: #1abc9c;
+            text-decoration: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav .navbar {
+                display: none;
+            }
+
+            .sideMenuButton {
+                display: block;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .courses .box {
+                width: 100%;
+            }
+
+            .contactMenu .input1,
+            .contactMenu .input3 {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
- 
-<body>
-    <nav>
-        <div class="heading">Landing Page</div>
-        <span class="sideMenuButton" 
-            onclick="openNavbar()">
-            &#9776
-        </span>
 
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="heading">RKD Computer Education</div>
+        <span class="sideMenuButton" onclick="openNavbar()">&#9776;</span>
         <div class="navbar">
             <ul>
-                <li><a href="#Home">Home</a></li>
-                <li><a href="/CLASS.html">Student</a></li>
-                <!--<li><a href="https://drive.google.com/drive/folders/1k95AkN_rQ11FvIqSatPa_dbMDXSI_mhg?usp=sharing">Photo</a></li> -->
-                <li><a href="https://script.google.com/macros/s/AKfycbzBQzCtZaS-HAUy4lou6j27zgbYP8efH-9gDo10zd6t0N2nXsaQ4cZ2keQpAUtFiWxBlA/exec">Teacher Login</a></li>
-                <li><a href="https://script.google.com/macros/s/AKfycbxM8sSONG6O15PAi4In7ae2YGbrFVzkgO6c1OhzDy09w-Qr01zjMRYupZzpc-_mvqsZlg/exec">Result</a></li>
-                <li><a href="/Login.html">Login</a></li>
-                <li><a href="/aboutme.html">About Me</a></li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="https://rkdce.github.io/LoginHCS1.html" target="_blank">Login</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Side navigation bar for 
-        responsive website -->
-    <div class="sideNavigationBar" 
-        id="sideNavigationBar">
-        <a href="#" class="closeButton" 
-            onclick="closeNavbar()">
-            &#x274C
-        </a>
-        <a href="#">Home</a>
-        <a href="/CLASS.html">Student</a>
-        <a href="https://script.google.com/macros/s/AKfycbzBQzCtZaS-HAUy4lou6j27zgbYP8efH-9gDo10zd6t0N2nXsaQ4cZ2keQpAUtFiWxBlA/exec">Teacher Login</a>
-        <a href="https://script.google.com/macros/s/AKfycbxM8sSONG6O15PAi4In7ae2YGbrFVzkgO6c1OhzDy09w-Qr01zjMRYupZzpc-_mvqsZlg/exec">Result</a>
-        <a href="/Login.html">Login</a>
-        <a href="/aboutme.html">About Me</a>
+    <!-- Side Navigation Bar (Responsive) -->
+    <div class="sideNavigationBar" id="sideNavigationBar">
+        <a href="#" class="closeButton" onclick="closeNavbar()">&#x274C;</a>
+        <a href="#home">Home</a>
+        <a href="#courses">Courses</a>
+        <a href="#contact">Contact</a>
+        <a href="#about">About Us</a>
+        <a href="https://rkdce.github.io/LoginHCS1.html" target="_blank">Login</a>
     </div>
 
-    <!-- Content -->
-    <div class="line" id="Home">
+    <!-- Hero Section -->
+    <section class="hero" id="home">
         <div class="side1">
-            <h1>RKD COMPUTER EDUCATION</h1>
-            <button href=
-"https://www.geeksforgeeks.org/">
-                
-                    Explore More
-                
-            </button>
+            <h1>Welcome to RKD Computer Education</h1>
+            <p>Empowering students with the latest technology and skills.</p>
+            <button>Explore Courses</button>
         </div>
         <div class="side2">
-            <img src=
-"https://media.geeksforgeeks.org/wp-content/cdn-uploads/20220401124017/HTML-Tutorial.png"
-                width="500">
+            <img src="https://lh3.googleusercontent.com/d/1AfmX3kHR6q3UkbAqyKY8HSDiyBVn1VzW=w200?authuser=0" alt="RKD Computer Education Logo">
         </div>
-    </div>
+    </section>
 
-    <section class="about" id="My Projects">
-        <div class="content">
-            <div class="title">
-                <center><span>Courses</span></center>
+    <!-- Courses Section -->
+    <section class="courses" id="courses">
+        <div class="title">Our Courses</div>
+        <div class="boxes">
+            <div class="box">
+                <div class="topic">Programming</div>
+                <p>Learn Python, Java, C++, and more to build your coding skills.</p>
             </div>
-            <div class="boxes">
-                <div class="box">
-                    <div class="topic">
-                        <a href="" target="_blank">
-                            DSA
-                        </a>
-                    </div>
-                    <p>
-                        The term DSA stands for Data 
-                        Structures and Algorithms. As 
-                        the name itself suggests, it 
-                        is a combination of two 
-                        separate yet interrelated 
-                        topics.
-                    </p>
-                </div>
-                <div class="box">
-
-                    <div class="topic">
-                        <a href="" target="_blank">
-                            HTML
-                        </a>
-                    </div>
-                    <p>
-                        HTML stands for HyperText 
-                        Markup Language. It is used 
-                        to design web pages using 
-                        the markup language.
-                    </p>
-                </div>
-
-                <div class="box">
-                    <div class="topic">
-                        <a href="" target="_blank">
-                            Javascript
-                        </a>
-                    </div>
-                    <p>
-                        JavaScript (JS) is the most 
-                        popular lightweight, interpreted 
-                        compiled programming language.
-                    </p>
-                </div>
+            <div class="box">
+                <div class="topic">Web Development</div>
+                <p>Master HTML, CSS, JavaScript, and frameworks like React and Node.js.</p>
+            </div>
+            <div class="box">
+                <div class="topic">Data Science</div>
+                <p>Explore data analysis, machine learning, and AI with hands-on projects.</p>
             </div>
         </div>
     </section>
 
+    <!-- Contact Section -->
     <section class="contact" id="contact">
-        <div class="content">
-            <div class="title"><span>Sign Up</span></div>
-            <div class="contactMenu">
-                <div class="input1">
-                    <div class="label1">Your Name</div>
-                    <div class="input2">
-                        <input type="text" 
-                            placeholder="Enter your Name here">
-                    </div>
-                    <div class="label1">
-                        <label>Your Email</label>
-                    </div>
-                    <div class="input2">
-                        <input type="text" 
-                            placeholder="Enter your Email here">
-                    </div>
-                    <div class="label1">
-                        <label>Your Password</label>
-                    </div>
-                    <div class="input2">
-                        <input type="text" 
-                            placeholder="Enter your Password here">
-                    </div>
-                    <div class="button">
-                        <button>Sign Up</button>
-                    </div>
-                </div>
-                <div class="input3">
-                    <div class="rightside1">
-                        <div class="title1">
-                            <span>
-                                Contact Us
-                            </span>
-                        </div>
-                        <div class="content1">
-                            A-143, 9th Floor, Sovereign 
-                            Corporate Tower, Sector-136, 
-                            Noida, Uttar Pradesh - 201305
-                        </div>
-                        <div class="title1">
-                            <span>More Information</span>
-                        </div>
-                        <div class="content1">
-                            Greetings to all the Geeks out there!
-                            We welcome you to the platform where we
-                            consistently strive to offer the best 
-                            of education. This platform has been 
-                            designed for every geek wishing to 
-                            expand their knowledge, share their 
-                            knowledge and is ready to grab their 
-                            dream job. We have millions of articles,
-                            live as well as online courses, thousands 
-                            of tutorials and much more just for the 
-                            geek inside you.Thank you for choosing 
-                            and supporting us!
-                        </div>
-                    </div>
+        <div class="title">Contact Us</div>
+        <div class="contactMenu">
+            <div class="input1">
+                <input type="text" placeholder="Your Name">
+                <input type="email" placeholder="Your Email">
+                <input type="text" placeholder="Your Message">
+                <button>Send Message</button>
+            </div>
+            <div class="input3">
+                <div class="content1">
+                    <p><strong>Address:</strong> Silchar, Assam, India</p>
+                    <p><strong>Email:</strong> emailrajeshkunardas@gmail.com</p>
+                    <p><strong>Phone:</strong> +91 7002323169</p>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Footer section -->
+
+    <!-- Footer -->
     <footer>
         <div class="footer">
-            <span>
-                Created By
-                <a href="#" 
-                    target="_blank">
-                    GeeksforGeeks
-                </a>
-            </span>
+            <span>© 2023 RKD Computer Education. All rights reserved.</span>
         </div>
     </footer>
-    <script src="assets/js/script.js"></script>
 
-  
+    <script>
+        function openNavbar() {
+            document.getElementById("sideNavigationBar").style.width = "250px";
+        }
 
-    
+        function closeNavbar() {
+            document.getElementById("sideNavigationBar").style.width = "0";
+        }
+    </script>
 </body>
 
 </html>
