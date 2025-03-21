@@ -3,598 +3,494 @@
   <head>
     <base target="_top">
 	 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
-            padding: 20px;
-        }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #ffffff;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        padding: 20px;
+        font-size: 16px; /* Base font size for better readability */
+    }
 
-        /* Header */
-        .header {
-            width: 100%;
-            max-width: 400px;
-            background-color: #ffffff;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .header .logout-button {
-            background-color: #ff4757;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .header .logout-button:hover {
-            background-color: #ff6b81;
-        }
-
-        /* Main Content */
-        .main-content {
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        /* Cards */
-        .card {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .card h2 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        /* Footer */
-        .footer {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: #999;
-            text-align: center;
-        }
-		.loader {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: rgba(0, 0, 0, 0.5);
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			z-index: 1000;
-		}
-
-		.spinner {
-			border: 4px solid rgba(0, 0, 0, 0.2);
-			width: 40px;
-			height: 40px;
-			border-radius: 50%;
-			border-left-color: #4CAF50;
-			animation: spin 1s linear infinite;
-		}
-
-		@keyframes spin {
-			0% {
-				transform: rotate(0deg);
-			}
-			100% {
-				transform: rotate(360deg);
-			}
-		}
-    </style>
-	<style>
-        body.no-interaction {
-            pointer-events: none;
-        }
-
-        .alert-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none; /* Ensure hidden on load */
-
-           
-            align-items: center; /* Center vertically */
-            justify-content: center; /* Center horizontally */
-        }
-
-        .alert-box {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            pointer-events: auto; /* Ensure interaction with alert */
-
-           
-            flex-direction: column; /* Stack items vertically */
-            align-items: center; /* Center content horizontally */
-        }
-
-        .alert-button {
-            padding: 5px 10px;
-            background: #000000;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px; /* Space between message and button */
-        }
-    </style>
-  <style>
-  /* General styles 
-  body {
-    font-family: Arial, sans-serif;
-    
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #ffffff;
-  }*/
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-  }
-
-  th, td {
-    border: 0px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-
-  th {
-    background-color: #f2f2f2;
-  }
-
-  input {
-    padding: 5px;
-    margin: 5px 0;
-  }
-
-  /* Accordion styles (unchanged) */
-  .accordion-toggle {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  .accordion-item {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-  }
-
-  .accordion-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-  }
-
-  .accordion-content {
-    padding: 20px;
-    display: none;
-  }
-
-  .accordion-item.open .accordion-content {
-    display: block;
-  }
-
-  .accordion {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .accordion-table th,
-  .accordion-table td {
-    border: 1px solid #ccc;
-    padding: 12px;
-    text-align: left;
-    vertical-align: middle;
-    min-width: 70px;
-  }
-  
-  
-
-  .accordion-table th {
-    background-color: #f2f2f2;
-  }
-
-  .accordion-table input{
-    width: calc(100%);
-    height: 100%;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    border: none;
-    background-color: transparent;
-    text-align: center;
-    font-size: 1em;
-  }
-  
-     .accordion-table select {
+    /* Header */
+    .header {
         width: 100%;
-        padding: 8px;
+        max-width: 100%; /* Full width on mobile */
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .header h1 {
+        font-size: 2rem; /* Larger font size */
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        font-size: 1.1rem; /* Larger font size */
+        color: #666;
+    }
+
+    .header .logout-button {
+        background-color: #ff4757;
+        color: white;
+        border: none;
+        padding: 12px 24px; /* Larger padding */
+        border-radius: 8px;
+        font-size: 1.1rem; /* Larger font size */
+        font-weight: 500;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .header .logout-button:hover {
+        background-color: #ff6b81;
+    }
+
+    /* Main Content */
+    .main-content {
+        width: 100%;
+        max-width: 100%; /* Full width on mobile */
+        display: flex;
+        flex-direction: column;
+        gap: 20px; /* Larger gap for better spacing */
+    }
+
+    /* Cards */
+    .card {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h2 {
+        font-size: 1.5rem; /* Larger font size */
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        font-size: 1.1rem; /* Larger font size */
+        color: #666;
+    }
+
+    /* Footer */
+    .footer {
+        margin-top: 20px;
+        font-size: 1rem; /* Larger font size */
+        color: #999;
+        text-align: center;
+    }
+
+    .loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.2);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border-left-color: #4CAF50;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    body.no-interaction {
+        pointer-events: none;
+    }
+
+    .alert-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none; /* Ensure hidden on load */
+        align-items: center; /* Center vertically */
+        justify-content: center; /* Center horizontally */
+    }
+
+    .alert-box {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        pointer-events: auto; /* Ensure interaction with alert */
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center content horizontally */
+    }
+
+    .alert-button {
+        padding: 10px 20px; /* Larger padding */
+        background: #000000;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px; /* Space between message and button */
+        font-size: 1rem; /* Larger font size */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    th, td {
+        border: 0px solid #ddd;
+        padding: 12px; /* Larger padding */
+        text-align: left;
+        font-size: 1.1rem; /* Larger font size */
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    input {
+        padding: 10px; /* Larger padding */
+        margin: 10px 0; /* Larger margin */
+        font-size: 1.1rem; /* Larger font size */
+    }
+
+    .accordion-toggle {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 12px 24px; /* Larger padding */
+        font-size: 1.1rem; /* Larger font size */
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .accordion-item {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        margin-bottom: 20px; /* Larger margin */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .accordion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px; /* Larger padding */
+        background-color: #f9f9f9;
+        cursor: pointer;
+        font-size: 1.2rem; /* Larger font size */
+    }
+
+    .accordion-content {
+        padding: 20px;
+        display: none;
+        font-size: 1.1rem; /* Larger font size */
+    }
+
+    .accordion-item.open .accordion-content {
+        display: block;
+    }
+
+    .accordion {
+        width: 100%;
+        max-width: 100%; /* Full width on mobile */
+        margin: 0 auto;
+    }
+
+    .accordion-table th,
+    .accordion-table td {
+        border: 1px solid #ccc;
+        padding: 15px; /* Larger padding */
+        text-align: left;
+        vertical-align: middle;
+        min-width: 70px;
+        font-size: 1.1rem; /* Larger font size */
+    }
+
+    .accordion-table th {
+        background-color: #f2f2f2;
+    }
+
+    .accordion-table input {
+        width: calc(100%);
+        height: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        border: none;
+        background-color: transparent;
+        text-align: center;
+        font-size: 1.1rem; /* Larger font size */
+    }
+
+    .accordion-table select {
+        width: 100%;
+        padding: 10px; /* Larger padding */
         border-radius: 8px;
         border: 1px solid #aaa;
-        font-size: 14px;
+        font-size: 1.1rem; /* Larger font size */
     }
-	.accordion-table select option.separator {
+
+    .accordion-table select option.separator {
         font-weight: bold;
         background: #f0f0f0;
         color: #555;
     }
-	.accordion-table select optgroup {
+
+    .accordion-table select optgroup {
         font-style: normal;
     }
 
-  .accordion-table td {
-    position: relative;
-  }
-
-  .accordion-table input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-
-  /* Search form styles (unchanged) */
-  #searchForm {
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-
-  #searchForm label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
-  }
-
-  #searchForm input[type="text"],
-  #searchForm select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    box-sizing: border-box;
-  }
-
-  #searchForm button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  #searchButton {
-    background-color: #007bff;
-    color: white;
-  }
-
-  #searchButton:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-
-  #resetButton {
-    background-color: #6c757d;
-    color: white;
-    margin-left: 10px;
-  }
-
-  #searchForm input:disabled,
-  #searchForm select:disabled {
-    background-color: #e9ecef;
-    cursor: not-allowed;
-  }
-</style>
- <style>
-    .student-info-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      font-size: 16px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .student-info-table th, .student-info-table td {
-      padding: 12px 16px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .student-info-table label {
-      font-weight: bold;
-      color: #444;
-    }
-
-    .student-info-table input {
-      border: none;
-      outline: none;
-      background: #eaeaea;
-      padding: 8px 12px;
-      border-radius: 8px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .student-info-table img {
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      max-width: 100px;
-      display: block;
-      margin: 0 auto;
-    }
-
-    .student-info-table tr:hover {
-      background-color: #f0f4f8;
-    }
-
-    .photo-cell {
-      text-align: center;
-      vertical-align: middle;
-    }
-
-  </style>
-<style>
-  /* Unique General styles */
-  .unique-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-
-  /* Unique Form container */
-  .unique-form-container {
-    max-width: 300px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center children horizontally */
-  }
-
-  /* Unique Form row styling */
-  .unique-form-row {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-    width: 100%; /* Ensure form rows take full width */
-  }
-
-  /* Unique Label styling */
-  .unique-form-row .unique-label {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-  }
-
-  /* Unique Input group styling */
-  .unique-input-group {
-    width: 100%;
-    display: flex;
-    align-items: center; /* Align items vertically */
-  }
-
-  /* Unique Input field styling */
-  .unique-input-group input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    box-sizing: border-box;
-  }
-
-  /* Unique Custom checkbox-specific styling */
-  .unique-custom-checkbox {
-    width: 20px; /* Increase checkbox size */
-    height: 20px; /* Increase checkbox size */
-    margin-right: 8px;
-    cursor: pointer;
-    accent-color: #4CAF50; /* Change checkbox color */
-  }
-
-  /* Unique Button styling */
-  .unique-save-button {
-    //display: none; /* Initially hidden */
-    margin: 20px 0; /* Add vertical margin */
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Unique gradient */
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: background 0.3s ease, transform 0.2s ease;
-  }
-
-  .unique-save-button:hover {
-    background: linear-gradient(135deg, #2575fc, #6a11cb); /* Reverse gradient on hover */
-    transform: translateY(-2px); /* Slight lift on hover */
-  }
-
-  .unique-save-button:active {
-    transform: translateY(0); /* Reset lift on click */
-  }
-/* Responsive Adjustments for Android Devices */
-@media only screen and (max-width: 600px) {
-    body {
-        padding: 10px;
-        font-size: 16px; /* Increase base font size for better readability */
-    }
-
-    .header h1 {
-        font-size: 2rem; /* Increase header font size */
-    }
-
-    .header p {
-        font-size: 1.1rem; /* Increase paragraph font size */
-    }
-
-    .header .logout-button {
-        padding: 12px 24px; /* Increase button padding */
-        font-size: 1.1rem; /* Increase button font size */
-    }
-
-    .card h2 {
-        font-size: 1.5rem; /* Increase card header font size */
-    }
-
-    .card p {
-        font-size: 1.1rem; /* Increase card paragraph font size */
-    }
-
-    .footer {
-        font-size: 1rem; /* Increase footer font size */
-    }
-
-    .student-info-table th, .student-info-table td {
-        padding: 16px; /* Increase table cell padding */
-        font-size: 1.1rem; /* Increase table font size */
-    }
-
-    .student-info-table input {
-        font-size: 1.1rem; /* Increase input font size */
-    }
-
-    .student-info-table img {
-        max-width: 120px; /* Increase image size */
-    }
-
-    .accordion-header {
-        font-size: 1.2rem; /* Increase accordion header font size */
-    }
-
-    .accordion-content {
-        font-size: 1.1rem; /* Increase accordion content font size */
-    }
-
-    .accordion-table th, .accordion-table td {
-        padding: 12px; /* Increase accordion table cell padding */
-        font-size: 1.1rem; /* Increase accordion table font size */
+    .accordion-table td {
+        position: relative;
     }
 
     .accordion-table input {
-        font-size: 1.1rem; /* Increase accordion input font size */
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    #searchForm {
+        max-width: 100%; /* Full width on mobile */
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #searchForm label {
+        display: block;
+        margin-bottom: 10px; /* Larger margin */
+        font-weight: bold;
+        color: #333;
+        font-size: 1.1rem; /* Larger font size */
+    }
+
+    #searchForm input[type="text"],
+    #searchForm select {
+        width: 100%;
+        padding: 12px; /* Larger padding */
+        margin-bottom: 20px; /* Larger margin */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1.1rem; /* Larger font size */
+        box-sizing: border-box;
+    }
+
+    #searchForm button {
+        padding: 12px 24px; /* Larger padding */
+        border: none;
+        border-radius: 4px;
+        font-size: 1.1rem; /* Larger font size */
+        cursor: pointer;
+    }
+
+    #searchButton {
+        background-color: #007bff;
+        color: white;
+    }
+
+    #searchButton:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    #resetButton {
+        background-color: #6c757d;
+        color: white;
+        margin-left: 10px;
+    }
+
+    #searchForm input:disabled,
+    #searchForm select:disabled {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+    }
+
+    .student-info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 1.1rem; /* Larger font size */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .student-info-table th, .student-info-table td {
+        padding: 15px; /* Larger padding */
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .student-info-table label {
+        font-weight: bold;
+        color: #444;
+    }
+
+    .student-info-table input {
+        border: none;
+        outline: none;
+        background: #eaeaea;
+        padding: 10px; /* Larger padding */
+        border-radius: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 1.1rem; /* Larger font size */
+    }
+
+    .student-info-table img {
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        max-width: 120px; /* Larger image size */
+        display: block;
+        margin: 0 auto;
+    }
+
+    .student-info-table tr:hover {
+        background-color: #f0f4f8;
+    }
+
+    .photo-cell {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .unique-body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
     }
 
     .unique-form-container {
-        padding: 20px; /* Increase form container padding */
+        max-width: 100%; /* Full width on mobile */
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center children horizontally */
+    }
+
+    .unique-form-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px; /* Larger margin */
+        width: 100%; /* Ensure form rows take full width */
     }
 
     .unique-form-row .unique-label {
-        font-size: 1.1rem; /* Increase label font size */
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px; /* Larger margin */
+        font-size: 1.1rem; /* Larger font size */
+    }
+
+    .unique-input-group {
+        width: 100%;
+        display: flex;
+        align-items: center; /* Align items vertically */
     }
 
     .unique-input-group input[type="text"] {
-        font-size: 1.1rem; /* Increase input font size */
+        width: 100%;
+        padding: 12px; /* Larger padding */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1.1rem; /* Larger font size */
+        box-sizing: border-box;
+    }
+
+    .unique-custom-checkbox {
+        width: 24px; /* Larger checkbox size */
+        height: 24px; /* Larger checkbox size */
+        margin-right: 10px; /* Larger margin */
+        cursor: pointer;
+        accent-color: #4CAF50; /* Change checkbox color */
     }
 
     .unique-save-button {
-        font-size: 1.1rem; /* Increase button font size */
-        padding: 14px 28px; /* Increase button padding */
+        margin: 20px 0; /* Add vertical margin */
+        padding: 14px 28px; /* Larger padding */
+        font-size: 1.1rem; /* Larger font size */
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(135deg, #6a11cb, #2575fc); /* Unique gradient */
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease, transform 0.2s ease;
     }
-}
-  
-  
+
+    .unique-save-button:hover {
+        background: linear-gradient(135deg, #2575fc, #6a11cb); /* Reverse gradient on hover */
+        transform: translateY(-2px); /* Slight lift on hover */
+    }
+
+    .unique-save-button:active {
+        transform: translateY(0); /* Reset lift on click */
+    }
 </style>
 
   </head>
@@ -677,7 +573,7 @@
     
 	<br><hr><h1 style="text-align: center;">Final Assessment</h1><hr><br>
 	
-	<div class="accordion2">
+	<div class="accordion">
 	  
          <div id="accordion-container2"></div>
 		
@@ -1863,7 +1759,7 @@ subject7FinalGrade: subject7FinalGrade,
             // Clear the user's information from localStorage
             localStorage.removeItem('user');
             // Redirect to the login page
-            window.location.href = 'Login.html';
+            window.location.href = 'LoginHCS1.html';
         }
     </script>
 	
