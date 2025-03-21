@@ -368,7 +368,7 @@
 .student-info-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 10px 0;
     font-size: 1.1rem; /* Larger font size */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 12px;
@@ -377,7 +377,7 @@
 
 /* Table Cells */
 .student-info-table th, .student-info-table td {
-    padding: 15px; /* Larger padding */
+    padding: 3px; /* Larger padding */
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -393,7 +393,7 @@
     border: none;
     outline: none;
     background: #eaeaea;
-    padding: 10px; /* Larger padding */
+    padding: 3px; /* Larger padding */
     border-radius: 8px;
     width: 100%;
     box-sizing: border-box; /* Ensure padding fits within width */
@@ -419,21 +419,23 @@
     .student-info-table,
     .student-info-table tbody,
     .student-info-table tr,
-    .student-info-table td {
+    .student-info-table td,
+.student-info-table input	{
         display: block;
         width: 100%;
+		text-align: center;
     }
 
     /* Adjust cell layout */
     .student-info-table td {
-        padding: 10px 0; /* Reduce padding for small screens */
+        padding: 3px 0; /* Reduce padding for small screens */
         border: none; /* Remove borders */
     }
 
     /* Display label above input */
     .student-info-table td label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
     }
 
     /* Move student photo to the top */
