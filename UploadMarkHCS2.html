@@ -2,6 +2,7 @@
 <html>
   <head>
     <base target="_top">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
     /* General Reset */
@@ -20,13 +21,13 @@
         align-items: center;
         justify-content: flex-start;
         min-height: 100vh;
-        padding: 20px;
+        padding: 100px;
         font-size: 16px; /* Base font size for better readability */
     }
 
     /* Header */
     .header {
-        width: 100%;
+        width: 80%;
         max-width: 100%; /* Full width on mobile */
         background-color: #ffffff;
         padding: 20px;
@@ -421,7 +422,7 @@
     }
 
     .unique-form-container {
-        max-width: 100%; /* Full width on mobile */
+        max-width: 50%; /* Full width on mobile */
         margin: 0 auto;
         background-color: #f9f9f9;
         padding: 20px;
@@ -519,7 +520,7 @@
     </select>
     
     <button type="button" id="searchButton" onclick="hideSearch()">Search</button>
-    <button type="button" id="resetButton" onclick="resetPage()" style="display:none;">Reset</button>
+    <button type="button" id="resetButton" onclick="location.reload()" style="display:none;">Reset</button>
   </form>
 
     <div id="marksTable" style="display:none;">
@@ -1655,92 +1656,44 @@ subject7FinalGrade: subject7FinalGrade,
 
 
 
-
 <script>
-    // Function to calculate overall marks, percentage, and grade
-    function calculateOverallResults() {
-      // Get final totals for all subjects
-      const subject1MarksObtained = parseFloat(document.getElementById('subject1MarksObtained').value) || 0;
-      const subject2MarksObtained = parseFloat(document.getElementById('subject2MarksObtained').value) || 0;
-      const subject3MarksObtained = parseFloat(document.getElementById('subject3MarksObtained').value) || 0;
-      const subject4MarksObtained = parseFloat(document.getElementById('subject4MarksObtained').value) || 0;
-      const subject5MarksObtained = parseFloat(document.getElementById('subject5MarksObtained').value) || 0;
-      const subject6MarksObtained = parseFloat(document.getElementById('subject6MarksObtained').value) || 0;
-      const subject7MarksObtained = parseFloat(document.getElementById('subject7MarksObtained').value) || 0;
+    function calculateTotalAssessment() {
+        let totalMarks = 0;
+        let subjectCount = 0;
 
-      // Array of all subject final totals
-      const subjectTotals = [
-        subject1MarksObtained,
-        subject2MarksObtained,
-        subject3MarksObtained,
-        subject4MarksObtained,
-        subject5MarksObtained,
-        subject6MarksObtained,
-        subject7MarksObtained,
-      ];
+        for (let i = 1; i <= 14; i++) {
+            const assessment = document.getElementById(`subject${i}FinalAssessment`);
+            if (assessment && assessment.value) {
+                totalMarks += parseFloat(assessment.value) || 0;
+                subjectCount++;
+            }
+        }
 
-      // Filter out subjects with 0 marks (not entered)
-      const enteredSubjects = subjectTotals.filter((total) => total > 0);
-      const numberOfSubjects = enteredSubjects.length;
+        const fullMarks = subjectCount * 100;
 
-      // Calculate overall marks
-      const overallMarks = enteredSubjects.reduce((sum, total) => sum + total, 0);
+        document.getElementById('overallMarks').value = totalMarks;
+        document.getElementById('fullSubjectMarks').value = fullMarks;
 
-      // Calculate full subject marks based on the number of subjects
-      let fullSubjectMarks;
-      switch (numberOfSubjects) {
-        case 4:
-          fullSubjectMarks = 400; // 4 subjects
-          break;
-        case 5:
-          fullSubjectMarks = 500; // 5 subjects
-          break;
-        case 6:
-          fullSubjectMarks = 600; // 6 subjects
-          break;
-        case 7:
-          fullSubjectMarks = 700; // 7 subjects
-          break;
-        default:
-          fullSubjectMarks = 0; // No subjects entered
-      }
+        const percentage = fullMarks > 0 ? (totalMarks / fullMarks) * 100 : 0;
+        document.getElementById('percentage').value = percentage.toFixed(2);
 
-      // Calculate percentage
-      const percentage = fullSubjectMarks > 0 ? (overallMarks / fullSubjectMarks) * 100 : 0;
-
-      // Calculate grade based on percentage
-      const grade = calculateGrade(percentage);
-
-      // Display results
-      document.getElementById('overallMarks').value = overallMarks.toFixed(2);
-      document.getElementById('fullSubjectMarks').value = fullSubjectMarks;
-      document.getElementById('percentage').value = percentage.toFixed(2);
-      document.getElementById('overallGrade').value = grade;
+        document.getElementById('overallGrade').value = getGrade(percentage);
     }
 
-    // Function to calculate grade based on percentage
-    function calculateGrade(percentage) {
-      if (percentage >= 90) return 'A+';
-      else if (percentage >= 75) return 'A';
-      else if (percentage >= 55) return 'B';
-      else if (percentage >= 35) return 'C';
-      else return 'D';
+    function getGrade(percentage) {
+        if (percentage >= 90) return 'A+';
+        if (percentage >= 80) return 'A';
+        if (percentage >= 70) return 'B+';
+        if (percentage >= 60) return 'B';
+        if (percentage >= 50) return 'C+';
+        if (percentage >= 40) return 'C';
+        if (percentage >= 33) return 'D';
+        return 'F';
     }
 
-    // Attach the function to input fields (optional)
-    const inputFields = [
-      'subject1MarksObtained', 'subject2MarksObtained', 'subject3MarksObtained',
-      'subject4MarksObtained', 'subject5MarksObtained', 'subject6MarksObtained', 'subject7MarksObtained'
-    ];
-
-    inputFields.forEach((field) => {
-      document.getElementById(field).addEventListener('input', calculateOverallResults);
-    });
+    // Trigger calculation when inputs change
+    document.addEventListener('input', calculateTotalAssessment);
 </script>
-
-  
-
-  
  
   <!-- JavaScript -->
     <script>
