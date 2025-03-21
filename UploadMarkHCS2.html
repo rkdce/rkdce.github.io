@@ -20,8 +20,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        min-height: 150vh;
-        padding: 30px;
+        min-height: 100vh;
+        padding: 100px;
         font-size: 16px; /* Base font size for better readability */
     }
 
@@ -364,54 +364,93 @@
         cursor: not-allowed;
     }
 
-    .student-info-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 1.1rem; /* Larger font size */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        border-radius: 12px;
-        overflow: hidden;
-    }
+   /* Base Table Styling */
+.student-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1.1rem; /* Larger font size */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+}
 
-    .student-info-table th, .student-info-table td {
-        padding: 15px; /* Larger padding */
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
+/* Table Cells */
+.student-info-table th, .student-info-table td {
+    padding: 15px; /* Larger padding */
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
 
-    .student-info-table label {
-        font-weight: bold;
-        color: #444;
-    }
+/* Labels */
+.student-info-table label {
+    font-weight: bold;
+    color: #444;
+}
 
-    .student-info-table input {
-        border: none;
-        outline: none;
-        background: #eaeaea;
-        padding: 10px; /* Larger padding */
-        border-radius: 8px;
-        width: 100%;
-        box-sizing: border-box;
-        font-size: 1.1rem; /* Larger font size */
-    }
+/* Input Fields */
+.student-info-table input {
+    border: none;
+    outline: none;
+    background: #eaeaea;
+    padding: 10px; /* Larger padding */
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding fits within width */
+    font-size: 1.1rem;
+}
 
-    .student-info-table img {
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        max-width: 120px; /* Larger image size */
+/* Student Photo */
+.student-info-table img {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    max-width: 120px; /* Larger image size */
+    display: block;
+    margin: 0 auto; /* Center image */
+}
+
+/* Hover Effect */
+.student-info-table tr:hover {
+    background-color: #f0f4f8;
+}
+
+/* Responsive Layout for Small Screens */
+@media (max-width: 768px) {
+    .student-info-table,
+    .student-info-table tbody,
+    .student-info-table tr,
+    .student-info-table td {
         display: block;
-        margin: 0 auto;
+        width: 100%;
     }
 
-    .student-info-table tr:hover {
-        background-color: #f0f4f8;
+    /* Adjust cell layout */
+    .student-info-table td {
+        padding: 10px 0; /* Reduce padding for small screens */
+        border: none; /* Remove borders */
     }
 
+    /* Display label above input */
+    .student-info-table td label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    /* Move student photo to the top */
     .photo-cell {
+        order: -1; /* Photo appears first */
         text-align: center;
+		
         vertical-align: middle;
     }
+
+    /* Ensure photo scales properly */
+    .student-info-table img {
+        max-width: 150px; /* Slightly larger on mobile */
+    }
+}
+
+
 
     .unique-body {
         font-family: Arial, sans-serif;
@@ -422,10 +461,10 @@
     }
 
     .unique-form-container {
-        max-width: 50%; /* Full width on mobile */
+        max-width: 70%; /* Full width on mobile */
         margin: 0 auto;
         background-color: #f9f9f9;
-        padding: 20px;
+        padding: 10px;
         border-radius: 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
         display: flex;
