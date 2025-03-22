@@ -787,7 +787,7 @@
 	
 	
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbytZcUgN9kmlJiUGG6iScfhE1KAi_mpNS5Oep4WWWqoUF8TuL2-EUPSRdFcNPBc7Vn5/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxzO8NXTUc04_toIMIr9120nyOPLVUEmt7oZhiVxz9ieozWkO2VtBwPjQjlNij2HNA/exec";
  function hideSearch() {
   // Hide the search button
   document.getElementById('searchButton').style.display = "none";
@@ -1172,14 +1172,16 @@ document.addEventListener('DOMContentLoaded', toggleAccordion);
      function searchStudent() {
   var admissionNumber = document.getElementById('admissionNumber').value;
   var examType = document.getElementById('examType').value;
+  var userType = document.getElementById('userType').textContent;
   
     // Show the loader
     document.getElementById('loader').style.display = 'flex';
   
   var params = new URLSearchParams({
-    action: 'search',
+    action: 'search1',
     admissionNumber: admissionNumber,
-    examType: examType
+    examType: examType,
+	userType: userType
   });
   
   fetch(`${GAS_URL}?${params}`)
@@ -1552,7 +1554,7 @@ var subject7FinalGrade = document.getElementById('subject7FinalGrade').value;
 
     // Encode the parameters to ensure special characters are handled correctly
     var params = new URLSearchParams({
-        action: 'save',
+        action: 'save1',
         examType: examType,
         admissionNumber: admissionNumber,
         teacherNameDisplay: teacherNameDisplay,
