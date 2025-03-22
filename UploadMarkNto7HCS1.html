@@ -1635,7 +1635,7 @@
         &copy; 2025 Rajesh Kumar Das. All rights reserved.
     </div>
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwrCfBvBxekppTDp_H0VEquecRBpDJgd0kvJHD_5KYQLZbAYl3vk0prsmAImbyrSnN1/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxzO8NXTUc04_toIMIr9120nyOPLVUEmt7oZhiVxz9ieozWkO2VtBwPjQjlNij2HNA/exec";
  function hideSearch() {
   // Hide the search button
   document.getElementById('searchButton').style.display = "none";
@@ -1757,18 +1757,21 @@ document.getElementById('examType').readOnly = false;
 document.addEventListener('DOMContentLoaded', initializeAccordion);
   </script>
     <script>
-     function searchStudent() {
+        function searchStudent() {
   var admissionNumber = document.getElementById('admissionNumber').value;
   var examType = document.getElementById('examType').value;
+  var userType = document.getElementById('userType').textContent;
   
     // Show the loader
     document.getElementById('loader').style.display = 'flex';
   
   var params = new URLSearchParams({
-    action: 'search',
+    action: 'search1',
     admissionNumber: admissionNumber,
-    examType: examType
+    examType: examType,
+    userType: userType
   });
+  
   
   fetch(`${GAS_URL}?${params}`)
     .then(response => response.json())
