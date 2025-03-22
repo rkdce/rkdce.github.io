@@ -165,43 +165,46 @@
         <p id="loginMessage"></p>
     </div>
 
-    <div id="registerForm" class="form">
-        <div class="select-wrapper">
-            <select id="regUserType" required>
-                <option value="">-- Select Class --</option>
-                <option value="User">User</option>
-                <option value="Admin">Admin</option>
-            </select>
-        </div>
-        <input type="text" id="regUsername" placeholder="Username" required>
-        <div class="select-wrapper">
-            <select id="regTeacherClass" required>
-                <option value="">-- Select Class --</option>
-                <option value="NURSERY">NURSERY</option>
-                <option value="KG1">KG1</option>
-                <option value="KG2">KG2</option>
-                <option value="I">I</option>
-                <option value="II">II</option>
-                <option value="III">III</option>
-                <option value="IV">IV</option>
-                <option value="V">V</option>
-                <option value="VI">VI</option>
-                <option value="VII">VII</option>
-                <option value="VIII">VIII</option>
-                <option value="IX">IX</option>
-                <option value="X">X</option>
-                <option value="XI SCIENCE">XI SCIENCE</option>
-                <option value="XI ARTS">XI ARTS</option>
-                <option value="XII SCIENCE">XII SCIENCE</option>
-                <option value="XII ARTS">XII ARTS</option>
-            </select>
-        </div>
-        <input type="text" id="regPhone" placeholder="Mobile No." required>
-        <input type="email" id="regEmail" placeholder="Email" required>
-        <input type="password" id="regPassword" placeholder="Password" required>
-        <button onclick="handleRegister()">Register</button>
-        <p id="regMessage"></p>
+        <div id="registerForm" class="form">
+        <form onsubmit="handleRegister(event)">
+            <div class="select-wrapper">
+                <select id="regUserType" required>
+                    <option value="">-- Select Class --</option>
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+            <input type="text" id="regUsername" placeholder="Username" required>
+            <div class="select-wrapper">
+                <select id="regTeacherClass" required>
+                    <option value="">-- Select Class --</option>
+                    <option value="NURSERY">NURSERY</option>
+                    <option value="KG1">KG1</option>
+                    <option value="KG2">KG2</option>
+                    <option value="I">I</option>
+                    <option value="II">II</option>
+                    <option value="III">III</option>
+                    <option value="IV">IV</option>
+                    <option value="V">V</option>
+                    <option value="VI">VI</option>
+                    <option value="VII">VII</option>
+                    <option value="VIII">VIII</option>
+                    <option value="IX">IX</option>
+                    <option value="X">X</option>
+                    <option value="XI SCIENCE">XI SCIENCE</option>
+                    <option value="XI ARTS">XI ARTS</option>
+                    <option value="XII SCIENCE">XII SCIENCE</option>
+                    <option value="XII ARTS">XII ARTS</option>
+                </select>
+            </div>
+            <input type="text" id="regPhone" placeholder="Mobile No." required>
+            <input type="email" id="regEmail" placeholder="Email" required>
+            <input type="password" id="regPassword" placeholder="Password" required>
+            <button type="submit">Register</button>
+            <p id="regMessage"></p>
+        </form>
     </div>
+
 </div>
 
 <div id="loader" class="loader" style="display: none;">
