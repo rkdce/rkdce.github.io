@@ -529,6 +529,44 @@
         transform: translateY(0); /* Reset lift on click */
     }
 </style>
+    <style>
+        /* Popup styling */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #4CAF50;
+            color: white;
+            padding: 20px 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            font-size: 20px;
+            text-align: center;
+            z-index: 9999;
+            opacity: 0;
+            animation: fadeInOut 3s ease forwards;
+        }
+
+        /* Fade in and out animation */
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
 
   </head>
   <body>
@@ -1171,10 +1209,7 @@ document.addEventListener('DOMContentLoaded', toggleAccordion);
 		
 		
 
-// English Subjects
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('subject1').textContent = data[11] || '';
-}); // for giving name in local html for span
+
 document.getElementById('subject1Name').value = data[11] || '';
 document.getElementById('subject1FullMarks').value = data[12] || '';
 document.getElementById('subject1Theory').value = data[13] || '';
@@ -1772,6 +1807,18 @@ subject7FinalGrade: subject7FinalGrade,
             alertOverlay.style.display = 'none';
             document.body.classList.remove('no-interaction');
         }
+    </script>
+	 <!-- Popup Message -->
+    <div id="popup" class="popup">
+        🚀 Welcome to RKD CE! <br>
+        👨‍💻 Developer: Rajesh Kumar Das
+    </div>
+
+    <script>
+        // Hide popup after 3 seconds (animation handles fade-out)
+        setTimeout(() => {
+            document.getElementById('popup').style.display = 'none';
+        }, 3000);
     </script>
  
   </body>
