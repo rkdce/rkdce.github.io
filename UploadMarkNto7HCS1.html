@@ -184,19 +184,7 @@
         }
     </style>
   <style>
-  /* General styles 
-  body {
-    font-family: Arial, sans-serif;
-    
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #ffffff;
-  }*/
-
+  
   table {
     width: 100%;
     border-collapse: collapse;
@@ -579,7 +567,44 @@
     }
   }
 </style>
+<style>
+        /* Popup styling */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #4CAF50;
+            color: white;
+            padding: 20px 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            font-size: 20px;
+            text-align: center;
+            z-index: 9999;
+            opacity: 0;
+            animation: fadeInOut 3s ease forwards;
+        }
 
+        /* Fade in and out animation */
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
   </head>
   <body>
   <!-- Header -->
@@ -3359,7 +3384,19 @@ document.querySelectorAll('#computerTheoryValue, #computerPracticalValue, #examT
             document.body.classList.remove('no-interaction');
         }
     </script>
- 
+ </script>
+	 <!-- Popup Message -->
+    <div id="popup" class="popup">
+        🚀 Welcome to RKD CE! <br>
+        👨‍💻 Developer: Rajesh Kumar Das
+    </div>
+
+    <script>
+        // Hide popup after 3 seconds (animation handles fade-out)
+        setTimeout(() => {
+            document.getElementById('popup').style.display = 'none';
+        }, 3000);
+    </script>
   </body>
 </html>
   
