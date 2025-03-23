@@ -2568,9 +2568,6 @@ document.querySelectorAll('#computerTheoryValue, #computerPracticalValue, #examT
     </script>
 <script>
 // Define the showAlert function
-function showAlert(message) {
-    alert(message); // Display an alert with the provided message
-}
 
 // Disable keyboard shortcuts
 document.addEventListener('keydown', function(e) {
@@ -2580,14 +2577,14 @@ document.addEventListener('keydown', function(e) {
         (e.ctrlKey && e.key === 'c') || 
         (e.ctrlKey && e.key === 'v')) {
         e.preventDefault();
-        showAlert("Keyboard shortcuts are disabled on this page.");
+        showAlert("");
     }
 });
 
 // Disable right-click
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
-    showAlert("Right-click is disabled on this page.");
+    showAlert("");
 });
 
 
