@@ -152,15 +152,15 @@
   <!-- JavaScript to check the text content and show the div -->
   <script>
     // Get the span element with the text content
-    const userTypeElement = document.getElementById("userType");
+    const userTypeElement = document.getElementById("userType").textContent;
 
     // Get the div to be shown
     const adminDiv = document.getElementById("adminDiv");
 
     // Check if the text content is "Admin"
-    if (userTypeElement.textContent.trim() === "Admin") {
+    if (userTypeElement === "Admin") {
       // Show the div
-      adminDiv.style.display = "block"; // or "inline", "flex", etc., depending on your layout
+      adminDiv.style.display = "show"; // or "inline", "flex", etc., depending on your layout
     }
   </script>
 
