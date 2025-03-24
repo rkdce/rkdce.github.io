@@ -140,29 +140,36 @@
             <h2>About Me</h2>
             <p>Developer:Rajesh Kumar Das</p>
         </div>
+
+         <div id="adminDiv" style="display: none;">
+          <div class="card" onclick="window.location.href='https://script.google.com/macros/s/AKfycbwq9AJx-PJXkyjYf3BC16R8DVjbc-B6qAHZJzBZoWDH_1AQm_pIO2739P2Doke5mv0V/exec'">
+        <h2>MARKSHEET</h2>
+        <p>MARKSHEET</p>
+          </div>
+    </div>
+        
     </div>
 
-    <div id="adminDiv" style="display: none;">
-     <div class="card" onclick="window.location.href='https://docs.google.com/forms/d/1JyoabuV69jFc3cKPmOGRFyZDzIj4Kx1Fzm0mfNgneUI/edit'">
-            <h2>MARKSHEET</h2>
-            <p>MARKSHEET</p>
-        </div>
-    </div>
+  
 
-  <!-- JavaScript to check the text content and show the div -->
-  <script>
-    // Get the span element with the text content
-    const userTypeElement = document.getElementById("userType").textContent;
+<!-- User Type Span -->
+<span id="userType">Admin</span>
 
-    // Get the div to be shown
-    const adminDiv = document.getElementById("adminDiv");
+<!-- JavaScript to check the text content and show the div -->
+<script>
+  // Get the span element with the text content
+  const userTypeElement = document.getElementById("userType").textContent.trim();
 
-    // Check if the text content is "Admin"
-    if (userTypeElement === "Admin") {
-      // Show the div
-      adminDiv.style.display = "show"; // or "inline", "flex", etc., depending on your layout
-    }
-  </script>
+  // Get the div to be shown
+  const adminDiv = document.getElementById("adminDiv");
+
+  // Check if the text content is "Admin"
+  if (userTypeElement === "Admin") {
+    // Show the div
+    adminDiv.style.display = "block"; // Correct value to display the div
+  }
+</script>
+
 
     
 
