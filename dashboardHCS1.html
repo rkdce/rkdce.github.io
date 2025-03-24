@@ -143,32 +143,35 @@
 
          <div id="adminDiv" style="display: none;">
           <div class="card" onclick="window.location.href='https://script.google.com/macros/s/AKfycbwq9AJx-PJXkyjYf3BC16R8DVjbc-B6qAHZJzBZoWDH_1AQm_pIO2739P2Doke5mv0V/exec'">
-        <h2>MARKSHEET</h2>
-        <p>MARKSHEET</p>
-          </div>
-    </div>
-        
+          <h2>MARKSHEET</h2>
+            <p>MARKSHEET</p>
+            </div>
+            </div>
+        </div>   
     </div>
 
-  
 
-<!-- User Type Span -->
-<span id="userType">Admin</span>
+
+
 
 <!-- JavaScript to check the text content and show the div -->
 <script>
-  // Get the span element with the text content
-  const userTypeElement = document.getElementById("userType").textContent.trim();
+  // Ensure script runs after DOM is fully loaded
+  window.addEventListener("DOMContentLoaded", function () {
+    // Get the userType content
+    const userTypeElement = document.getElementById("userType").textContent.trim();
 
-  // Get the div to be shown
-  const adminDiv = document.getElementById("adminDiv");
+    // Get the adminDiv
+    const adminDiv = document.getElementById("adminDiv");
 
-  // Check if the text content is "Admin"
-  if (userTypeElement === "Admin") {
-    // Show the div
-    adminDiv.style.display = "block"; // Correct value to display the div
-  }
+    // Show the div if user is Admin
+    if (userTypeElement === "Admin") {
+      adminDiv.style.display = "block"; // Ensure visibility
+    }
+  });
 </script>
+
+
 
 
     
