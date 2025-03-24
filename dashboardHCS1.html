@@ -142,6 +142,30 @@
         </div>
     </div>
 
+    <div id="adminDiv" style="display: none;">
+     <div class="card" onclick="window.location.href='https://docs.google.com/forms/d/1JyoabuV69jFc3cKPmOGRFyZDzIj4Kx1Fzm0mfNgneUI/edit'">
+            <h2>MARKSHEET</h2>
+            <p>MARKSHEET</p>
+        </div>
+    </div>
+
+  <!-- JavaScript to check the text content and show the div -->
+  <script>
+    // Get the span element with the text content
+    const userTypeElement = document.getElementById("userType");
+
+    // Get the div to be shown
+    const adminDiv = document.getElementById("adminDiv");
+
+    // Check if the text content is "Admin"
+    if (userTypeElement.textContent.trim() === "Admin") {
+      // Show the div
+      adminDiv.style.display = "block"; // or "inline", "flex", etc., depending on your layout
+    }
+  </script>
+
+    
+
     <!-- Footer -->
     <div class="footer">
         &copy; 2025 Rajesh Kumar Das. All rights reserved.
