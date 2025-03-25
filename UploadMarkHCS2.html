@@ -1001,13 +1001,10 @@ document.getElementById('examType').readOnly = false;
 
     function getGrade(percentage) {
         if (percentage >= 90) return 'A+';
-        if (percentage >= 80) return 'A';
-        if (percentage >= 70) return 'B+';
-        if (percentage >= 60) return 'B';
-        if (percentage >= 50) return 'C+';
-        if (percentage >= 40) return 'C';
-        if (percentage >= 33) return 'D';
-        return 'F';
+        if (percentage >= 75) return 'A';
+        if (percentage >= 55) return 'B';
+        if (percentage >= 35) return 'C';
+        return 'D';
     }
 
 
@@ -1130,13 +1127,10 @@ function calculateFinalMarks(subjectNumber) {
 
 function getGrade(totalMarks) {
     if (totalMarks >= 90) return 'A+';
-    if (totalMarks >= 80) return 'A';
-    if (totalMarks >= 70) return 'B+';
-    if (totalMarks >= 60) return 'B';
-    if (totalMarks >= 50) return 'C+';
-    if (totalMarks >= 40) return 'C';
-    if (totalMarks >= 33) return 'D';
-    return 'F';
+    if (totalMarks >= 75) return 'A';
+    if (totalMarks >= 55) return 'B';
+    if (totalMarks >= 35) return 'C';
+    return 'D';
 }
 
 initializeAccordion2();
@@ -1762,13 +1756,10 @@ subject7FinalGrade: subject7FinalGrade,
 
     function getGrade(percentage) {
         if (percentage >= 90) return 'A+';
-        if (percentage >= 80) return 'A';
-        if (percentage >= 70) return 'B+';
-        if (percentage >= 60) return 'B';
-        if (percentage >= 50) return 'C+';
-        if (percentage >= 40) return 'C';
-        if (percentage >= 33) return 'D';
-        return 'F';
+        if (percentage >= 75) return 'A';
+        if (percentage >= 55) return 'B';
+        if (percentage >= 35) return 'C';
+        return 'D';
     }
 
     // Trigger calculation when inputs change
