@@ -1104,7 +1104,7 @@ function calculateFinalMarks(subjectNumber) {
     const fieldsToClear = [pt1, pt2, pt20, hy, hy30, annual, annual50, finalAssessment, finalGrade];
 
     // If Final Subject is blank or '-', clear all related fields
-    if (!finalSubject.value || finalSubject.value === '-') {
+    if (!finalSubject.value || finalSubject.value === '-' || finalSubject.value === '' ) {
         fieldsToClear.forEach(field => field.value = '');
         return; // Stop further calculations
     }
