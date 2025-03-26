@@ -1745,7 +1745,7 @@ subject7FinalGrade: subject7FinalGrade,
 
         const fullMarks = subjectCount * 100;
 
-        document.getElementById('overallMarks').value = totalMarks;
+        document.getElementById('overallMarks').value = totalMarks.toFixed(2);
         document.getElementById('fullSubjectMarks').value = fullMarks;
 
         const percentage = fullMarks > 0 ? (totalMarks / fullMarks) * 100 : 0;
