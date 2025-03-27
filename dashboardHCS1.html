@@ -146,7 +146,7 @@
         </div>
 
          <div id="adminDiv" style="display: none;">
-          <div class="card" onclick="window.location.href='https://script.google.com/a/~/macros/s/AKfycbyQ0Ftu4nAudRU5MGvEb7RYZl9p--bxQfQsAj4pjZoGfWBZspP1OkQpErte13v59hLm/exec'">
+          <div class="card" onclick="window.location.href='https://script.google.com/macros/s/AKfycbzK5k7YMAPaMR72YjT4xcp6151nzhinMvNi2beKYDj5nnRNOx7jOQhcAdD6BJdUZVEm/exec'">
           <h2>MARKSHEET</h2>
             <p>MARKSHEET</p>
         </div>
@@ -169,7 +169,7 @@
     const adminDiv = document.getElementById("adminDiv");
 
     // Show the div if user is Admin
-    if (userTypeElement === "Admin") {
+    if (userTypeElement === "Admin" || userTypeElement === "User" ) {
       adminDiv.style.display = "block"; // Ensure visibility
     }
   });
