@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rajesh Kumar Das</title>
+    <style>
+        .developer-credit {
+            text-align: center;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .developer-name {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
+        }
+        
+        .copyright {
+            font-size: 0.95em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .search-container {
+            margin: 25px 0;
+            width: 100%;
+        }
+        
+        #searchInput {
+            width: 100%;
+            padding: 14px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+        
+        #searchInput:focus {
+            outline: none;
+            border-color: #667eea;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        
+        .accordion {
+            background-color: white;
+            color: #2d3748;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 16px;
+            transition: 0.4s;
+            margin-top: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid #667eea;
+        }
+
+        .accordion:hover {
+            background-color: #f8f9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .accordion.active {
+            background-color: #f0f4ff;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .accordion:after {
+            content: '\002B';
+            color: #667eea;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+            transition: all 0.3s;
+        }
+        
+        .accordion.active:after {
+            content: '\2212';
+            color: #764ba2;
+        }
+
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin-bottom: 5px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .panel.show {
+            max-height: 5000px;
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .row-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .data-item {
+            flex: 1 1 220px;
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid #edf2f7;
+        }
+
+        .data-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+
+        .data-photo {
+            max-width: 50%;
+            max-height: 300px;
+            border-radius: 6px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: block;
+            margin: 12px auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            font-style: italic;
+            color: #718096;
+        }
+
+        .error {
+            color: #e53e3e;
+            padding: 20px;
+            text-align: center;
+            background: #fff5f5;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #fed7d7;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 25px;
+            color: #718096;
+            font-style: italic;
+            background: #f7fafc;
+            border-radius: 8px;
+            border: 1px dashed #cbd5e0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8fafc;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin: 20px 0 10px;
+            font-weight: 600;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="developer-credit">
+        <div class="developer-name">Rajesh Kumar Das</div>
+        <div class="copyright">© 2023 All Rights Reserved</div>
+    </div>
+    
+    <h1>Student Data 2024-25</h1>
+    
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search students by name, class, or other details..." onkeyup="filterAccordions()">
+    </div>
+    
+    <div id="accordionContainer">
+        <div class="loading">Loading student data...</div>
+    </div>
+
+    <!-- [Rest of your JavaScript remains exactly the same as in previous version] -->
+    <script>
+        let allAccordions = [];
+        
+        function parseCSV(csvText) {
+            const rows = [];
+            let currentRow = [];
+            let currentField = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    currentRow.push(currentField.trim());
+                    currentField = '';
+                } else if (char === '\n' && !inQuotes) {
+                    currentRow.push(currentField.trim());
+                    rows.push(currentRow);
+                    currentRow = [];
+                    currentField = '';
+                } else {
+                    currentField += char;
+                }
+            }
+            
+            if (currentField.trim() || currentRow.length > 0) {
+                currentRow.push(currentField.trim());
+                rows.push(currentRow);
+            }
+            
+            return rows;
+        }
+        
+        function extractFileId(url) {
+            if (!url) return null;
+            
+            // Handle open?id= format
+            if (url.includes('drive.google.com/open?id=')) {
+                return url.split('drive.google.com/open?id=')[1].split('&')[0];
+            }
+            // Handle file/d/ format
+            else if (url.includes('drive.google.com/file/d/')) {
+                return url.split('/file/d/')[1].split('/')[0];
+            }
+            // Handle direct ID
+            else if (url.match(/^[a-zA-Z0-9_-]{25,}$/)) {
+                return url;
+            }
+            return null;
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR_ehMArxKHPXty4szCuQinHQsj-CdZ4ANicIPtEO-btPmPvCtVZ5iY7yAFH9oHreFwMtoNU2NPnb37/pub?gid=1857926359&single=true&output=csv';
+            const container = document.getElementById('accordionContainer');
+            
+            fetch(csvUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(csvData => {
+                    container.innerHTML = '';
+                    
+                    const rows = parseCSV(csvData);
+                    if (rows.length === 0) {
+                        container.innerHTML = '<div class="error">No data found in CSV</div>';
+                        return;
+                    }
+                    
+                    const headers = rows[0].map(h => h.trim());
+                    
+                    for (let i = 1; i < rows.length; i++) {
+                        if (rows[i].length === 0 || rows[i].every(field => field.trim() === '')) continue;
+                        
+                        const columns = rows[i];
+                        const accordion = document.createElement('button');
+                        accordion.className = 'accordion';
+                        accordion.textContent = `${columns[3] || ''} ${columns[5] || ''} Class: ${columns[4] || ''}` || `Item ${i}`;
+                        accordion.dataset.searchContent = columns.join(' ').toLowerCase();
+                        
+                        const panel = document.createElement('div');
+                        panel.className = 'panel';
+                        
+                        const contentDiv = document.createElement('div');
+                        contentDiv.className = 'row-content';
+                        
+                        for (let j = 0; j < headers.length; j++) {
+                            if (j >= columns.length) continue;
+                            
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = 'data-item';
+                            
+                            const label = document.createElement('div');
+                            label.className = 'data-label';
+                            label.textContent = headers[j] || `Column ${j+1}`;
+                            
+                            const value = document.createElement('div');
+                            
+                            // Check for Google Drive image links
+                            if (columns[j] && (columns[j].includes('drive.google.com') || columns[j].match(/^[a-zA-Z0-9_-]{25,}$/))) {
+                                const fileId = extractFileId(columns[j]);
+                                if (fileId) {
+                                    const img = document.createElement('img');
+                                    img.src = `https://drive.google.com/thumbnail?id=${fileId}`;
+                                    img.className = 'data-photo';
+                                    img.alt = headers[j] || 'Photo';
+                                    value.appendChild(img);
+                                } else {
+                                    value.textContent = columns[j] || 'N/A';
+                                }
+                            } else {
+                                value.textContent = columns[j] || 'N/A';
+                            }
+                            
+                            itemDiv.appendChild(label);
+                            itemDiv.appendChild(value);
+                            contentDiv.appendChild(itemDiv);
+                        }
+                        
+                        panel.appendChild(contentDiv);
+                        container.appendChild(accordion);
+                        container.appendChild(panel);
+                        
+                        allAccordions.push({
+                            button: accordion,
+                            panel: panel
+                        });
+                        
+                        accordion.addEventListener('click', function() {
+                            this.classList.toggle('active');
+                            const panel = this.nextElementSibling;
+                            
+                            if (panel.classList.contains('show')) {
+                                panel.classList.remove('show');
+                                panel.style.maxHeight = null;
+                            } else {
+                                // Close any open panels
+                                document.querySelectorAll('.panel.show').forEach(openPanel => {
+                                    openPanel.classList.remove('show');
+                                    openPanel.style.maxHeight = null;
+                                    openPanel.previousElementSibling.classList.remove('active');
+                                });
+                                panel.classList.add('show');
+                                panel.style.maxHeight = panel.scrollHeight + 'px';
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    container.innerHTML = `<div class="error">Failed to load data: ${error.message}</div>`;
+                    console.error('Error loading CSV:', error);
+                });
+        });
+        
+        function filterAccordions() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const container = document.getElementById('accordionContainer');
+            let hasResults = false;
+            
+            if (allAccordions.length === 0) return;
+            
+            allAccordions.forEach(item => {
+                const textContent = item.button.dataset.searchContent;
+                if (textContent.includes(filter)) {
+                    item.button.style.display = '';
+                    item.panel.style.display = '';
+                    hasResults = true;
+                } else {
+                    item.button.style.display = 'none';
+                    item.panel.style.display = 'none';
+                    item.button.classList.remove('active');
+                    item.panel.classList.remove('show');
+                    item.panel.style.maxHeight = null;
+                }
+            });
+            
+            const existingNoResults = document.getElementById('noResults');
+            if (existingNoResults) {
+                existingNoResults.remove();
+            }
+            
+            if (!hasResults) {
+                const noResults = document.createElement('div');
+                noResults.id = 'noResults';
+                noResults.className = 'no-results';
+                noResults.textContent = 'No matching results found';
+                container.appendChild(noResults);
+            }
+        }
+    </script>
+</body>
+</html>
