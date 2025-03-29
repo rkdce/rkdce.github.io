@@ -36,12 +36,51 @@
             letter-spacing: 0.5px;
         }
         
+        /* New Header Styles */
+        .header {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 1.5em;
+            margin: 0 0 10px 0;
+            color: white;
+        }
+        
+        .header p {
+            margin: 0 0 15px 0;
+            color: #e2e8f0;
+            font-size: 1em;
+        }
+        
+        .logout-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+        
+        .logout-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
         .copyright {
             font-size: clamp(0.8em, 3vw, 0.95em);
             opacity: 0.9;
             font-weight: 300;
+            margin-top: 15px;
         }
 
+        /* Rest of your existing styles... */
         /* Heading */
         h1 {
             text-align: center;
@@ -78,8 +117,8 @@
 
         /* Dark Accordion System */
         .accordion {
-            background-color: #1e293b; /* Dark slate background */
-            color: #f8fafc; /* Light text */
+            background-color: #1e293b;
+            color: #f8fafc;
             cursor: pointer;
             padding: 18px;
             width: 100%;
@@ -96,14 +135,14 @@
         }
 
         .accordion:hover {
-            background-color: #0f172a; /* Even darker slate on hover */
+            background-color: #0f172a;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             color: #ffffff;
         }
 
         .accordion.active {
-            background-color: #0f172a; /* Darkest slate for active */
+            background-color: #0f172a;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             color: #ffffff;
@@ -246,6 +285,13 @@
 <body>
     <div class="developer-credit">
         <div class="developer-name">Rajesh Kumar Das</div>
+        
+        <div class="header">
+            <h1>Welcome, <span id="username"></span>!</h1>
+            <p>Class: <span id="tClass"></span> | Role: <span id="userType"></span></p>
+            <button class="logout-button" onclick="handleLogout()">Logout</button>
+        </div>
+        
         <div class="copyright">© 2023 All Rights Reserved</div>
     </div>
     
@@ -260,6 +306,25 @@
     </div>
 
     <script>
+
+ // Retrieve the user's information from localStorage
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            const user = JSON.parse(userString);
+            document.getElementById('username').textContent = user.username; // Display username
+            document.getElementById('tClass').textContent = user.tClass; // Display class
+            document.getElementById('userType').textContent = user.userType; // Display user type
+        } else {
+            window.location.href = 'LoginHCS1.html'; // Redirect to login page if no user data
+        }
+
+      function handleLogout() {
+            // Clear the user's information from localStorage
+            //localStorage.removeItem('user');
+            // Redirect to the login page
+            window.location.href = 'dashboardHCS1.html';
+        }
+
         let allAccordions = [];
         
         function parseCSV(csvText) {
