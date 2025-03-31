@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marks Entry System</title>
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --secondary-color: #3367D6;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+            --success-color: #e6f7ee;
+            --error-color: #ffebee;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        h1, h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.5em;
+        }
+        
+        .school-info {
+            background-color: var(--light-gray);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .form-container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .success {
+            background-color: var(--success-color);
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+        
+        .error {
+            background-color: var(--error-color);
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+        
+        .info {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: var(--light-gray);
+        }
+        
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            
+            tr {
+                margin-bottom: 15px;
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+            }
+            
+            td {
+                border: none;
+                position: relative;
+                padding-left: 40%;
+            }
+            
+            td:before {
+                position: absolute;
+                left: 10px;
+                width: 35%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                font-weight: bold;
+            }
+        }
+
+        .nav-button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #ddd;
+        }
+        
+        .student-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div id="schoolHeader" class="school-info">
+        <h2 id="schoolName">Loading school information...</h2>
+        <p id="schoolAddress"></p>
+        <p id="schoolYear"></p>
+    </div>
+
+    <a href="student_registration.html" class="nav-button">← Go to Student Registration</a>
+    
+    <div class="form-container">
+        <h1>Marks Entry</h1>
+        <form id="marksForm">
+            <div class="form-group">
+                <label for="studentIdMarks">Student ID:</label>
+                <input type="text" id="studentIdMarks" name="studentIdMarks" required>
+                <div id="studentInfo" class="student-info" style="display: none;">
+                    <strong>Student:</strong> <span id="studentName"></span> (<span id="studentIdDisplay"></span>)
+                    <strong>Class:</strong> <span id="studentClass"></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="subjectMarks">Subject:</label>
+                <select id="subjectMarks" name="subjectMarks" required>
+                    <option value="">Select a subject</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="teacherMarks">Teacher:</label>
+                <select id="teacherMarks" name="teacherMarks" required>
+                    <option value="">Select a teacher</option>
+                </select>
+            </div>
+            
+            <table id="marksTable">
+                <thead>
+                    <tr>
+                        <th>First Test</th>
+                        <th>Second Test</th>
+                        <th>Written Exam</th>
+                        <th>Oral Exam</th>
+                        <th>Research Work</th>
+                        <th>Class Average</th>
+                        <th>Final Exam Marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="First Test"><input type="number" id="firstTest" name="firstTest" min="0" max="100" step="0.1"></td>
+                        <td data-label="Second Test"><input type="number" id="secondTest" name="secondTest" min="0" max="100" step="0.1"></td>
+                        <td data-label="Written Exam"><input type="number" id="writtenExam" name="writtenExam" min="0" max="100" step="0.1"></td>
+                        <td data-label="Oral Exam"><input type="number" id="oralExam" name="oralExam" min="0" max="100" step="0.1"></td>
+                        <td data-label="Research Work"><input type="number" id="researchWork" name="researchWork" min="0" max="100" step="0.1"></td>
+                        <td data-label="Class Average"><input type="number" id="classAverage" name="classAverage" min="0" max="100" step="0.1"></td>
+                        <td data-label="Final Exam Marks"><input type="number" id="finalExamMarks" name="finalExamMarks" min="0" max="100" step="0.1"></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button type="button" id="submitMarksBtn">
+                Submit Marks
+                <span id="marksLoadingSpinner" class="loading" style="display: none;"></span>
+            </button>
+        </form>
+        
+        <div id="marksMessage" class="message"></div>
+    </div>
+
+ <script>
+        // Configuration
+const APP_URL = 'https://script.google.com/macros/s/AKfycbxw_deNS-n4TuNR2pSpgPXB0d8OuBfMQPMKvKnuxV1W9NCFPrHdDfmpSBnH1FdTc2ED1g/exec';
+
+// DOM Elements
+const elements = {
+    schoolName: document.getElementById('schoolName'),
+    schoolAddress: document.getElementById('schoolAddress'),
+    schoolYear: document.getElementById('schoolYear'),
+    marksForm: document.getElementById('marksForm'),
+    submitMarksBtn: document.getElementById('submitMarksBtn'),
+    marksMessageDiv: document.getElementById('marksMessage'),
+    marksLoadingSpinner: document.getElementById('marksLoadingSpinner'),
+    studentIdMarksInput: document.getElementById('studentIdMarks'),
+    subjectMarksSelect: document.getElementById('subjectMarks'),
+    teacherMarksSelect: document.getElementById('teacherMarks'),
+    studentInfoDiv: document.getElementById('studentInfo'),
+    studentNameSpan: document.getElementById('studentName'),
+    studentIdDisplay: document.getElementById('studentIdDisplay'),
+    studentClassSpan: document.getElementById('studentClass')
+};
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Initializing marks entry application...');
+    setupEventListeners();
+    loadConfiguration();
+});
+
+// Event Listeners
+function setupEventListeners() {
+    elements.submitMarksBtn.addEventListener('click', handleMarksSubmission);
+    
+    // Student ID input
+    elements.studentIdMarksInput.addEventListener('input', debounce(() => {
+        const studentId = elements.studentIdMarksInput.value.trim();
+        if (studentId) {
+            loadStudentInfo(studentId);
+            loadStudentSubjectsForMarks(studentId);
+        } else {
+            elements.studentInfoDiv.style.display = 'none';
+        }
+    }, 500));
+    
+    // Subject change
+    elements.subjectMarksSelect.addEventListener('change', function() {
+        const studentId = elements.studentIdMarksInput.value.trim();
+        const subject = this.value;
+        if (studentId && subject) {
+            loadTeacherForSubject(studentId, subject);
+            loadSubjectMarks(studentId, subject);
+        }
+    });
+}
+
+// Utility Functions
+function debounce(func, wait) {
+    let timeout;
+    return function() {
+        const context = this, args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+}
+
+function showMessage(message, type) {
+    elements.marksMessageDiv.textContent = message;
+    elements.marksMessageDiv.className = `message ${type}`;
+    elements.marksMessageDiv.style.display = 'block';
+    
+    // Auto-hide success messages after 5 seconds
+    if (type === 'success') {
+        setTimeout(() => {
+            elements.marksMessageDiv.style.display = 'none';
+        }, 5000);
+    }
+}
+
+function hideMessage() {
+    elements.marksMessageDiv.style.display = 'none';
+}
+
+function showLoading(show) {
+    elements.submitMarksBtn.disabled = show;
+    elements.marksLoadingSpinner.style.display = show ? 'inline-block' : 'none';
+    elements.submitMarksBtn.innerHTML = show ? 'Submitting... <span id="marksLoadingSpinner" class="loading"></span>' : 'Submit Marks';
+}
+
+// Data Loading Functions
+function loadConfiguration() {
+    showMessage('Loading configuration...', 'info');
+    
+    fetch(`${APP_URL}?action=getConfig`)
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            updateSchoolInfo(data);
+            hideMessage();
+        })
+        .catch(error => {
+            console.error('Failed to load configuration:', error);
+            showMessage(`Failed to load configuration: ${error.message}`, 'error');
+        });
+}
+
+function updateSchoolInfo(data) {
+    elements.schoolName.textContent = data.schoolName || 'School Name Not Set';
+    elements.schoolAddress.textContent = data.schoolAddress || 'Address Not Set';
+    elements.schoolYear.textContent = `Academic Year: ${data.schoolYear || 'Year Not Set'}`;
+}
+
+function loadStudentInfo(studentId) {
+    fetch(`${APP_URL}?action=getStudentInfo&studentId=${studentId}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                elements.studentNameSpan.textContent = data.name || 'Not found';
+                elements.studentIdDisplay.textContent = studentId; // Display student ID
+                elements.studentClassSpan.textContent = data.class || 'Not found';
+                elements.studentInfoDiv.style.display = 'block';
+            } else {
+                elements.studentInfoDiv.style.display = 'none';
+                showMessage('Student not found', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading student info:', error);
+            elements.studentInfoDiv.style.display = 'none';
+        });
+}
+
+function loadStudentSubjectsForMarks(studentId) {
+    fetch(`${APP_URL}?action=getStudentSubjects&studentId=${studentId}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                populateSubjectMarksDropdown(data.subjects);
+                // Load marks for the first subject if available
+                if (data.subjects.length > 0) {
+                    elements.subjectMarksSelect.value = data.subjects[0].subject;
+                    loadTeacherForSubject(studentId, data.subjects[0].subject);
+                    loadSubjectMarks(studentId, data.subjects[0].subject);
+                }
+            } else {
+                showMessage('Student not found or has no registered subjects', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Failed to load student subjects:', error);
+            showMessage('Failed to load student subjects. Please try again.', 'error');
+        });
+}
+
+function loadTeacherForSubject(studentId, subject) {
+    fetch(`${APP_URL}?action=getTeacherForSubject&studentId=${studentId}&subject=${encodeURIComponent(subject)}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                populateTeacherDropdown(data.teacher);
+            } else {
+                elements.teacherMarksSelect.innerHTML = '<option value="">Select a teacher</option>';
+                showMessage('No teacher assigned for this subject', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading teacher:', error);
+            elements.teacherMarksSelect.innerHTML = '<option value="">Select a teacher</option>';
+        });
+}
+
+function loadSubjectMarks(studentId, subject) {
+    fetch(`${APP_URL}?action=getStudentMarks&studentId=${studentId}&subject=${encodeURIComponent(subject)}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                populateMarks(data.marks);
+            } else {
+                resetMarksForm();
+                showMessage('No marks found for this subject', 'info');
+            }
+        })
+        .catch(error => {
+            console.error('Failed to load subject marks:', error);
+            resetMarksForm();
+            showMessage('Failed to load subject marks. Please try again.', 'error');
+        });
+}
+
+function populateSubjectMarksDropdown(subjects) {
+    elements.subjectMarksSelect.innerHTML = '<option value="">Select a subject</option>';
+    
+    if (subjects && subjects.length > 0) {
+        subjects.forEach(subject => {
+            const option = document.createElement('option');
+            option.value = subject.subject;
+            option.textContent = subject.subject;
+            elements.subjectMarksSelect.appendChild(option);
+        });
+    }
+}
+
+function populateTeacherDropdown(teacher) {
+    elements.teacherMarksSelect.innerHTML = '<option value="">Select a teacher</option>';
+    
+    if (teacher) {
+        const option = document.createElement('option');
+        option.value = teacher;
+        option.textContent = teacher;
+        option.selected = true;
+        elements.teacherMarksSelect.appendChild(option);
+    }
+}
+
+function populateMarks(marks) {
+    document.getElementById('firstTest').value = marks.firstTest || '';
+    document.getElementById('secondTest').value = marks.secondTest || '';
+    document.getElementById('writtenExam').value = marks.writtenExam || '';
+    document.getElementById('oralExam').value = marks.oralExam || '';
+    document.getElementById('researchWork').value = marks.researchWork || '';
+    document.getElementById('classAverage').value = marks.classAverage || '';
+    document.getElementById('finalExamMarks').value = marks.finalExamMarks || '';
+}
+
+function handleMarksSubmission(e) {
+    e.preventDefault();
+    const formData = getMarksFormData();
+    
+    if (!validateMarksForm(formData)) return;
+    
+    showLoading(true);
+    hideMessage();
+    
+    const payload = new URLSearchParams();
+    payload.append('action', 'updateMarks');
+    payload.append('studentId', formData.studentId);
+    payload.append('subject', formData.subject);
+    payload.append('teacher', formData.teacher);
+    payload.append('firstTest', formData.firstTest || '');
+    payload.append('secondTest', formData.secondTest || '');
+    payload.append('writtenExam', formData.writtenExam || '');
+    payload.append('oralExam', formData.oralExam || '');
+    payload.append('researchWork', formData.researchWork || '');
+    payload.append('classAverage', formData.classAverage || '');
+    payload.append('finalExamMarks', formData.finalExamMarks || '');
+    
+    fetch(APP_URL, {
+        method: 'POST',
+        body: payload,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showMessage('Marks updated successfully', 'success');
+            // Optionally reload marks to show updated values
+            loadSubjectMarks(formData.studentId, formData.subject);
+        } else {
+            showMessage(data.message || 'Failed to update marks', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showMessage('Failed to update marks. Please try again.', 'error');
+    })
+    .finally(() => {
+        showLoading(false);
+    });
+}
+
+function getMarksFormData() {
+    return {
+        studentId: elements.studentIdMarksInput.value.trim(),
+        subject: elements.subjectMarksSelect.value,
+        teacher: elements.teacherMarksSelect.value,
+        firstTest: document.getElementById('firstTest').value.trim(),
+        secondTest: document.getElementById('secondTest').value.trim(),
+        writtenExam: document.getElementById('writtenExam').value.trim(),
+        oralExam: document.getElementById('oralExam').value.trim(),
+        researchWork: document.getElementById('researchWork').value.trim(),
+        classAverage: document.getElementById('classAverage').value.trim(),
+        finalExamMarks: document.getElementById('finalExamMarks').value.trim()
+    };
+}
+
+function validateMarksForm(data) {
+    if (!data.studentId) {
+        showMessage('Please enter a student ID', 'error');
+        return false;
+    }
+    
+    if (!data.subject) {
+        showMessage('Please select a subject', 'error');
+        return false;
+    }
+    
+    if (!data.teacher) {
+        showMessage('Please select a teacher', 'error');
+        return false;
+    }
+    
+    // Validate that at least one mark is entered
+    const hasMarks = data.firstTest || data.secondTest || data.writtenExam || 
+                   data.oralExam || data.researchWork || data.classAverage || 
+                   data.finalExamMarks;
+    
+    if (!hasMarks) {
+        showMessage('Please enter at least one mark', 'error');
+        return false;
+    }
+    
+    return true;
+}
+
+function resetMarksForm() {
+    document.getElementById('firstTest').value = '';
+    document.getElementById('secondTest').value = '';
+    document.getElementById('writtenExam').value = '';
+    document.getElementById('oralExam').value = '';
+    document.getElementById('researchWork').value = '';
+    document.getElementById('classAverage').value = '';
+    document.getElementById('finalExamMarks').value = '';
+}
+    
+    </script>
+</body>
+</html>
