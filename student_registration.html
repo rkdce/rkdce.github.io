@@ -1,0 +1,629 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration System</title>
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --secondary-color: #3367D6;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        h1, h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.5em;
+        }
+        
+        .school-info {
+            background-color: var(--light-gray);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .form-container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        
+        select[multiple] {
+            height: 150px;
+            padding: 8px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .success {
+            background-color: #e6f7ee;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+        
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+        
+        .selected-subjects {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .subject-tag {
+            display: inline-block;
+            background: #e0e0e0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Mobile-friendly subject selector */
+        .subject-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .subject-option {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+        
+        .subject-option.selected {
+            background-color: #4285F4;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .select-instruction {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            select[multiple] {
+                display: none !important;
+            }
+            .subject-options {
+                display: flex;
+            }
+            .select-instruction {
+                display: block;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .subject-options {
+                display: none !important;
+            }
+            select[multiple] {
+                display: block !important;
+            }
+            .select-instruction {
+                display: none;
+            }
+        }
+		        .nav-button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div id="schoolHeader" class="school-info">
+        <h2 id="schoolName">Loading school information...</h2>
+        <p id="schoolAddress"></p>
+        <p id="schoolYear"></p>
+    </div>
+	
+	<a href="marks_entry.html" class="nav-button">Go to Marks Entry →</a>
+    
+    <div class="form-container">
+        <h1>Student Registration</h1>
+        <form id="studentForm">
+            <div class="form-group">
+                <label for="studentId">Student ID:</label>
+                <input type="text" id="studentId" name="studentId" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="class">Class:</label>
+                <select id="class" name="class" required>
+                    <option value="">Loading classes...</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="subjects">Subjects:</label>
+                <select id="subjects" name="subjects" multiple required>
+                    <option value="">Loading subjects...</option>
+                </select>
+                
+                <div class="subject-options" id="subjectOptions"></div>
+                <div class="select-instruction">Tap subjects to select multiple</div>
+                
+                <div id="selectedSubjects" class="selected-subjects"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="teacher">Teacher:</label>
+                <select id="teacher" name="teacher" required>
+                    <option value="">Loading teachers...</option>
+                </select>
+            </div>
+            
+            <button type="button" id="submitBtn">
+                Register Student
+                <span id="loadingSpinner" class="loading" style="display: none;"></span>
+            </button>
+        </form>
+        
+        <div id="message" class="message"></div>
+    </div>
+
+
+    <script>
+        // Configuration
+        const APP_URL = 'https://script.google.com/macros/s/AKfycbxw_deNS-n4TuNR2pSpgPXB0d8OuBfMQPMKvKnuxV1W9NCFPrHdDfmpSBnH1FdTc2ED1g/exec';
+        
+        // DOM Elements
+        const form = document.getElementById('studentForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const messageDiv = document.getElementById('message');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        
+        // State
+        let selectedSubjects = [];
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing application...');
+            loadConfiguration();
+            setupEventListeners();
+            window.addEventListener('resize', updateMobileDesktopView);
+        });
+        
+        /**
+         * Load configuration data from the server
+         */
+        function loadConfiguration() {
+            console.log('Loading configuration data...');
+            showMessage('Loading configuration...', 'info');
+            
+            fetch(`${APP_URL}?action=getConfig`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Configuration data loaded:', data);
+                    
+                    if (!data.subjects || !Array.isArray(data.subjects)) {
+                        throw new Error('Subjects data is missing or invalid');
+                    }
+                    
+                    updateSchoolInfo(data);
+                    populateDropdowns(data);
+                    initMultipleSelect(data.subjects);
+                    updateMobileDesktopView();
+                    hideMessage();
+                })
+                .catch(error => {
+                    console.error('Failed to load configuration:', error);
+                    showMessage(`Failed to load configuration: ${error.message}`, 'error');
+                });
+        }
+        
+        /**
+         * Set up form event listeners
+         */
+        function setupEventListeners() {
+            submitBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                submitForm();
+            });
+        }
+        
+        /**
+         * Initialize multiple select functionality
+         */
+        function initMultipleSelect(subjects) {
+            console.log('Initializing subject selection with:', subjects);
+            const subjectSelect = document.getElementById('subjects');
+            const subjectOptions = document.getElementById('subjectOptions');
+            
+            // Clear existing options
+            subjectSelect.innerHTML = '';
+            subjectOptions.innerHTML = '';
+            
+            // Add default option to native select
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Select subject(s)';
+            subjectSelect.appendChild(defaultOption);
+            
+            // Create options for both interfaces
+            subjects.forEach(subject => {
+                // Native select option
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                subjectSelect.appendChild(option);
+                
+                // Mobile-friendly option
+                const div = document.createElement('div');
+                div.className = 'subject-option';
+                div.textContent = subject;
+                div.dataset.value = subject;
+                
+                div.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    updateSelectedSubjects();
+                });
+                
+                subjectOptions.appendChild(div);
+            });
+            
+            // Change handler for native select
+            subjectSelect.addEventListener('change', updateSelectedSubjects);
+        }
+        
+        /**
+         * Update selected subjects list
+         */
+        function updateSelectedSubjects() {
+            const subjectSelect = document.getElementById('subjects');
+            const subjectOptions = document.querySelectorAll('.subject-option.selected');
+            
+            if (window.innerWidth <= 768) {
+                // Mobile - get from custom options
+                selectedSubjects = Array.from(subjectOptions).map(div => div.dataset.value);
+                
+                // Sync with native select
+                Array.from(subjectSelect.options).forEach(option => {
+                    option.selected = selectedSubjects.includes(option.value);
+                });
+            } else {
+                // Desktop - get from native select
+                selectedSubjects = Array.from(subjectSelect.selectedOptions)
+                    .map(opt => opt.value)
+                    .filter(value => value);
+                
+                // Sync with custom options
+                document.querySelectorAll('.subject-option').forEach(div => {
+                    if (selectedSubjects.includes(div.dataset.value)) {
+                        div.classList.add('selected');
+                    } else {
+                        div.classList.remove('selected');
+                    }
+                });
+            }
+            
+            // Update visual display
+            updateSelectedSubjectsDisplay();
+        }
+        
+        /**
+         * Update the visual display of selected subjects
+         */
+        function updateSelectedSubjectsDisplay() {
+            const container = document.getElementById('selectedSubjects');
+            container.innerHTML = '';
+            
+            selectedSubjects.forEach(subject => {
+                const tag = document.createElement('span');
+                tag.className = 'subject-tag';
+                tag.textContent = subject;
+                container.appendChild(tag);
+            });
+        }
+        
+        /**
+         * Show the appropriate interface based on screen size
+         */
+        function updateMobileDesktopView() {
+            console.log('Updating view for screen size:', window.innerWidth);
+            if (window.innerWidth <= 768) {
+                // Mobile view
+                document.getElementById('subjects').style.display = 'none';
+                document.getElementById('subjectOptions').style.display = 'flex';
+                document.querySelector('.select-instruction').style.display = 'block';
+            } else {
+                // Desktop view
+                document.getElementById('subjects').style.display = 'block';
+                document.getElementById('subjectOptions').style.display = 'none';
+                document.querySelector('.select-instruction').style.display = 'none';
+            }
+            
+            // Update selected subjects when switching views
+            updateSelectedSubjects();
+        }
+        
+        /**
+         * Handle form submission
+         */
+        function submitForm() {
+            const formData = getFormData();
+            
+            if (!validateForm(formData)) {
+                return;
+            }
+            
+            showLoading(true);
+            hideMessage();
+            
+            const formDataObj = new FormData();
+            formDataObj.append('action', 'addStudent');
+            formDataObj.append('studentId', formData.studentId);
+            formDataObj.append('name', formData.name);
+            formDataObj.append('class', formData.class);
+            formDataObj.append('subjects', formData.subjects.join(','));
+            formDataObj.append('teacher', formData.teacher);
+            
+            fetch(APP_URL, {
+                method: 'POST',
+                body: formDataObj
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    let message = 'Registration completed. ';
+                    if (data.added > 0) message += `Added ${data.added} new subject(s). `;
+                    if (data.skipped > 0) message += `Skipped ${data.skipped} duplicate(s).`;
+                    
+                    showMessage(message, 'success');
+                    if (data.added > 0) resetForm();
+                } else {
+                    showMessage(data.message || 'Registration failed', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('Registration failed. Please try again.', 'error');
+            })
+            .finally(() => {
+                showLoading(false);
+            });
+        }
+        
+        /**
+         * Get data from form inputs
+         */
+        function getFormData() {
+            return {
+                studentId: document.getElementById('studentId').value.trim(),
+                name: document.getElementById('name').value.trim(),
+                class: document.getElementById('class').value,
+                subjects: selectedSubjects,
+                teacher: document.getElementById('teacher').value
+            };
+        }
+        
+        /**
+         * Validate form data
+         */
+        function validateForm(data) {
+            if (!data.studentId) {
+                showMessage('Please enter a student ID', 'error');
+                return false;
+            }
+            
+            if (!data.name) {
+                showMessage('Please enter the student name', 'error');
+                return false;
+            }
+            
+            if (!data.class) {
+                showMessage('Please select a class', 'error');
+                return false;
+            }
+            
+            if (data.subjects.length === 0) {
+                showMessage('Please select at least one subject', 'error');
+                return false;
+            }
+            
+            if (!data.teacher) {
+                showMessage('Please select a teacher', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        /**
+         * Reset the form after successful submission
+         */
+        function resetForm() {
+            form.reset();
+            selectedSubjects = [];
+            
+            // Reset both select interfaces
+            document.getElementById('subjects').selectedIndex = 0;
+            document.querySelectorAll('.subject-option').forEach(div => {
+                div.classList.remove('selected');
+            });
+            
+            updateSelectedSubjectsDisplay();
+        }
+        
+        /**
+         * Update school information display
+         */
+        function updateSchoolInfo(data) {
+            document.getElementById('schoolName').textContent = data.schoolName || 'School Name Not Set';
+            document.getElementById('schoolAddress').textContent = data.schoolAddress || 'Address Not Set';
+            document.getElementById('schoolYear').textContent = `Academic Year: ${data.schoolYear || 'Year Not Set'}`;
+        }
+        
+        /**
+         * Populate all dropdown menus
+         */
+        function populateDropdowns(data) {
+            populateDropdown('class', data.classes || []);
+            populateDropdown('teacher', data.teachers || []);
+        }
+        
+        /**
+         * Populate a single dropdown
+         */
+        function populateDropdown(id, options) {
+            const select = document.getElementById(id);
+            select.innerHTML = '';
+            
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = `Select ${id}`;
+            select.appendChild(defaultOption);
+            
+            options.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                select.appendChild(opt);
+            });
+        }
+        
+        /**
+         * Show loading state
+         */
+        function showLoading(show) {
+            if (show) {
+                submitBtn.disabled = true;
+                loadingSpinner.style.display = 'inline-block';
+                submitBtn.innerHTML = 'Registering <span id="loadingSpinner" class="loading"></span>';
+            } else {
+                submitBtn.disabled = false;
+                loadingSpinner.style.display = 'none';
+                submitBtn.innerHTML = 'Register Student';
+            }
+        }
+        
+        /**
+         * Show message to user
+         */
+        function showMessage(message, type) {
+            messageDiv.textContent = message;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+        }
+        
+        /**
+         * Hide message
+         */
+        function hideMessage() {
+            messageDiv.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
