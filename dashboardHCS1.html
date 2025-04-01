@@ -130,7 +130,7 @@
             <h2>Upload Mark: VIII-XII</h2>
             <p>Class: VIII-XII</p>
         </div>
-       <div class="card" onclick="window.location.href='StudentsDataHCS1.html'">
+       <div class="card" id="std" style="display: none;" onclick="window.location.href='StudentsDataHCS1.html'">
             <h2>Student Details</h2>
             <p>Student Details</p>
         </div>
@@ -167,10 +167,12 @@
 
     // Get the adminDiv
     const adminDiv = document.getElementById("adminDiv");
+    const adminDiv1 = document.getElementById("std");
 
     // Show the div if user is Admin
     if (userTypeElement === "Admin" ) {
       adminDiv.style.display = "block"; // Ensure visibility
+      adminDiv1.style.display = "block"; // Ensure visibility
     }
   });
 </script>
