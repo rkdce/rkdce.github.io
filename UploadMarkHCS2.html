@@ -2,8 +2,8 @@
 <html>
   <head>
     <base target="_top">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
     /* General Reset */
     * {
@@ -237,7 +237,7 @@
         padding: 20px;
         display: none;
         font-size: 1.1rem;
-		background-color: papayawhip;
+background-color: papayawhip;
     }
 
     .accordion-item.open .accordion-content {
@@ -265,7 +265,7 @@
         vertical-align: middle;
         min-width: 70px;
         font-size: 1.1rem;
-		background-color: white;
+background-color: white;
     }
     .accordion-table th {
         background-color: #edf2f7; /* Light blue-gray */
@@ -333,7 +333,7 @@
         border-radius: 4px;
         font-size: 1rem;
         box-sizing: border-box;
-		background-color: #ffffff;
+background-color: #ffffff;
     }
 
     #searchForm button {
@@ -376,7 +376,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         border-radius: 12px;
         overflow: hidden;
-		
+
     }
 
     /* Table Cells */
@@ -384,7 +384,7 @@
         padding: 3px;
         text-align: left;
         border-bottom: 1px solid #ddd;
-		background-color: lightseagreen;
+background-color: lightseagreen;
     }
 
     /* Labels */
@@ -585,9 +585,9 @@
         <p>Class: <span id="tClass"></span> | Role: <span id="userType"></span></p>
         <button class="logout-button" onclick="handleLogout()">Logout</button>
     </div>
-	<div id="loader" class="loader" style="display: none;">
+<div id="loader" class="loader" style="display: none;">
     <div class="spinner"></div>
-	</div>
+</div>
     <h1>Student Marksheet</h1>
       <form id="searchForm">
     <label for="admissionNumber">Admission Number:</label>
@@ -595,7 +595,7 @@
     
     <label for="examType">Select Exam Type:</label>
     <select id="examType" name="examType" required>
-	  <option value="">-- Select Exam --</option>
+  <option value="">-- Select Exam --</option>
       <option value="1st Periodic Test">1st Periodic Test</option>
       <option value="2nd Periodic Test">2nd Periodic Test</option>
       <option value="Half-Yearly Examination">Half-Yearly Examination</option>
@@ -607,7 +607,7 @@
   </form>
 
     <div id="marksTable" style="display:none;">
-			
+
 
 <table class="student-info-table">
   <tr>
@@ -647,55 +647,55 @@
     
     
     
-	<div class="accordion">
-	  
+<div class="accordion">
+  
          <div id="accordion-container1"></div>
-		
-	</div>	    
-	
+
+</div>    
+
 
     
-	<br><hr><h1 style="text-align: center;">Final Assessment</h1><hr><br>
-	
-	<div class="accordion">
-	  
+<br><hr><h1 style="text-align: center;">Final Assessment</h1><hr><br>
+
+<div class="accordion">
+  
          <div id="accordion-container2"></div>
-		
-	</div>	
+
+</div>
 
 
-	
+
 
 
    <br><hr><h2>Overall Results</h2><hr><br>
-	<div class="accordion">
-		  <div class="accordion-item">
-			<div class="accordion-header">
-			  <span>Overall Results</span>
-			  <button class="accordion-toggle">+</button>
-			</div>
-			<div class="accordion-content">
-		     <table class="accordion-table">
-				<tr>
-				  <th>Overall Marks</th>
-				  <td><input type="number" id="overallMarks" readonly></td>
-				</tr>
-				<tr>
-				  <th>Full Subject Marks</th>
-				  <td><input type="number" id="fullSubjectMarks" readonly></td>
-				</tr>
-				<tr>
-				  <th>Percentage</th>
-				  <td><input type="number" id="percentage" readonly></td>
-				</tr>
-				<tr>
-				  <th>Overall Grade</th>
-				  <td><input type="text" id="overallGrade" readonly></td>
-				</tr>
-			  </table>
-			  
-			  <br><br>
-			  <h2 style="text-align: center;">Attendance & Promotion Record</h2>
+<div class="accordion">
+  <div class="accordion-item">
+<div class="accordion-header">
+  <span>Overall Results</span>
+  <button class="accordion-toggle">+</button>
+</div>
+<div class="accordion-content">
+     <table class="accordion-table">
+<tr>
+  <th>Overall Marks</th>
+  <td><input type="number" id="overallMarks" readonly></td>
+</tr>
+<tr>
+  <th>Full Subject Marks</th>
+  <td><input type="number" id="fullSubjectMarks" readonly></td>
+</tr>
+<tr>
+  <th>Percentage</th>
+  <td><input type="number" id="percentage" readonly></td>
+</tr>
+<tr>
+  <th>Overall Grade</th>
+  <td><input type="text" id="overallGrade" readonly></td>
+</tr>
+  </table>
+  
+  <br><br>
+  <h2 style="text-align: center;">Attendance & Promotion Record</h2>
 
 
     <table class="accordion-table">
@@ -743,48 +743,48 @@
         </tr>
     </table>
 
-			  
-			  
-			  
-			</div>
-		</div>
-	</div>
-	
-	
-	 <!-- <button id="saveButton" style="display:none;" onclick="saveMarks()">Save Marks</button> -->
-	<br><br>
-		<div class="unique-form-container">
-		  <div class="unique-form-row">
-			<div class="unique-input-group">
-			  <label class="unique-label">Status:</label>
-			 
-			   <select style="width: calc(100%);height: 30px;box-sizing: border-box;padding: 0;margin: 0;background-color: transparent;text-align: center;" id="statusDisplay">
+  
+  
+  
+</div>
+</div>
+</div>
+
+
+ <!-- <button id="saveButton" style="display:none;" onclick="saveMarks()">Save Marks</button> -->
+<br><br>
+<div class="unique-form-container">
+  <div class="unique-form-row">
+<div class="unique-input-group">
+  <label class="unique-label">Status:</label>
+ 
+   <select style="width: calc(100%);height: 30px;box-sizing: border-box;padding: 0;margin: 0;background-color: transparent;text-align: center;" id="statusDisplay">
                     <option value="Unchecked">Unchecked</option>
                     <option value="Checked">Checked</option>
                 </select>
-			  
-			  
-			</div>
-		  </div>
+  
+  
+</div>
+  </div>
 
-		  <div class="unique-form-row">
-			<label for="teacherNameDisplay" class="unique-label">Teacher Name:</label>
-			<div class="unique-input-group">
-			  <input type="text" id="teacherNameDisplay" name="teacherNameDisplay">
-			</div>
-		  </div>
+  <div class="unique-form-row">
+<label for="teacherNameDisplay" class="unique-label">Teacher Name:</label>
+<div class="unique-input-group">
+  <input type="text" id="teacherNameDisplay" name="teacherNameDisplay">
+</div>
+  </div>
 
-		  <!--<div class="unique-form-row">
-			<label for="examTypeDisplay" class="unique-label">Exam Type:</label>
-			<div class="unique-input-group">
-			  <input type="text" id="examTypeDisplay" name="examTypeDisplay">
-			</div>
-		  </div> -->
+  <!--<div class="unique-form-row">
+<label for="examTypeDisplay" class="unique-label">Exam Type:</label>
+<div class="unique-input-group">
+  <input type="text" id="examTypeDisplay" name="examTypeDisplay">
+</div>
+  </div> -->
 
-		  <!-- Centered Save Button -->
-		  <button id="saveButton" class="unique-save-button" onclick="saveUserMarks()">Save Marks</button>
-		</div>
-		<br><br><br><br>
+  <!-- Centered Save Button -->
+  <button id="saveButton" class="unique-save-button" onclick="saveUserMarks()">Save Marks</button>
+</div>
+<br><br><br><br>
 </div>
 
   
@@ -792,11 +792,11 @@
     <div class="footer">
         &copy; 2025 Rajesh Kumar Das. All rights reserved.
     </div>
-	
-	
-	
+
+
+
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyXDxe3B7v9LXE2lYT5HLIcCAFhx4TWR9P4Oib0PKUYgkZGLLiEcRdVQLNbzYlpbRrx/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwP-UeteK5eIVq3WOHi24TFRRUglhEuYL0Sn95Q6iS3_kHr6odQkdKbvIjCYfAMcA4/exec";
  function hideSearch() {
   // Hide the search button
   document.getElementById('searchButton').style.display = "none";
@@ -806,7 +806,7 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbyXDxe3B7v9LXE2lYT5HLIc
   
   document.getElementById('admissionNumber').readOnly = true;
   document.getElementById('examType').readOnly = true;
-	
+
 
   
     
@@ -891,7 +891,7 @@ document.getElementById('examType').readOnly = false;
                 <button class="accordion-toggle">+</button>
             </div>
             <div class="accordion-content">
-                <table class="accordion-table">
+<table class="accordion-table">
                     <tr>
                         <th>Subject Name</th>
                         <td>
@@ -900,50 +900,50 @@ document.getElementById('examType').readOnly = false;
                                 <option value="-">-</option>
                         
                             <!-- Common Subjects -->
-							<option class="separator" disabled>─── Common Subjects ───</option>
-							<option value="Artificial Intelligence">Artificial Intelligence</option>
-							<option value="Bengali">Bengali</option>
-							<option value="Computer Applications">Computer Applications</option>
-							<option value="English">English</option>
-							<option value="Food Production">Food Production</option>
-							<option value="Hindi">Hindi</option>
-							<option value="Home Science">Home Science</option>
-							<option value="Information Technology">Information Technology</option>
-							<option value="Mathematics">Mathematics</option>
-							<option value="Music">Music</option>
-							<option value="Painting">Painting</option>
-							<option value="Physical Education">Physical Education</option>
-							<option value="Sanskrit">Sanskrit</option>
-							<option value="Science">Science</option>
-							<option value="Social Science">Social Science</option>
-							<option value="Yoga">Yoga</option>
+<option class="separator" disabled>─── Common Subjects ───</option>
+<option value="Artificial Intelligence">Artificial Intelligence</option>
+<option value="Bengali">Bengali</option>
+<option value="Computer Applications">Computer Applications</option>
+<option value="English">English</option>
+<option value="Food Production">Food Production</option>
+<option value="Hindi">Hindi</option>
+<option value="Home Science">Home Science</option>
+<option value="Information Technology">Information Technology</option>
+<option value="Mathematics">Mathematics</option>
+<option value="Music">Music</option>
+<option value="Painting">Painting</option>
+<option value="Physical Education">Physical Education</option>
+<option value="Sanskrit">Sanskrit</option>
+<option value="Science">Science</option>
+<option value="Social Science">Social Science</option>
+<option value="Yoga">Yoga</option>
 
-							<!-- Science Stream -->
-							<option class="separator" disabled>─── Science Stream ───</option>
-							<option value="Biology">Biology</option>
-							<option value="Chemistry">Chemistry</option>
-							<option value="Computer Science">Computer Science</option>
-							<option value="Informatics Practices">Informatics Practices</option>
-							<option value="Mathematics">Mathematics</option>
-							<option value="Physics">Physics</option>
+<!-- Science Stream -->
+<option class="separator" disabled>─── Science Stream ───</option>
+<option value="Biology">Biology</option>
+<option value="Chemistry">Chemistry</option>
+<option value="Computer Science">Computer Science</option>
+<option value="Informatics Practices">Informatics Practices</option>
+<option value="Mathematics">Mathematics</option>
+<option value="Physics">Physics</option>
 
-							<!-- Commerce Stream -->
-							<option class="separator" disabled>─── Commerce Stream ───</option>
-							<option value="Accountancy">Accountancy</option>
-							<option value="Business Studies">Business Studies</option>
-							<option value="Economics">Economics</option>
-							<option value="Entrepreneurship">Entrepreneurship</option>
-							<option value="Mathematics">Mathematics</option>
+<!-- Commerce Stream -->
+<option class="separator" disabled>─── Commerce Stream ───</option>
+<option value="Accountancy">Accountancy</option>
+<option value="Business Studies">Business Studies</option>
+<option value="Economics">Economics</option>
+<option value="Entrepreneurship">Entrepreneurship</option>
+<option value="Mathematics">Mathematics</option>
 
-							<!-- Arts Stream -->
-							<option class="separator" disabled>─── Arts Stream ───</option>
-							<option value="Geography">Geography</option>
-							<option value="History">History</option>
-							<option value="Legal Studies">Legal Studies</option>
-							<option value="Philosophy">Philosophy</option>
-							<option value="Political Science">Political Science</option>
-							<option value="Psychology">Psychology</option>
-							<option value="Sociology">Sociology</option>
+<!-- Arts Stream -->
+<option class="separator" disabled>─── Arts Stream ───</option>
+<option value="Geography">Geography</option>
+<option value="History">History</option>
+<option value="Legal Studies">Legal Studies</option>
+<option value="Philosophy">Philosophy</option>
+<option value="Political Science">Political Science</option>
+<option value="Psychology">Psychology</option>
+<option value="Sociology">Sociology</option>
                             </select>
                         </td>
                     </tr>
@@ -957,9 +957,12 @@ document.getElementById('examType').readOnly = false;
                             </select>
                         </td>
                     </tr>
-                    <tr><th>Theory</th><td><input type="number" id="subject${subjectNumber}Theory" oninput="calculateMarksObtained(${subjectNumber})"></td></tr>
-                    <tr><th>Practical</th><td><input type="number" id="subject${subjectNumber}Practical" oninput="calculateMarksObtained(${subjectNumber})"></td></tr>
-                    <tr><th>Internal Assessment</th><td><input type="number" id="subject${subjectNumber}InternalAssessment" oninput="calculateMarksObtained(${subjectNumber})"></td></tr>
+                    <tr><th>Theory Total</th><td><input type="number" id="subject${subjectNumber}TheoryTotal" max="100"></td></tr>
+                    <tr><th>Theory Obtained</th><td><input type="number" id="subject${subjectNumber}Theory" oninput="calculateMarksObtained(${subjectNumber})"></td></tr>
+                    <tr><th>Practical Total</th><td><input type="number" id="subject${subjectNumber}PracticalTotal" ></td></tr>
+                    <tr><th>Practical Obtained</th><td><input type="number" id="subject${subjectNumber}Practical" oninput="calculateMarksObtained(${subjectNumber})"></td></tr>
+                    <tr><th>IA Total</th><td><input type="number" id="subject${subjectNumber}InternalAssessmentTotal"></td></tr>
+                    <tr><th>IA Obtained</th><td><input type="number" id="subject${subjectNumber}InternalAssessment" oninput="calculateMarksObtained(${subjectNumber})"></td></tr>
                     <tr><th>Marks Obtained</th><td><input type="text" id="subject${subjectNumber}MarksObtained" readonly></td></tr>
                     <tr><th>Grades</th><td><input type="text" id="subject${subjectNumber}Grades" readonly></td></tr>
                 </table>
@@ -1009,45 +1012,45 @@ document.getElementById('examType').readOnly = false;
 
 
 
-		function updateAllSubjectHeaders() {
-			for (let i = 1; i <= 7; i++) {
-				syncSubjectName(i);
-			}
-			// Keep checking until all subjects are updated
-			requestAnimationFrame(updateAllSubjectHeaders);
-		}
+function updateAllSubjectHeaders() {
+for (let i = 1; i <= 7; i++) {
+syncSubjectName(i);
+}
+// Keep checking until all subjects are updated
+requestAnimationFrame(updateAllSubjectHeaders);
+}
 
-		// Initialize the accordion and wait for DOM to update
-		function initializeAccordion1() {
-			const container = document.getElementById("accordion-container1");
-			for (let i = 1; i <= 7; i++) {
-				container.innerHTML += createSubjectAccordion(i);
-			}
-			// Ensure spans update after the DOM is populated
-			requestAnimationFrame(updateAllSubjectHeaders);
-		}
+// Initialize the accordion and wait for DOM to update
+function initializeAccordion1() {
+const container = document.getElementById("accordion-container1");
+for (let i = 1; i <= 7; i++) {
+container.innerHTML += createSubjectAccordion(i);
+}
+// Ensure spans update after the DOM is populated
+requestAnimationFrame(updateAllSubjectHeaders);
+}
 
-		// Synchronize subject name and update headers
-		function syncSubjectName(subjectNumber) {
-			const subjectName = document.getElementById(`subject${subjectNumber}Name`).value;
-			const headerSpan1 = document.querySelector(`#accordion-container1 .accordion-item:nth-child(${subjectNumber}) .accordion-header span`);
-			const headerSpan2 = document.querySelector(`#accordion-container2 .accordion-item:nth-child(${subjectNumber}) .accordion-header span`);
-			const finalSubject = document.getElementById(`finalSubject${subjectNumber}Name`);
+// Synchronize subject name and update headers
+function syncSubjectName(subjectNumber) {
+const subjectName = document.getElementById(`subject${subjectNumber}Name`).value;
+const headerSpan1 = document.querySelector(`#accordion-container1 .accordion-item:nth-child(${subjectNumber}) .accordion-header span`);
+const headerSpan2 = document.querySelector(`#accordion-container2 .accordion-item:nth-child(${subjectNumber}) .accordion-header span`);
+const finalSubject = document.getElementById(`finalSubject${subjectNumber}Name`);
 
-			// Update the final subject field if present
-			if (finalSubject) {
-				finalSubject.value = subjectName;
-			}
+// Update the final subject field if present
+if (finalSubject) {
+finalSubject.value = subjectName;
+}
 
-			// Update the headers in both containers
-			const updatedText = (subjectName !== " " && subjectName !== "-")
-				? `Subject ${subjectNumber} - ${subjectName}`
-				: `Subject ${subjectNumber}`;
+// Update the headers in both containers
+const updatedText = (subjectName !== " " && subjectName !== "-")
+? `Subject ${subjectNumber} - ${subjectName}`
+: `Subject ${subjectNumber}`;
 
-			if (headerSpan1) headerSpan1.textContent = updatedText;
-			if (headerSpan2) headerSpan2.textContent = updatedText;
-		}
-					
+if (headerSpan1) headerSpan1.textContent = updatedText;
+if (headerSpan2) headerSpan2.textContent = updatedText;
+}
+
 
      initializeAccordion1();
 </script>
@@ -1184,188 +1187,209 @@ document.addEventListener('DOMContentLoaded', toggleAccordion);
     action: 'search1',
     admissionNumber: admissionNumber,
     examType: examType,
-	userType: userType
+userType: userType
   });
   
   fetch(`${GAS_URL}?${params}`)
     .then(response => response.json())
     .then(data => {
       if (data) {
-	    //document.getElementById('examTypeDisplay').textContent = data[0] || '';
-	//	document.getElementById('admissionNumberDisplay').textContent = data[1] || '';
+    //document.getElementById('examTypeDisplay').textContent = data[0] || '';
+//document.getElementById('admissionNumberDisplay').textContent = data[1] || '';
       //  document.getElementById('examTypeDisplay').value = data[0] || '';
-		document.getElementById('admissionNumberDisplay').value = data[1] || '';
-		document.getElementById('classDisplay').value = data[2] || '';
-		document.getElementById('nameDisplay').value = data[3] || '';
-		document.getElementById('fatherNameDisplay').value = data[4] || '';
-		document.getElementById('motherNameDisplay').value = data[5] || '';
-		document.getElementById('dobDisplay').value = data[6] || '';
-		document.getElementById('rollNumberDisplay').value = data[7] || '';
-		document.getElementById('teacherNameDisplay').value = data[9] || '';
-		//document.getElementById('statusDisplay').value = data[10] || '';
+document.getElementById('admissionNumberDisplay').value = data[1] || '';
+document.getElementById('classDisplay').value = data[2] || '';
+document.getElementById('nameDisplay').value = data[3] || '';
+document.getElementById('fatherNameDisplay').value = data[4] || '';
+document.getElementById('motherNameDisplay').value = data[5] || '';
+document.getElementById('dobDisplay').value = data[6] || '';
+document.getElementById('rollNumberDisplay').value = data[7] || '';
+document.getElementById('teacherNameDisplay').value = data[9] || '';
+//document.getElementById('statusDisplay').value = data[10] || '';
 
-		// Set image source for display
-		const imageId = data[8] || '';
-		if (imageId) {
-		  const imageUrl = `https://drive.google.com/thumbnail?id=${imageId}&sz=w95-h95`;
-		  document.getElementById('photoDisplay').src = imageUrl;
-		}
-		
-		
-		
+// Set image source for display
+const imageId = data[8] || '';
+if (imageId) {
+  const imageUrl = `https://drive.google.com/thumbnail?id=${imageId}&sz=w95-h95`;
+  document.getElementById('photoDisplay').src = imageUrl;
+}
+
+
+
 
 
 document.getElementById('subject1Name').value = data[11] || '';
 document.getElementById('subject1FullMarks').value = data[12] || '';
-document.getElementById('subject1Theory').value = data[13] || '';
-document.getElementById('subject1Practical').value = data[14] || '';
-document.getElementById('subject1InternalAssessment').value = data[15] || '';
-document.getElementById('subject1MarksObtained').value = data[16] || '';
-document.getElementById('subject1Grades').value = data[17] || '';
+document.getElementById('subject1TheoryTotal').value = data[13] || '';
+document.getElementById('subject1Theory').value = data[14] || '';
+document.getElementById('subject1PracticalTotal').value = data[15] || '';
+document.getElementById('subject1Practical').value = data[16] || '';
+document.getElementById('subject1InternalAssessmentTotal').value = data[17] || '';
+document.getElementById('subject1InternalAssessment').value = data[18] || '';
+document.getElementById('subject1MarksObtained').value = data[19] || '';
+document.getElementById('subject1Grades').value = data[20] || '';
 
-document.getElementById('subject2Name').value = data[18] || '';
-document.getElementById('subject2FullMarks').value = data[19] || '';
-document.getElementById('subject2Theory').value = data[20] || '';
-document.getElementById('subject2Practical').value = data[21] || '';
-document.getElementById('subject2InternalAssessment').value = data[22] || '';
-document.getElementById('subject2MarksObtained').value = data[23] || '';
-document.getElementById('subject2Grades').value = data[24] || '';
+document.getElementById('subject2Name').value = data[21] || '';
+document.getElementById('subject2FullMarks').value = data[22] || '';
+document.getElementById('subject2TheoryTotal').value = data[23] || '';
+document.getElementById('subject2Theory').value = data[24] || '';
+document.getElementById('subject2PracticalTotal').value = data[25] || '';
+document.getElementById('subject2Practical').value = data[26] || '';
+document.getElementById('subject2InternalAssessmentTotal').value = data[27] || '';
+document.getElementById('subject2InternalAssessment').value = data[28] || '';
+document.getElementById('subject2MarksObtained').value = data[29] || '';
+document.getElementById('subject2Grades').value = data[30] || '';
 
-document.getElementById('subject3Name').value = data[25] || '';
-document.getElementById('subject3FullMarks').value = data[26] || '';
-document.getElementById('subject3Theory').value = data[27] || '';
-document.getElementById('subject3Practical').value = data[28] || '';
-document.getElementById('subject3InternalAssessment').value = data[29] || '';
-document.getElementById('subject3MarksObtained').value = data[30] || '';
-document.getElementById('subject3Grades').value = data[31] || '';
+document.getElementById('subject3Name').value = data[31] || '';
+document.getElementById('subject3FullMarks').value = data[32] || '';
+document.getElementById('subject3TheoryTotal').value = data[33] || '';
+document.getElementById('subject3Theory').value = data[34] || '';
+document.getElementById('subject3PracticalTotal').value = data[35] || '';
+document.getElementById('subject3Practical').value = data[36] || '';
+document.getElementById('subject3InternalAssessmentTotal').value = data[37] || '';
+document.getElementById('subject3InternalAssessment').value = data[38] || '';
+document.getElementById('subject3MarksObtained').value = data[39] || '';
+document.getElementById('subject3Grades').value = data[40] || '';
 
-document.getElementById('subject4Name').value = data[32] || '';
-document.getElementById('subject4FullMarks').value = data[33] || '';
-document.getElementById('subject4Theory').value = data[34] || '';
-document.getElementById('subject4Practical').value = data[35] || '';
-document.getElementById('subject4InternalAssessment').value = data[36] || '';
-document.getElementById('subject4MarksObtained').value = data[37] || '';
-document.getElementById('subject4Grades').value = data[38] || '';
+document.getElementById('subject4Name').value = data[41] || '';
+document.getElementById('subject4FullMarks').value = data[42] || '';
+document.getElementById('subject4TheoryTotal').value = data[43] || '';
+document.getElementById('subject4Theory').value = data[44] || '';
+document.getElementById('subject4PracticalTotal').value = data[45] || '';
+document.getElementById('subject4Practical').value = data[46] || '';
+document.getElementById('subject4InternalAssessmentTotal').value = data[47] || '';
+document.getElementById('subject4InternalAssessment').value = data[48] || '';
+document.getElementById('subject4MarksObtained').value = data[49] || '';
+document.getElementById('subject4Grades').value = data[50] || '';
 
-document.getElementById('subject5Name').value = data[39] || '';
-document.getElementById('subject5FullMarks').value = data[40] || '';
-document.getElementById('subject5Theory').value = data[41] || '';
-document.getElementById('subject5Practical').value = data[42] || '';
-document.getElementById('subject5InternalAssessment').value = data[43] || '';
-document.getElementById('subject5MarksObtained').value = data[44] || '';
-document.getElementById('subject5Grades').value = data[45] || '';
+document.getElementById('subject5Name').value = data[51] || '';
+document.getElementById('subject5FullMarks').value = data[52] || '';
+document.getElementById('subject5TheoryTotal').value = data[53] || '';
+document.getElementById('subject5Theory').value = data[54] || '';
+document.getElementById('subject5PracticalTotal').value = data[55] || '';
+document.getElementById('subject5Practical').value = data[56] || '';
+document.getElementById('subject5InternalAssessmentTotal').value = data[57] || '';
+document.getElementById('subject5InternalAssessment').value = data[58] || '';
+document.getElementById('subject5MarksObtained').value = data[59] || '';
+document.getElementById('subject5Grades').value = data[60] || '';
 
-document.getElementById('subject6Name').value = data[46] || '';
-document.getElementById('subject6FullMarks').value = data[47] || '';
-document.getElementById('subject6Theory').value = data[48] || '';
-document.getElementById('subject6Practical').value = data[49] || '';
-document.getElementById('subject6InternalAssessment').value = data[50] || '';
-document.getElementById('subject6MarksObtained').value = data[51] || '';
-document.getElementById('subject6Grades').value = data[52] || '';
+document.getElementById('subject6Name').value = data[61] || '';
+document.getElementById('subject6FullMarks').value = data[62] || '';
+document.getElementById('subject6TheoryTotal').value = data[63] || '';
+document.getElementById('subject6Theory').value = data[64] || '';
+document.getElementById('subject6PracticalTotal').value = data[65] || '';
+document.getElementById('subject6Practical').value = data[66] || '';
+document.getElementById('subject6InternalAssessmentTotal').value = data[67] || '';
+document.getElementById('subject6InternalAssessment').value = data[68] || '';
+document.getElementById('subject6MarksObtained').value = data[69] || '';
+document.getElementById('subject6Grades').value = data[70] || '';
 
-document.getElementById('subject7Name').value = data[53] || '';
-document.getElementById('subject7FullMarks').value = data[54] || '';
-document.getElementById('subject7Theory').value = data[55] || '';
-document.getElementById('subject7Practical').value = data[56] || '';
-document.getElementById('subject7InternalAssessment').value = data[57] || '';
-document.getElementById('subject7MarksObtained').value = data[58] || '';
-document.getElementById('subject7Grades').value = data[59] || '';
+document.getElementById('subject7Name').value = data[71] || '';
+document.getElementById('subject7FullMarks').value = data[72] || '';
+document.getElementById('subject7TheoryTotal').value = data[73] || '';
+document.getElementById('subject7Theory').value = data[74] || '';
+document.getElementById('subject7PracticalTotal').value = data[75] || '';
+document.getElementById('subject7Practical').value = data[76] || '';
+document.getElementById('subject7InternalAssessmentTotal').value = data[77] || '';
+document.getElementById('subject7InternalAssessment').value = data[78] || '';
+document.getElementById('subject7MarksObtained').value = data[79] || '';
+document.getElementById('subject7Grades').value = data[80] || '';
 
 
-document.getElementById('finalSubject1Name').value = data[62] || '';
-document.getElementById('subject1PT1').value = data[63] || '';
-document.getElementById('subject1PT2').value = data[64] || '';
-document.getElementById('subject1PT20').value = data[65] || '';
-document.getElementById('subject1HY').value = data[66] || '';
-document.getElementById('subject1HY30').value = data[67] || '';
-document.getElementById('subject1Annual').value = data[68] || '';
-document.getElementById('subject1Annual50').value = data[69] || '';
-document.getElementById('subject1FinalAssessment').value = data[70] || '';
-document.getElementById('subject1FinalGrade').value = data[71] || '';
+document.getElementById('finalSubject1Name').value = data[83] || '';
+document.getElementById('subject1PT1').value = data[84] || '';
+document.getElementById('subject1PT2').value = data[85] || '';
+document.getElementById('subject1PT20').value = data[86] || '';
+document.getElementById('subject1HY').value = data[87] || '';
+document.getElementById('subject1HY30').value = data[88] || '';
+document.getElementById('subject1Annual').value = data[89] || '';
+document.getElementById('subject1Annual50').value = data[90] || '';
+document.getElementById('subject1FinalAssessment').value = data[91] || '';
+document.getElementById('subject1FinalGrade').value = data[92] || '';
 
-document.getElementById('finalSubject2Name').value = data[72] || '';
-document.getElementById('subject2PT1').value = data[73] || '';
-document.getElementById('subject2PT2').value = data[74] || '';
-document.getElementById('subject2PT20').value = data[75] || '';
-document.getElementById('subject2HY').value = data[76] || '';
-document.getElementById('subject2HY30').value = data[77] || '';
-document.getElementById('subject2Annual').value = data[78] || '';
-document.getElementById('subject2Annual50').value = data[79] || '';
-document.getElementById('subject2FinalAssessment').value = data[80] || '';
-document.getElementById('subject2FinalGrade').value = data[81] || '';
+document.getElementById('finalSubject2Name').value = data[93] || '';
+document.getElementById('subject2PT1').value = data[94] || '';
+document.getElementById('subject2PT2').value = data[95] || '';
+document.getElementById('subject2PT20').value = data[96] || '';
+document.getElementById('subject2HY').value = data[97] || '';
+document.getElementById('subject2HY30').value = data[98] || '';
+document.getElementById('subject2Annual').value = data[99] || '';
+document.getElementById('subject2Annual50').value = data[100] || '';
+document.getElementById('subject2FinalAssessment').value = data[101] || '';
+document.getElementById('subject2FinalGrade').value = data[102] || '';
 
-document.getElementById('finalSubject3Name').value = data[82] || '';
-document.getElementById('subject3PT1').value = data[83] || '';
-document.getElementById('subject3PT2').value = data[84] || '';
-document.getElementById('subject3PT20').value = data[85] || '';
-document.getElementById('subject3HY').value = data[86] || '';
-document.getElementById('subject3HY30').value = data[87] || '';
-document.getElementById('subject3Annual').value = data[88] || '';
-document.getElementById('subject3Annual50').value = data[89] || '';
-document.getElementById('subject3FinalAssessment').value = data[90] || '';
-document.getElementById('subject3FinalGrade').value = data[91] || '';
+document.getElementById('finalSubject3Name').value = data[103] || '';
+document.getElementById('subject3PT1').value = data[104] || '';
+document.getElementById('subject3PT2').value = data[105] || '';
+document.getElementById('subject3PT20').value = data[106] || '';
+document.getElementById('subject3HY').value = data[107] || '';
+document.getElementById('subject3HY30').value = data[108] || '';
+document.getElementById('subject3Annual').value = data[109] || '';
+document.getElementById('subject3Annual50').value = data[110] || '';
+document.getElementById('subject3FinalAssessment').value = data[111] || '';
+document.getElementById('subject3FinalGrade').value = data[112] || '';
 
-document.getElementById('finalSubject4Name').value = data[92] || '';
-document.getElementById('subject4PT1').value = data[93] || '';
-document.getElementById('subject4PT2').value = data[94] || '';
-document.getElementById('subject4PT20').value = data[95] || '';
-document.getElementById('subject4HY').value = data[96] || '';
-document.getElementById('subject4HY30').value = data[97] || '';
-document.getElementById('subject4Annual').value = data[98] || '';
-document.getElementById('subject4Annual50').value = data[99] || '';
-document.getElementById('subject4FinalAssessment').value = data[100] || '';
-document.getElementById('subject4FinalGrade').value = data[101] || '';
+document.getElementById('finalSubject4Name').value = data[113] || '';
+document.getElementById('subject4PT1').value = data[114] || '';
+document.getElementById('subject4PT2').value = data[115] || '';
+document.getElementById('subject4PT20').value = data[116] || '';
+document.getElementById('subject4HY').value = data[117] || '';
+document.getElementById('subject4HY30').value = data[118] || '';
+document.getElementById('subject4Annual').value = data[119] || '';
+document.getElementById('subject4Annual50').value = data[120] || '';
+document.getElementById('subject4FinalAssessment').value = data[121] || '';
+document.getElementById('subject4FinalGrade').value = data[122] || '';
 
-document.getElementById('finalSubject5Name').value = data[102] || '';
-document.getElementById('subject5PT1').value = data[103] || '';
-document.getElementById('subject5PT2').value = data[104] || '';
-document.getElementById('subject5PT20').value = data[105] || '';
-document.getElementById('subject5HY').value = data[106] || '';
-document.getElementById('subject5HY30').value = data[107] || '';
-document.getElementById('subject5Annual').value = data[108] || '';
-document.getElementById('subject5Annual50').value = data[109] || '';
-document.getElementById('subject5FinalAssessment').value = data[110] || '';
-document.getElementById('subject5FinalGrade').value = data[111] || '';
+document.getElementById('finalSubject5Name').value = data[123] || '';
+document.getElementById('subject5PT1').value = data[124] || '';
+document.getElementById('subject5PT2').value = data[125] || '';
+document.getElementById('subject5PT20').value = data[126] || '';
+document.getElementById('subject5HY').value = data[127] || '';
+document.getElementById('subject5HY30').value = data[128] || '';
+document.getElementById('subject5Annual').value = data[129] || '';
+document.getElementById('subject5Annual50').value = data[130] || '';
+document.getElementById('subject5FinalAssessment').value = data[131] || '';
+document.getElementById('subject5FinalGrade').value = data[132] || '';
 
-document.getElementById('finalSubject6Name').value = data[112] || '';
-document.getElementById('subject6PT1').value = data[113] || '';
-document.getElementById('subject6PT2').value = data[114] || '';
-document.getElementById('subject6PT20').value = data[115] || '';
-document.getElementById('subject6HY').value = data[116] || '';
-document.getElementById('subject6HY30').value = data[117] || '';
-document.getElementById('subject6Annual').value = data[118] || '';
-document.getElementById('subject6Annual50').value = data[119] || '';
-document.getElementById('subject6FinalAssessment').value = data[120] || '';
-document.getElementById('subject6FinalGrade').value = data[121] || '';
+document.getElementById('finalSubject6Name').value = data[133] || '';
+document.getElementById('subject6PT1').value = data[134] || '';
+document.getElementById('subject6PT2').value = data[135] || '';
+document.getElementById('subject6PT20').value = data[136] || '';
+document.getElementById('subject6HY').value = data[137] || '';
+document.getElementById('subject6HY30').value = data[138] || '';
+document.getElementById('subject6Annual').value = data[139] || '';
+document.getElementById('subject6Annual50').value = data[140] || '';
+document.getElementById('subject6FinalAssessment').value = data[141] || '';
+document.getElementById('subject6FinalGrade').value = data[142] || '';
 
-document.getElementById('finalSubject7Name').value = data[122] || '';
-document.getElementById('subject7PT1').value = data[123] || '';
-document.getElementById('subject7PT2').value = data[124] || '';
-document.getElementById('subject7PT20').value = data[125] || '';
-document.getElementById('subject7HY').value = data[126] || '';
-document.getElementById('subject7HY30').value = data[127] || '';
-document.getElementById('subject7Annual').value = data[128] || '';
-document.getElementById('subject7Annual50').value = data[129] || '';
-document.getElementById('subject7FinalAssessment').value = data[130] || '';
-document.getElementById('subject7FinalGrade').value = data[131] || '';
+document.getElementById('finalSubject7Name').value = data[143] || '';
+document.getElementById('subject7PT1').value = data[144] || '';
+document.getElementById('subject7PT2').value = data[145] || '';
+document.getElementById('subject7PT20').value = data[146] || '';
+document.getElementById('subject7HY').value = data[147] || '';
+document.getElementById('subject7HY30').value = data[148] || '';
+document.getElementById('subject7Annual').value = data[149] || '';
+document.getElementById('subject7Annual50').value = data[150] || '';
+document.getElementById('subject7FinalAssessment').value = data[151] || '';
+document.getElementById('subject7FinalGrade').value = data[152] || '';
 
-document.getElementById('overallMarks').value = data[132] || '';
-document.getElementById('fullSubjectMarks').value = data[133] || '';
-document.getElementById('percentage').value = data[134] || '';
-document.getElementById('overallGrade').value = data[135] || '';
-document.getElementById('totalPresent').value = data[136] || '';
-document.getElementById('totalDays').value = data[137] || '';
-document.getElementById('promotionStatus').value = data[138] || '';
-document.getElementById('selectClass').value = data[139] || '';
-	
+document.getElementById('overallMarks').value = data[153] || '';
+document.getElementById('fullSubjectMarks').value = data[154] || '';
+document.getElementById('percentage').value = data[155] || '';
+document.getElementById('overallGrade').value = data[156] || '';
+document.getElementById('totalPresent').value = data[157] || '';
+document.getElementById('totalDays').value = data[158] || '';
+document.getElementById('promotionStatus').value = data[159] || '';
+document.getElementById('selectClass').value = data[160] || '';
 
-				
+
+
         document.getElementById('marksTable').style.display = 'block';
         document.getElementById('saveButton').style.display = 'block';
       } else {
         showAlert('No matching student found.');
       }
-	  })
+  })
      .catch(error => {
             console.error('Error:', error);
             showAlert('An error occurred while searching for the student.');
@@ -1377,9 +1401,9 @@ document.getElementById('selectClass').value = data[139] || '';
 }
       
     </script>
-	
-	
-	<script>
+
+
+<script>
 function saveMarks() {
     // Show the loader
     document.getElementById('loader').style.display = 'flex';
@@ -1392,8 +1416,11 @@ function saveMarks() {
    // Subject 1
 var subject1Name = document.getElementById('subject1Name').value;
 var subject1FullMarks = document.getElementById('subject1FullMarks').value;
+var subject1TheoryTotal = document.getElementById('subject1TheoryTotal').value;
 var subject1Theory = document.getElementById('subject1Theory').value;
+var subject1PracticalTotal = document.getElementById('subject1PracticalTotal').value;
 var subject1Practical = document.getElementById('subject1Practical').value;
+var subject1InternalAssessmentTotal = document.getElementById('subject1InternalAssessmentTotal').value;
 var subject1InternalAssessment = document.getElementById('subject1InternalAssessment').value;
 var subject1MarksObtained = document.getElementById('subject1MarksObtained').value;
 var subject1Grades = document.getElementById('subject1Grades').value;
@@ -1401,8 +1428,11 @@ var subject1Grades = document.getElementById('subject1Grades').value;
 // Subject 2
 var subject2Name = document.getElementById('subject2Name').value;
 var subject2FullMarks = document.getElementById('subject2FullMarks').value;
+var subject2TheoryTotal = document.getElementById('subject2TheoryTotal').value;
 var subject2Theory = document.getElementById('subject2Theory').value;
+var subject2PracticalTotal = document.getElementById('subject2PracticalTotal').value;
 var subject2Practical = document.getElementById('subject2Practical').value;
+var subject2InternalAssessmentTotal = document.getElementById('subject2InternalAssessmentTotal').value;
 var subject2InternalAssessment = document.getElementById('subject2InternalAssessment').value;
 var subject2MarksObtained = document.getElementById('subject2MarksObtained').value;
 var subject2Grades = document.getElementById('subject2Grades').value;
@@ -1410,8 +1440,11 @@ var subject2Grades = document.getElementById('subject2Grades').value;
 // Subject 3
 var subject3Name = document.getElementById('subject3Name').value;
 var subject3FullMarks = document.getElementById('subject3FullMarks').value;
+var subject3TheoryTotal = document.getElementById('subject3TheoryTotal').value;
 var subject3Theory = document.getElementById('subject3Theory').value;
+var subject3PracticalTotal = document.getElementById('subject3PracticalTotal').value;
 var subject3Practical = document.getElementById('subject3Practical').value;
+var subject3InternalAssessmentTotal = document.getElementById('subject3InternalAssessmentTotal').value;
 var subject3InternalAssessment = document.getElementById('subject3InternalAssessment').value;
 var subject3MarksObtained = document.getElementById('subject3MarksObtained').value;
 var subject3Grades = document.getElementById('subject3Grades').value;
@@ -1419,8 +1452,11 @@ var subject3Grades = document.getElementById('subject3Grades').value;
 // Subject 4
 var subject4Name = document.getElementById('subject4Name').value;
 var subject4FullMarks = document.getElementById('subject4FullMarks').value;
+var subject4TheoryTotal = document.getElementById('subject4TheoryTotal').value;
 var subject4Theory = document.getElementById('subject4Theory').value;
+var subject4PracticalTotal = document.getElementById('subject4PracticalTotal').value;
 var subject4Practical = document.getElementById('subject4Practical').value;
+var subject4InternalAssessmentTotal = document.getElementById('subject4InternalAssessmentTotal').value;
 var subject4InternalAssessment = document.getElementById('subject4InternalAssessment').value;
 var subject4MarksObtained = document.getElementById('subject4MarksObtained').value;
 var subject4Grades = document.getElementById('subject4Grades').value;
@@ -1428,8 +1464,11 @@ var subject4Grades = document.getElementById('subject4Grades').value;
 // Subject 5
 var subject5Name = document.getElementById('subject5Name').value;
 var subject5FullMarks = document.getElementById('subject5FullMarks').value;
+var subject5TheoryTotal = document.getElementById('subject5TheoryTotal').value;
 var subject5Theory = document.getElementById('subject5Theory').value;
+var subject5PracticalTotal = document.getElementById('subject5PracticalTotal').value;
 var subject5Practical = document.getElementById('subject5Practical').value;
+var subject5InternalAssessmentTotal = document.getElementById('subject5InternalAssessmentTotal').value;
 var subject5InternalAssessment = document.getElementById('subject5InternalAssessment').value;
 var subject5MarksObtained = document.getElementById('subject5MarksObtained').value;
 var subject5Grades = document.getElementById('subject5Grades').value;
@@ -1437,8 +1476,11 @@ var subject5Grades = document.getElementById('subject5Grades').value;
 // Subject 6
 var subject6Name = document.getElementById('subject6Name').value;
 var subject6FullMarks = document.getElementById('subject6FullMarks').value;
+var subject6TheoryTotal = document.getElementById('subject6TheoryTotal').value;
 var subject6Theory = document.getElementById('subject6Theory').value;
+var subject6PracticalTotal = document.getElementById('subject6PracticalTotal').value;
 var subject6Practical = document.getElementById('subject6Practical').value;
+var subject6InternalAssessmentTotal = document.getElementById('subject6InternalAssessmentTotal').value;
 var subject6InternalAssessment = document.getElementById('subject6InternalAssessment').value;
 var subject6MarksObtained = document.getElementById('subject6MarksObtained').value;
 var subject6Grades = document.getElementById('subject6Grades').value;
@@ -1446,8 +1488,11 @@ var subject6Grades = document.getElementById('subject6Grades').value;
 // Subject 7
 var subject7Name = document.getElementById('subject7Name').value;
 var subject7FullMarks = document.getElementById('subject7FullMarks').value;
+var subject7TheoryTotal = document.getElementById('subject7TheoryTotal').value;
 var subject7Theory = document.getElementById('subject7Theory').value;
+var subject7PracticalTotal = document.getElementById('subject7PracticalTotal').value;
 var subject7Practical = document.getElementById('subject7Practical').value;
+var subject7InternalAssessmentTotal = document.getElementById('subject7InternalAssessmentTotal').value;
 var subject7InternalAssessment = document.getElementById('subject7InternalAssessment').value;
 var subject7MarksObtained = document.getElementById('subject7MarksObtained').value;
 var subject7Grades = document.getElementById('subject7Grades').value;
@@ -1565,56 +1610,77 @@ var subject7FinalGrade = document.getElementById('subject7FinalGrade').value;
 
 subject1Name: subject1Name,
 subject1FullMarks: subject1FullMarks,
+subject1TheoryTotal: subject1TheoryTotal,
 subject1Theory: subject1Theory,
+subject1PracticalTotal: subject1PracticalTotal,
 subject1Practical: subject1Practical,
+subject1InternalAssessmentTotal: subject1InternalAssessmentTotal,
 subject1InternalAssessment: subject1InternalAssessment,
 subject1MarksObtained: subject1MarksObtained,
 subject1Grades: subject1Grades,
 
 subject2Name: subject2Name,
 subject2FullMarks: subject2FullMarks,
+subject2TheoryTotal: subject2TheoryTotal,
 subject2Theory: subject2Theory,
+subject2PracticalTotal: subject2PracticalTotal,
 subject2Practical: subject2Practical,
+subject2InternalAssessmentTotal: subject2InternalAssessmentTotal,
 subject2InternalAssessment: subject2InternalAssessment,
 subject2MarksObtained: subject2MarksObtained,
 subject2Grades: subject2Grades,
 
 subject3Name: subject3Name,
 subject3FullMarks: subject3FullMarks,
+subject3TheoryTotal: subject3TheoryTotal,
 subject3Theory: subject3Theory,
+subject3PracticalTotal: subject3PracticalTotal,
 subject3Practical: subject3Practical,
+subject3InternalAssessmentTotal: subject3InternalAssessmentTotal,
 subject3InternalAssessment: subject3InternalAssessment,
 subject3MarksObtained: subject3MarksObtained,
 subject3Grades: subject3Grades,
 
 subject4Name: subject4Name,
 subject4FullMarks: subject4FullMarks,
+subject4TheoryTotal: subject4TheoryTotal,
 subject4Theory: subject4Theory,
+subject4PracticalTotal: subject4PracticalTotal,
 subject4Practical: subject4Practical,
+subject4InternalAssessmentTotal: subject4InternalAssessmentTotal,
 subject4InternalAssessment: subject4InternalAssessment,
 subject4MarksObtained: subject4MarksObtained,
 subject4Grades: subject4Grades,
 
 subject5Name: subject5Name,
 subject5FullMarks: subject5FullMarks,
+subject5TheoryTotal: subject5TheoryTotal,
 subject5Theory: subject5Theory,
+subject5PracticalTotal: subject5PracticalTotal,
 subject5Practical: subject5Practical,
+subject5InternalAssessmentTotal: subject5InternalAssessmentTotal,
 subject5InternalAssessment: subject5InternalAssessment,
 subject5MarksObtained: subject5MarksObtained,
 subject5Grades: subject5Grades,
 
 subject6Name: subject6Name,
 subject6FullMarks: subject6FullMarks,
+subject6TheoryTotal: subject6TheoryTotal,
 subject6Theory: subject6Theory,
+subject6PracticalTotal: subject6PracticalTotal,
 subject6Practical: subject6Practical,
+subject6InternalAssessmentTotal: subject6InternalAssessmentTotal,
 subject6InternalAssessment: subject6InternalAssessment,
 subject6MarksObtained: subject6MarksObtained,
 subject6Grades: subject6Grades,
 
 subject7Name: subject7Name,
 subject7FullMarks: subject7FullMarks,
+subject7TheoryTotal: subject7TheoryTotal,
 subject7Theory: subject7Theory,
+subject7PracticalTotal: subject7PracticalTotal,
 subject7Practical: subject7Practical,
+subject7InternalAssessmentTotal: subject7InternalAssessmentTotal,
 subject7InternalAssessment: subject7InternalAssessment,
 subject7MarksObtained: subject7MarksObtained,
 subject7Grades: subject7Grades,
@@ -1786,8 +1852,8 @@ subject7FinalGrade: subject7FinalGrade,
             window.location.href = 'dashboardHCS1.html';
         }
     </script>
-	
-	<div id="alertOverlay" class="alert-overlay">
+
+<div id="alertOverlay" class="alert-overlay">
         <div id="alertBox" class="alert-box"></div>
     </div>
 
@@ -1808,7 +1874,7 @@ subject7FinalGrade: subject7FinalGrade,
             document.body.classList.remove('no-interaction');
         }
     </script>
-	 <!-- Popup Message -->
+ <!-- Popup Message -->
     <div id="popup" class="popup">
         🚀 Welcome to RKD CE! <br>
         👨‍💻&nbsp;Developer&nbsp;:&nbsp;Rajesh&nbsp;Kumar&nbsp;Das
