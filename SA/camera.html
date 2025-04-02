@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner with Google Sheets Integration</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        #scanner-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border: 2px solid #333;
+            margin-bottom: 20px;
+        }
+        #qr-video {
+            width: 100%;
+            height: 100%;
+            background: black;
+        }
+        #qr-canvas {
+            display: none;
+        }
+        #btn-scan-qr {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        #btn-scan-qr:hover {
+            background: #3367d6;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            min-height: 20px;
+            word-break: break-all;
+        }
+        .status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        .warning {
+            color: orange;
+        }
+        #manual-entry {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        #manual-input {
+            padding: 8px;
+            width: 80%;
+            margin: 10px 0;
+        }
+        .permission-help {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ffcc00;
+            background: #fff9e6;
+            text-align: left;
+        }
+        .hidden {
+            display: none;
+        }
+        #camera-selector {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>QR Code Scanner to Google Sheet</h1>
+        
+        <div id="scanner-container">
+            <video id="qr-video" playsinline></video>
+            <canvas id="qr-canvas"></canvas>
+        </div>
+        
+        <div id="camera-selector" class="hidden">
+            <label for="camera-device">Select Camera: </label>
+            <select id="camera-device"></select>
+        </div>
+        
+        <button id="btn-scan-qr">Start Scanning</button>
+        
+        <div id="result">Scanned data will appear here</div>
+        <div id="status" class="status"></div>
+        
+        <div id="manual-entry">
+            <p>Can't access camera? Enter QR code manually:</p>
+            <input type="text" id="manual-input" placeholder="Enter QR code content">
+            <button id="btn-manual-submit">Submit</button>
+        </div>
+        
+        <div id="permission-help" class="permission-help hidden">
+            <h3>How to enable camera permissions:</h3>
+            <p><strong>Chrome/Edge:</strong> Click the lock icon in the address bar > Site settings > Camera > Allow</p>
+            <p><strong>Firefox:</strong> Click the camera icon in the address bar > Allow</p>
+            <p><strong>Safari:</strong> Safari > Preferences > Websites > Camera > Allow for this site</p>
+            <p><strong>Mobile:</strong> Check your device settings to enable camera access for this browser</p>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const video = document.getElementById("qr-video");
+        const canvas = document.getElementById("qr-canvas");
+        const canvasContext = canvas.getContext("2d");
+        const btnScanQR = document.getElementById("btn-scan-qr");
+        const resultElement = document.getElementById("result");
+        const statusElement = document.getElementById("status");
+        const manualEntry = document.getElementById("manual-entry");
+        const manualInput = document.getElementById("manual-input");
+        const btnManualSubmit = document.getElementById("btn-manual-submit");
+        const permissionHelp = document.getElementById("permission-help");
+        const cameraSelector = document.getElementById("camera-selector");
+        const cameraDevice = document.getElementById("camera-device");
+        
+        // State variables
+        let scanning = false;
+        let stream = null;
+        
+        // Google Sheets configuration - REPLACE WITH YOUR OWN
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz6c6bepMHw6ihwzJiDpD6dC97kMZN88s7uYRws5_HvtxRm0WpsLqXaozIakORG_EdC/exec';
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            checkCameraPermissions();
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            btnScanQR.addEventListener("click", toggleScanning);
+            btnManualSubmit.addEventListener("click", submitManualEntry);
+            cameraDevice.addEventListener("change", changeCamera);
+        }
+        
+        async function checkCameraPermissions() {
+            try {
+                const permissionStatus = await navigator.permissions.query({ name: 'camera' });
+                updatePermissionStatus(permissionStatus.state);
+                
+                permissionStatus.onchange = () => {
+                    updatePermissionStatus(permissionStatus.state);
+                };
+            } catch (error) {
+                console.log("Permission API not supported in this browser");
+            }
+        }
+        
+        function updatePermissionStatus(state) {
+            if (state === 'denied') {
+                statusElement.textContent = "Camera permission denied. Please reset permissions.";
+                statusElement.className = "status error";
+                permissionHelp.classList.remove("hidden");
+                manualEntry.style.display = "block";
+            }
+        }
+        
+        function toggleScanning() {
+            if (scanning) {
+                stopScanning();
+                btnScanQR.textContent = "Start Scanning";
+            } else {
+                startScanning();
+                btnScanQR.textContent = "Stop Scanning";
+            }
+            scanning = !scanning;
+        }
+        
+        async function startScanning() {
+            try {
+                // Check if we already have permission
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                
+                if (videoDevices.length > 1) {
+                    populateCameraSelection(videoDevices);
+                    cameraSelector.classList.remove("hidden");
+                }
+                
+                // Try to get the camera stream
+                const constraints = { 
+                    video: { 
+                        facingMode: "environment",
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    } 
+                };
+                
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                // Try to enable torch if available
+                if (stream.getVideoTracks().length > 0) {
+                    stream.getVideoTracks()[0].applyConstraints({
+                        advanced: [{ torch: true }]
+                    }).catch(() => {});
+                }
+                
+                video.srcObject = stream;
+                video.play();
+                requestAnimationFrame(tick);
+                
+                statusElement.textContent = "Scanning... Point camera at QR code";
+                statusElement.className = "status";
+                permissionHelp.classList.add("hidden");
+                
+            } catch (err) {
+                handleCameraError(err);
+            }
+        }
+        
+        function populateCameraSelection(devices) {
+            cameraDevice.innerHTML = '';
+            devices.forEach((device, index) => {
+                const label = device.label || `Camera ${index + 1}`;
+                const option = document.createElement('option');
+                option.value = device.deviceId;
+                option.text = label;
+                if (index === 0) option.selected = true;
+                cameraDevice.appendChild(option);
+            });
+        }
+        
+        async function changeCamera() {
+            if (!stream) return;
+            
+            stopScanning();
+            
+            const deviceId = cameraDevice.value;
+            const constraints = { 
+                video: { 
+                    deviceId: { exact: deviceId },
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                } 
+            };
+            
+            try {
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+                video.play();
+                scanning = true;
+                requestAnimationFrame(tick);
+            } catch (err) {
+                handleCameraError(err);
+            }
+        }
+        
+        function stopScanning() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+        }
+        
+        function tick() {
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvas.height = video.videoHeight;
+                canvas.width = video.videoWidth;
+                canvasContext.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                const imageData = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+                
+                if (code) {
+                    resultElement.textContent = code.data;
+                    sendToGoogleSheet(code.data);
+                    // Optional: stop scanning after successful read
+                    // toggleScanning();
+                }
+            }
+            
+            if (scanning) {
+                requestAnimationFrame(tick);
+            }
+        }
+        
+        function handleCameraError(err) {
+            console.error("Camera error:", err);
+            
+            let errorMessage = "Camera error: ";
+            switch(err.name) {
+                case 'NotAllowedError':
+                    errorMessage += "Permission denied. Please allow camera access.";
+                    permissionHelp.classList.remove("hidden");
+                    break;
+                case 'NotFoundError':
+                    errorMessage += "No camera found on this device.";
+                    break;
+                case 'NotReadableError':
+                    errorMessage += "Camera is already in use by another application.";
+                    break;
+                case 'OverconstrainedError':
+                    errorMessage += "Camera doesn't support required features.";
+                    break;
+                default:
+                    errorMessage += err.message;
+            }
+            
+            statusElement.textContent = errorMessage;
+            statusElement.className = "status error";
+            manualEntry.style.display = "block";
+            
+            scanning = false;
+            btnScanQR.textContent = "Start Scanning";
+        }
+        
+        function submitManualEntry() {
+            const manualData = manualInput.value.trim();
+            if (manualData) {
+                resultElement.textContent = manualData;
+                sendToGoogleSheet(manualData);
+                manualInput.value = '';
+            } else {
+                statusElement.textContent = "Please enter some text first";
+                statusElement.className = "status warning";
+            }
+        }
+        
+        function sendToGoogleSheet(data) {
+            statusElement.textContent = "Sending data to Google Sheet...";
+            statusElement.className = "status";
+            
+            fetch(scriptURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `data=${encodeURIComponent(data)}`
+            })
+            .then(response => {
+                if (response.ok) {
+                    statusElement.textContent = "Data successfully sent to Google Sheet!";
+                    statusElement.className = "status success";
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                statusElement.textContent = "Error sending data: " + error.message;
+                statusElement.className = "status error";
+            });
+        }
+    </script>
+</body>
+</html>
