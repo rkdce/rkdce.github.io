@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Scanner with Google Sheets Integration</title>
+    <title>Advanced QR Scanner</title>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <style>
         body {
@@ -17,360 +17,533 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
         #scanner-container {
             position: relative;
             width: 300px;
             height: 300px;
             border: 2px solid #333;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            overflow: hidden;
         }
         #qr-video {
             width: 100%;
             height: 100%;
-            background: black;
+            object-fit: cover;
         }
-        #qr-canvas {
-            display: none;
+        #scan-region {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            border: 3px solid rgba(0, 255, 0, 0.5);
+            box-sizing: border-box;
         }
-        #btn-scan-qr {
+        .control-panel {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
             background: #4285f4;
             color: white;
             border: none;
-            padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            margin: 5px;
         }
-        #btn-scan-qr:hover {
+        button:hover {
             background: #3367d6;
         }
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        #btn-flash {
+            background: #f4b400;
+        }
+        #btn-flash:hover {
+            background: #db9b00;
+        }
+        #btn-switch {
+            background: #34a853;
+        }
+        #btn-switch:hover {
+            background: #2d9249;
+        }
         #result {
-            margin-top: 20px;
+            margin: 15px 0;
             padding: 10px;
             border: 1px solid #ddd;
             min-height: 20px;
             word-break: break-all;
-        }
-        .status {
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .success {
-            color: green;
-        }
-        .error {
-            color: red;
-        }
-        .warning {
-            color: orange;
-        }
-        #manual-entry {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
             background: #f9f9f9;
         }
-        #manual-input {
+        .status {
+            margin: 10px 0;
             padding: 8px;
-            width: 80%;
-            margin: 10px 0;
+            border-radius: 4px;
         }
-        .permission-help {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ffcc00;
-            background: #fff9e6;
+        .success {
+            background: #e6ffed;
+            color: #22863a;
+            border: 1px solid #b3e6c1;
+        }
+        .error {
+            background: #ffebee;
+            color: #b71c1c;
+            border: 1px solid #ffcdd2;
+        }
+        .warning {
+            background: #fff8e1;
+            color: #ff8f00;
+            border: 1px solid #ffe082;
+        }
+        #debug {
             text-align: left;
-        }
-        .hidden {
-            display: none;
-        }
-        #camera-selector {
-            margin: 10px 0;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            font-family: monospace;
+            font-size: 13px;
+            max-height: 150px;
+            overflow-y: auto;
+            background: #f5f5f5;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>QR Code Scanner to Google Sheet</h1>
+        <h1>Advanced QR Scanner</h1>
+        <p>Scan student IDs and send to Google Sheets</p>
         
         <div id="scanner-container">
-            <video id="qr-video" playsinline></video>
-            <canvas id="qr-canvas"></canvas>
+            <video id="qr-video" playsinline muted></video>
+            <div id="scan-region"></div>
         </div>
         
-        <div id="camera-selector" class="hidden">
-            <label for="camera-device">Select Camera: </label>
-            <select id="camera-device"></select>
+        <div class="control-panel">
+            <button id="btn-start">Start Scanner</button>
+            <button id="btn-stop" disabled>Stop Scanner</button>
+            <button id="btn-flash" disabled>Toggle Flash</button>
+            <button id="btn-switch" disabled>Switch Camera</button>
         </div>
         
-        <button id="btn-scan-qr">Start Scanning</button>
+        <div id="result">No QR code detected yet</div>
+        <div id="status" class="status">Status: Ready</div>
         
-        <div id="result">Scanned data will appear here</div>
-        <div id="status" class="status"></div>
-        
-        <div id="manual-entry">
-            <p>Can't access camera? Enter QR code manually:</p>
-            <input type="text" id="manual-input" placeholder="Enter QR code content">
-            <button id="btn-manual-submit">Submit</button>
-        </div>
-        
-        <div id="permission-help" class="permission-help hidden">
-            <h3>How to enable camera permissions:</h3>
-            <p><strong>Chrome/Edge:</strong> Click the lock icon in the address bar > Site settings > Camera > Allow</p>
-            <p><strong>Firefox:</strong> Click the camera icon in the address bar > Allow</p>
-            <p><strong>Safari:</strong> Safari > Preferences > Websites > Camera > Allow for this site</p>
-            <p><strong>Mobile:</strong> Check your device settings to enable camera access for this browser</p>
+        <div id="debug">
+            <strong>Debug Console:</strong><br>
+            System initialized...
         </div>
     </div>
 
     <script>
-        // DOM elements
-        const video = document.getElementById("qr-video");
-        const canvas = document.getElementById("qr-canvas");
-        const canvasContext = canvas.getContext("2d");
-        const btnScanQR = document.getElementById("btn-scan-qr");
-        const resultElement = document.getElementById("result");
-        const statusElement = document.getElementById("status");
-        const manualEntry = document.getElementById("manual-entry");
-        const manualInput = document.getElementById("manual-input");
-        const btnManualSubmit = document.getElementById("btn-manual-submit");
-        const permissionHelp = document.getElementById("permission-help");
-        const cameraSelector = document.getElementById("camera-selector");
-        const cameraDevice = document.getElementById("camera-device");
+        // DOM Elements
+        const video = document.getElementById('qr-video');
+        const btnStart = document.getElementById('btn-start');
+        const btnStop = document.getElementById('btn-stop');
+        const btnFlash = document.getElementById('btn-flash');
+        const btnSwitch = document.getElementById('btn-switch');
+        const statusDiv = document.getElementById('status');
+        const resultDiv = document.getElementById('result');
+        const debugDiv = document.getElementById('debug');
         
         // State variables
-        let scanning = false;
         let stream = null;
+        let scanning = false;
+        let animationFrame = null;
+        let flashOn = false;
+        let currentFacingMode = 'environment'; // Start with rear camera
+        let videoDevices = [];
+        let currentDeviceIndex = 0;
+        let scannedToday = []; // Track scanned IDs for today
         
-        // Google Sheets configuration - REPLACE WITH YOUR OWN
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbz6c6bepMHw6ihwzJiDpD6dC97kMZN88s7uYRws5_HvtxRm0WpsLqXaozIakORG_EdC/exec';
+        // Google Sheets configuration
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz6c6bepMHw6ihwzJiDpD6dC97kMZN88s7uYRws5_HvtxRm0WpsLqXaozIakORG_EdC/exec'; // Replace with your URL
         
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', () => {
-            checkCameraPermissions();
-            setupEventListeners();
-        });
-        
-        function setupEventListeners() {
-            btnScanQR.addEventListener("click", toggleScanning);
-            btnManualSubmit.addEventListener("click", submitManualEntry);
-            cameraDevice.addEventListener("change", changeCamera);
+        // Debug logging
+        function debugLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            debugDiv.scrollTop = debugDiv.scrollHeight;
         }
         
-        async function checkCameraPermissions() {
+        // Initialize
+        debugLog('System initialized');
+        loadScannedData();
+        
+        // Load previously scanned data for today
+        async function loadScannedData() {
             try {
-                const permissionStatus = await navigator.permissions.query({ name: 'camera' });
-                updatePermissionStatus(permissionStatus.state);
-                
-                permissionStatus.onchange = () => {
-                    updatePermissionStatus(permissionStatus.state);
-                };
+                const today = new Date().toISOString().split('T')[0];
+                const response = await fetch(`${scriptURL}?action=getTodayData&date=${today}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    scannedToday = data.map(item => item.id);
+                    debugLog(`Loaded ${scannedToday.length} previously scanned IDs for today`);
+                }
             } catch (error) {
-                console.log("Permission API not supported in this browser");
+                debugLog(`Error loading scanned data: ${error.message}`);
             }
         }
         
-        function updatePermissionStatus(state) {
-            if (state === 'denied') {
-                statusElement.textContent = "Camera permission denied. Please reset permissions.";
-                statusElement.className = "status error";
-                permissionHelp.classList.remove("hidden");
-                manualEntry.style.display = "block";
-            }
-        }
+        // Event Listeners
+        btnStart.addEventListener('click', startScanning);
+        btnStop.addEventListener('click', stopScanning);
+        btnFlash.addEventListener('click', toggleFlash);
+        btnSwitch.addEventListener('click', switchCamera);
         
-        function toggleScanning() {
-            if (scanning) {
-                stopScanning();
-                btnScanQR.textContent = "Start Scanning";
-            } else {
-                startScanning();
-                btnScanQR.textContent = "Stop Scanning";
-            }
-            scanning = !scanning;
-        }
-        
+        // Start scanning function
         async function startScanning() {
+            debugLog('Attempting to start scanner...');
+            btnStart.disabled = true;
+            statusDiv.textContent = 'Starting camera...';
+            
             try {
-                // Check if we already have permission
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                const videoDevices = devices.filter(device => device.kind === 'videoinput');
-                
-                if (videoDevices.length > 1) {
-                    populateCameraSelection(videoDevices);
-                    cameraSelector.classList.remove("hidden");
+                // Check permissions first
+                if (navigator.permissions) {
+                    const permissionStatus = await navigator.permissions.query({ name: 'camera' });
+                    debugLog(`Camera permission state: ${permissionStatus.state}`);
+                    
+                    if (permissionStatus.state === 'denied') {
+                        throw new Error('Camera access was denied. Please reset permissions.');
+                    }
                 }
                 
-                // Try to get the camera stream
-                const constraints = { 
-                    video: { 
-                        facingMode: "environment",
+                // Get available devices
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                videoDevices = devices.filter(device => device.kind === 'videoinput');
+                debugLog(`Found ${videoDevices.length} video devices`);
+                
+                if (videoDevices.length === 0) {
+                    throw new Error('No cameras found on this device.');
+                }
+                
+                // Start with rear camera (environment) if available
+                const constraints = {
+                    video: {
                         width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    } 
+                        height: { ideal: 720 },
+                        facingMode: currentFacingMode
+                    }
                 };
                 
-                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                debugLog('Trying with constraints:', JSON.stringify(constraints));
                 
-                // Try to enable torch if available
-                if (stream.getVideoTracks().length > 0) {
-                    stream.getVideoTracks()[0].applyConstraints({
-                        advanced: [{ torch: true }]
-                    }).catch(() => {});
+                // Get media stream
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                debugLog('Successfully got media stream');
+                
+                // Check flashlight capability
+                const videoTrack = stream.getVideoTracks()[0];
+                if ('fillLightMode' in videoTrack.getCapabilities()) {
+                    btnFlash.disabled = false;
+                    debugLog('Flashlight is supported on this device');
+                } else {
+                    debugLog('Flashlight not supported on this device');
                 }
                 
+                // Enable switch button if multiple cameras
+                if (videoDevices.length > 1) {
+                    btnSwitch.disabled = false;
+                }
+                
+                // Attach stream to video
                 video.srcObject = stream;
-                video.play();
-                requestAnimationFrame(tick);
                 
-                statusElement.textContent = "Scanning... Point camera at QR code";
-                statusElement.className = "status";
-                permissionHelp.classList.add("hidden");
+                // Wait for video to be ready
+                await new Promise((resolve) => {
+                    video.onloadedmetadata = () => {
+                        debugLog(`Video ready. Dimensions: ${video.videoWidth}x${video.videoHeight}`);
+                        resolve();
+                    };
+                    
+                    // Fallback for some browsers
+                    setTimeout(() => {
+                        if (video.readyState >= 3) resolve();
+                    }, 1000);
+                });
                 
-            } catch (err) {
-                handleCameraError(err);
+                // Start playing
+                await video.play();
+                debugLog('Video playback started');
+                
+                scanning = true;
+                btnStop.disabled = false;
+                statusDiv.textContent = 'Scanning... Point at QR code';
+                statusDiv.className = 'status';
+                
+                scanFrame();
+                
+            } catch (error) {
+                handleCameraError(error);
+                btnStart.disabled = false;
             }
         }
         
-        function populateCameraSelection(devices) {
-            cameraDevice.innerHTML = '';
-            devices.forEach((device, index) => {
-                const label = device.label || `Camera ${index + 1}`;
-                const option = document.createElement('option');
-                option.value = device.deviceId;
-                option.text = label;
-                if (index === 0) option.selected = true;
-                cameraDevice.appendChild(option);
-            });
-        }
-        
-        async function changeCamera() {
+        // Toggle flashlight
+        async function toggleFlash() {
             if (!stream) return;
             
-            stopScanning();
-            
-            const deviceId = cameraDevice.value;
-            const constraints = { 
-                video: { 
-                    deviceId: { exact: deviceId },
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 }
-                } 
-            };
+            try {
+                const videoTrack = stream.getVideoTracks()[0];
+                flashOn = !flashOn;
+                
+                await videoTrack.applyConstraints({
+                    advanced: [{ fillLightMode: flashOn ? 'flash' : 'off' }]
+                });
+                
+                btnFlash.textContent = flashOn ? 'Turn Flash Off' : 'Turn Flash On';
+                debugLog(`Flashlight ${flashOn ? 'ON' : 'OFF'}`);
+                
+            } catch (error) {
+                debugLog(`Flash error: ${error.message}`);
+                statusDiv.textContent = 'Error controlling flashlight';
+                statusDiv.className = 'status error';
+            }
+        }
+        
+        // Switch between front and back cameras
+        async function switchCamera() {
+            debugLog('Switching camera...');
             
             try {
+                // Stop current stream
+                stopScanning();
+                
+                // Toggle facing mode
+                currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+                
+                // Or cycle through all available devices
+                currentDeviceIndex = (currentDeviceIndex + 1) % videoDevices.length;
+                const deviceId = videoDevices[currentDeviceIndex].deviceId;
+                
+                const constraints = {
+                    video: {
+                        deviceId: { exact: deviceId },
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                };
+                
+                debugLog(`Switching to device: ${deviceId}`);
+                statusDiv.textContent = 'Switching camera...';
+                
+                // Get new stream
                 stream = await navigator.mediaDevices.getUserMedia(constraints);
                 video.srcObject = stream;
-                video.play();
+                
+                // Wait for video to be ready
+                await new Promise((resolve) => {
+                    video.onloadedmetadata = () => {
+                        resolve();
+                    };
+                    setTimeout(resolve, 500);
+                });
+                
+                await video.play();
+                
                 scanning = true;
-                requestAnimationFrame(tick);
-            } catch (err) {
-                handleCameraError(err);
+                btnStop.disabled = false;
+                statusDiv.textContent = 'Scanning... Point at QR code';
+                statusDiv.className = 'status';
+                
+                scanFrame();
+                
+            } catch (error) {
+                handleCameraError(error);
             }
         }
         
-        function stopScanning() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                video.srcObject = null;
-            }
-        }
-        
-        function tick() {
-            if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                canvas.height = video.videoHeight;
-                canvas.width = video.videoWidth;
-                canvasContext.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                const imageData = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
-                const code = jsQR(imageData.data, imageData.width, imageData.height);
-                
-                if (code) {
-                    resultElement.textContent = code.data;
-                    sendToGoogleSheet(code.data);
-                    // Optional: stop scanning after successful read
-                    // toggleScanning();
+        // Main scanning loop
+        function scanFrame() {
+            if (!scanning) return;
+            
+            try {
+                if (video.readyState >= video.HAVE_ENOUGH_DATA) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const ctx = canvas.getContext('2d');
+                    
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    
+                    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                        inversionAttempts: 'dontInvert',
+                    });
+                    
+                    if (code) {
+                        debugLog(`QR Code detected: ${code.data}`);
+                        processScannedData(code.data);
+                        return;
+                    }
                 }
-            }
-            
-            if (scanning) {
-                requestAnimationFrame(tick);
+                
+                animationFrame = requestAnimationFrame(scanFrame);
+            } catch (error) {
+                debugLog(`Scan error: ${error.message}`);
+                stopScanning();
             }
         }
         
-        function handleCameraError(err) {
-            console.error("Camera error:", err);
-            
-            let errorMessage = "Camera error: ";
-            switch(err.name) {
-                case 'NotAllowedError':
-                    errorMessage += "Permission denied. Please allow camera access.";
-                    permissionHelp.classList.remove("hidden");
-                    break;
-                case 'NotFoundError':
-                    errorMessage += "No camera found on this device.";
-                    break;
-                case 'NotReadableError':
-                    errorMessage += "Camera is already in use by another application.";
-                    break;
-                case 'OverconstrainedError':
-                    errorMessage += "Camera doesn't support required features.";
-                    break;
-                default:
-                    errorMessage += err.message;
+        // Process scanned QR code data
+        function processScannedData(data) {
+            // Parse the scanned data (format: "828 IX FAHIMA SIDDIKA BARBHUIYA")
+            const parts = data.split('\t'); // Assuming tab-separated values
+            if (parts.length < 3) {
+                statusDiv.textContent = 'Invalid QR format. Expected: ID\\tClass\\tName';
+                statusDiv.className = 'status error';
+                return;
             }
             
-            statusElement.textContent = errorMessage;
-            statusElement.className = "status error";
-            manualEntry.style.display = "block";
+            const [id, studentClass, name] = parts;
             
+            // Check if already scanned today
+            if (scannedToday.includes(id)) {
+                statusDiv.textContent = `ID ${id} already scanned today`;
+                statusDiv.className = 'status warning';
+                return;
+            }
+            
+            resultDiv.textContent = `ID: ${id}, Class: ${studentClass}, Name: ${name}`;
+            statusDiv.textContent = 'QR code detected!';
+            statusDiv.className = 'status success';
+            
+            // Add to scanned list
+            scannedToday.push(id);
+            
+            // Send to Google Sheets
+            sendToGoogleSheet(id, studentClass, name);
+            
+            // Continue scanning after a brief pause
+            setTimeout(() => {
+                if (scanning) {
+                    statusDiv.textContent = 'Scanning... Point at QR code';
+                    statusDiv.className = 'status';
+                    scanFrame();
+                }
+            }, 2000);
+        }
+        
+        // Stop scanning
+        function stopScanning() {
+            debugLog('Stopping scanner...');
             scanning = false;
-            btnScanQR.textContent = "Start Scanning";
-        }
-        
-        function submitManualEntry() {
-            const manualData = manualInput.value.trim();
-            if (manualData) {
-                resultElement.textContent = manualData;
-                sendToGoogleSheet(manualData);
-                manualInput.value = '';
-            } else {
-                statusElement.textContent = "Please enter some text first";
-                statusElement.className = "status warning";
+            
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+            }
+            
+            if (stream) {
+                stream.getTracks().forEach(track => {
+                    debugLog(`Stopping track: ${track.kind}`);
+                    track.stop();
+                });
+                video.srcObject = null;
+                stream = null;
+            }
+            
+            btnStart.disabled = false;
+            btnStop.disabled = true;
+            btnFlash.disabled = true;
+            btnSwitch.disabled = true;
+            
+            if (statusDiv.className !== 'status success') {
+                statusDiv.textContent = 'Scanner stopped';
+                statusDiv.className = 'status';
             }
         }
         
-        function sendToGoogleSheet(data) {
-            statusElement.textContent = "Sending data to Google Sheet...";
-            statusElement.className = "status";
+        // Send data to Google Sheets
+        function sendToGoogleSheet(id, studentClass, name) {
+            statusDiv.textContent = 'Sending data to Google Sheet...';
+            statusDiv.className = 'status';
+            
+            const today = new Date().toISOString().split('T')[0];
             
             fetch(scriptURL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: `data=${encodeURIComponent(data)}`
+                body: JSON.stringify({
+                    id: id,
+                    class: studentClass,
+                    name: name,
+                    date: today,
+                    action: 'addRecord'
+                })
             })
             .then(response => {
-                if (response.ok) {
-                    statusElement.textContent = "Data successfully sent to Google Sheet!";
-                    statusElement.className = "status success";
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    debugLog('Data successfully sent to Google Sheets');
+                    statusDiv.textContent = 'Data sent to Google Sheet!';
+                    statusDiv.className = 'status success';
                 } else {
-                    throw new Error('Network response was not ok');
+                    throw new Error(data.message || 'Unknown error from server');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                statusElement.textContent = "Error sending data: " + error.message;
-                statusElement.className = "status error";
+                debugLog(`ERROR sending data: ${error.message}`);
+                statusDiv.textContent = `Error sending data: ${error.message}`;
+                statusDiv.className = 'status error';
+                
+                // Remove from scanned list if failed
+                const index = scannedToday.indexOf(id);
+                if (index > -1) {
+                    scannedToday.splice(index, 1);
+                }
             });
         }
+        
+        // Error handling
+        function handleCameraError(error) {
+            debugLog(`ERROR: ${error.name}: ${error.message}`);
+            
+            let userMessage = error.message;
+            
+            switch(error.name) {
+                case 'NotAllowedError':
+                    userMessage = 'Camera access was denied. Please allow camera permissions.';
+                    break;
+                case 'NotFoundError':
+                    userMessage = 'No camera found on this device.';
+                    break;
+                case 'NotReadableError':
+                    userMessage = 'Camera is already in use by another application.';
+                    break;
+                case 'OverconstrainedError':
+                    userMessage = 'Camera doesn\'t support required features.';
+                    break;
+                case 'TypeError':
+                    if (error.message.includes('navigator.mediaDevices')) {
+                        userMessage = 'Camera API not available. Are you using HTTPS or localhost?';
+                    }
+                    break;
+            }
+            
+            statusDiv.textContent = `Error: ${userMessage}`;
+            statusDiv.className = 'status error';
+            resultDiv.textContent = 'Could not access camera';
+        }
+        
+        // Clean up on page exit
+        window.addEventListener('beforeunload', () => {
+            if (scanning) {
+                stopScanning();
+            }
+        });
     </script>
 </body>
 </html>
