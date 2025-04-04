@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Exam System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .config-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f0f7ff;
+            border-radius: 6px;
+            border: 1px solid #d0e3ff;
+        }
+        .exam-selector {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #e8f4f8;
+            border-radius: 6px;
+        }
+        select, button, input {
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .section-navigation {
+            display: flex;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        .section-btn {
+            padding: 8px 15px;
+            margin-right: 10px;
+            background-color: #ecf0f1;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .section-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .section-btn.visited {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .question-container {
+            margin-bottom: 30px;
+            display: none;
+        }
+        .question-container.active {
+            display: block;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .question-image {
+            max-width: 100%;
+            max-height: 300px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            display: block;
+        }
+        .options {
+            margin-left: 20px;
+        }
+        .option {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background-color: #f8f9fa;
+            border-color: #ddd;
+        }
+        .option.selected {
+            background-color: #d4edff;
+            border-color: #3498db;
+        }
+        .option-image {
+            max-width: 200px;
+            max-height: 150px;
+            display: block;
+            margin-top: 5px;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .submit-btn {
+            background-color: #e74c3c;
+        }
+        .submit-btn:hover {
+            background-color: #c0392b;
+        }
+        .result-container {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        .result-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2ecc71;
+            margin: 20px 0;
+        }
+        .section-result {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .loading {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Online Exam</h1>
+        
+        <div class="config-section" style="display:none">
+			<h2>Configuration</h2>
+			<div>
+				<label for="scriptUrl">Google Apps Script Web App URL:</label>
+				<input type="text" id="scriptUrl" value="https://script.google.com/macros/s/AKfycbz9wXVPoInRmLEW4nRYs0ppLnUPUbdoDuEssTCCrWQnYKIJ1TV2_XkU8utErtCoIJUPqw/exec" placeholder="https://script.google.com/macros/s/..." style="width: 100%; max-width: 600px; padding: 10px;">
+				<button id="saveConfig" style="margin-top: 10px;">Save Configuration</button>
+				<p id="configStatus" style="margin-top: 10px; color: #27ae60; display: none;">Configuration saved successfully!</p>
+			</div>
+		</div>
+
+		<script>
+			// Function to click the button on page load
+			window.onload = function() {
+				document.getElementById('saveConfig').click();
+			};
+		</script>
+        
+        <div class="exam-selector">
+            <h2>Select Exam</h2>
+            <select id="examSelect">
+                <option value="">-- Select an Exam --</option>
+            </select>
+            <button id="startExamBtn" disabled>Start Exam</button>
+        </div>
+        
+        <div id="examInterface" style="display: none;">
+            <div class="exam-header">
+                <h2 id="examTitle"></h2>
+                <div class="timer" id="examTimer">00:00:00</div>
+            </div>
+            
+            <div class="section-navigation" id="sectionNav"></div>
+            
+            <div id="questionSection"></div>
+            
+            <div class="navigation-buttons">
+                <button id="prevSectionBtn" disabled>Previous Section</button>
+                <button id="nextSectionBtn">Next Section</button>
+                <button id="submitExamBtn" class="submit-btn">Submit Exam</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="resultContainer">
+            <h2>Exam Results</h2>
+            <div id="resultDetails"></div>
+            <button id="retakeExamBtn">Take Another Exam</button>
+        </div>
+        
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            <p>Loading exam data...</p>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentExam = null;
+        let currentExamName = '';
+        let sections = [];
+        let questions = {};
+        let userResponses = {};
+        let currentSectionIndex = 0;
+        let examTimer = null;
+        let remainingTime = 0;
+        let examStartTime = null;
+        let userId = 'USER_' + Math.floor(Math.random() * 1000000);
+        let scriptUrl = localStorage.getItem('appScriptUrl') || '';
+        
+        // DOM elements
+        const scriptUrlInput = document.getElementById('scriptUrl');
+        const saveConfigBtn = document.getElementById('saveConfig');
+        const configStatus = document.getElementById('configStatus');
+        const examSelect = document.getElementById('examSelect');
+        const startExamBtn = document.getElementById('startExamBtn');
+        const examInterface = document.getElementById('examInterface');
+        const examTitle = document.getElementById('examTitle');
+        const examTimerDisplay = document.getElementById('examTimer');
+        const sectionNav = document.getElementById('sectionNav');
+        const questionSection = document.getElementById('questionSection');
+        const prevSectionBtn = document.getElementById('prevSectionBtn');
+        const nextSectionBtn = document.getElementById('nextSectionBtn');
+        const submitExamBtn = document.getElementById('submitExamBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultDetails = document.getElementById('resultDetails');
+        const retakeExamBtn = document.getElementById('retakeExamBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            scriptUrlInput.value = scriptUrl;
+            
+            saveConfigBtn.addEventListener('click', saveConfig);
+            
+            examSelect.addEventListener('change', function() {
+                startExamBtn.disabled = !this.value;
+                if (this.value) {
+                    currentExamName = this.options[this.selectedIndex].text;
+                }
+            });
+            
+            startExamBtn.addEventListener('click', startExam);
+            prevSectionBtn.addEventListener('click', goToPreviousSection);
+            nextSectionBtn.addEventListener('click', goToNextSection);
+            submitExamBtn.addEventListener('click', confirmSubmitExam);
+            retakeExamBtn.addEventListener('click', resetExam);
+            
+            if (scriptUrl) {
+                loadExamsFromAppScript();
+            }
+        });
+        
+        function saveConfig() {
+            scriptUrl = scriptUrlInput.value.trim();
+            if (!scriptUrl) {
+                alert('Please enter a valid Apps Script Web App URL');
+                return;
+            }
+            
+            localStorage.setItem('appScriptUrl', scriptUrl);
+            configStatus.style.display = 'block';
+            setTimeout(() => {
+                configStatus.style.display = 'none';
+            }, 3000);
+            
+            loadExamsFromAppScript();
+        }
+        
+function loadExamsFromAppScript() {
+  if (!scriptUrl) return;
+  
+  loadingIndicator.style.display = 'block';
+  examSelect.disabled = true;
+  startExamBtn.disabled = true;
+  
+  fetch(`${scriptUrl}?action=getExams`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.error) throw new Error(data.error);
+      populateExamSelect(data);
+      loadingIndicator.style.display = 'none';
+      examSelect.disabled = false;
+    })
+    .catch(error => {
+      console.error('Error loading exams:', error);
+      loadingIndicator.innerHTML = `<p>Error loading exams: ${error.message}</p>`;
+      examSelect.innerHTML = '<option value="">-- Error loading exams --</option>';
+    });
+}
+
+function populateExamSelect(data) {
+  const exams = Array.isArray(data) ? data : (data.data || []);
+  
+  examSelect.innerHTML = '<option value="">-- Select an Exam --</option>';
+  
+  if (!Array.isArray(exams)) {
+    console.error('Expected exams to be an array, received:', exams);
+    examSelect.innerHTML = '<option value="">-- Error loading exams --</option>';
+    return;
+  }
+
+  exams.forEach(exam => {
+    const option = document.createElement('option');
+    option.value = exam.id;
+    option.textContent = exam.name;
+    examSelect.appendChild(option);
+  });
+}
+        
+
+
+function startExam() {
+  currentExam = examSelect.value;
+  examTitle.textContent = currentExamName;
+  
+  loadingIndicator.style.display = 'block';
+  examInterface.style.display = 'none';
+
+  fetch(`${scriptUrl}?action=getExamData&examId=${currentExam}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.error) {
+        alert(data.error);
+        loadingIndicator.style.display = 'none';
+        return;
+      }
+      
+      if (!data.data || !data.data.sections || !data.data.questions) {
+        throw new Error('Invalid exam data structure received');
+      }
+
+      sections = data.data.sections;
+      questions = data.data.questions;
+      
+      if (!Array.isArray(sections)) {
+        throw new Error('Sections data is not an array');
+      }
+      
+      if (typeof questions !== 'object' || questions === null) {
+        throw new Error('Questions data is invalid');
+      }
+
+      // Initialize user responses
+      sections.forEach(section => {
+        if (!questions[section.id] || !Array.isArray(questions[section.id])) {
+          throw new Error(`No questions found for section ${section.id}`);
+        }
+        
+        userResponses[section.id] = {};
+        questions[section.id].forEach(question => {
+          userResponses[section.id][question.qid] = {
+            userAnswer: '',
+            correctAnswer: question.correctAnswer,
+            marks: question.marks
+          };
+        });
+      });
+      
+      // Calculate total exam time
+      const totalTime = sections.reduce((sum, section) => sum + (section.time || 0), 0);
+      remainingTime = totalTime * 60;
+      examStartTime = new Date();
+      
+      // Initialize UI
+      setupExamUI();
+      showCurrentSection();
+      startTimer();
+      
+      loadingIndicator.style.display = 'none';
+      examInterface.style.display = 'block';
+      examSelect.disabled = true;
+      startExamBtn.disabled = true;
+    })
+    .catch(error => {
+      console.error('Error starting exam:', error);
+      alert('Error loading exam: ' + error.message);
+      loadingIndicator.style.display = 'none';
+    });
+}
+
+
+function setupExamUI() {
+  sectionNav.innerHTML = '';
+  questionSection.innerHTML = '';
+
+  // Create section navigation buttons
+  sections.forEach((section, index) => {
+    const sectionBtn = document.createElement('button');
+    sectionBtn.className = 'section-btn';
+    sectionBtn.textContent = section.name;
+    sectionBtn.dataset.sectionIndex = index;
+
+    sectionBtn.addEventListener('click', () => {
+      if (index !== currentSectionIndex) {
+        currentSectionIndex = index;
+        showCurrentSection();
+      }
+    });
+
+    sectionNav.appendChild(sectionBtn);
+  });
+
+  // Create question containers for each section
+  sections.forEach((section, sectionIndex) => {
+    const sectionContainer = document.createElement('div');
+    sectionContainer.className = 'question-container';
+    sectionContainer.id = `section-${section.id}`;
+
+    const sectionTitle = document.createElement('h3');
+    sectionTitle.textContent = section.name;
+    sectionContainer.appendChild(sectionTitle);
+
+    questions[section.id].forEach((question, qIndex) => {
+      const questionDiv = document.createElement('div');
+      questionDiv.className = 'question-item';
+      questionDiv.dataset.qid = question.qid;
+
+      // Question Text or Image or Mixed
+      const questionContent = document.createElement('div');
+      questionContent.className = 'question';
+
+      // Add question number (using QID from the spreadsheet)
+      const questionNumber = document.createElement('span');
+      questionNumber.className = 'question-number';
+      questionNumber.textContent = `${question.qid}. `;
+      questionContent.appendChild(questionNumber);
+
+      // Handle mixed content (text + image)
+      const questionParts = splitMixedContent(question.question);
+      
+      questionParts.forEach(part => {
+        if (part.type === 'text') {
+          const textElement = document.createElement('span');
+          textContent = part.content.replace(/^\s+/, ''); // Remove leading whitespace
+          textElement.textContent = textContent;
+          questionContent.appendChild(textElement);
+        } else if (part.type === 'image') {
+          questionContent.appendChild(
+            createImageElement(part.content, 'question-image', 'Question image')
+          );
+        }
+      });
+
+      questionDiv.appendChild(questionContent);
+
+      // Options
+      const optionsDiv = document.createElement('div');
+      optionsDiv.className = 'options';
+
+      question.options.forEach((option, optIndex) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'option';
+        optionDiv.dataset.option = String.fromCharCode(65 + optIndex);
+
+        if (isImageUrl(option.text)) {
+          const optionContainer = document.createElement('div');
+          optionContainer.className = 'option-with-image';
+          
+          const label = document.createElement('span');
+          label.className = 'option-letter';
+          label.textContent = `${String.fromCharCode(65 + optIndex)}.`;
+          
+          optionContainer.appendChild(label);
+          optionContainer.appendChild(
+            createImageElement(option.text, 'option-image', `Option ${String.fromCharCode(65 + optIndex)}`)
+          );
+          optionDiv.appendChild(optionContainer);
+        } else {
+          optionDiv.textContent = `${String.fromCharCode(65 + optIndex)}. ${option.text}`;
+        }
+
+        optionDiv.addEventListener('click', () => {
+          // Deselect all options in this question
+          optionsDiv.querySelectorAll('.option').forEach(opt => {
+            opt.classList.remove('selected');
+          });
+
+          // Select this option
+          optionDiv.classList.add('selected');
+
+          // Save response
+          userResponses[section.id][question.qid].userAnswer = 
+            optionDiv.dataset.option;
+
+          // Mark section as visited
+          const sectionBtn = document.querySelector(
+            `.section-btn[data-section-index="${sectionIndex}"]`
+          );
+          sectionBtn.classList.add('visited');
+        });
+
+        optionsDiv.appendChild(optionDiv);
+      });
+
+      questionDiv.appendChild(optionsDiv);
+      sectionContainer.appendChild(questionDiv);
+    });
+
+    questionSection.appendChild(sectionContainer);
+  });
+
+  updateNavButtons();
+}
+      
+
+
+
+function splitMixedContent(content) {
+  const parts = [];
+  // Regex to find URLs in text
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  let lastIndex = 0;
+  let match;
+  
+  while ((match = urlRegex.exec(content)) !== null) {
+    // Add text before the URL
+    if (match.index > lastIndex) {
+      parts.push({
+        type: 'text',
+        content: content.substring(lastIndex, match.index)
+      });
+    }
+    
+    // Add the URL as image if it's an image
+    if (isImageUrl(match[0])) {
+      parts.push({
+        type: 'image',
+        content: match[0]
+      });
+    } else {
+      // If not an image, keep as text
+      parts.push({
+        type: 'text',
+        content: match[0]
+      });
+    }
+    
+    lastIndex = urlRegex.lastIndex;
+  }
+  
+  // Add remaining text after last URL
+  if (lastIndex < content.length) {
+    parts.push({
+      type: 'text',
+      content: content.substring(lastIndex)
+    });
+  }
+  
+  return parts;
+}	
+
+
+// Improved image element creation
+function createImageElement(url, className, altText) {
+  const container = document.createElement('div');
+  container.className = `${className}-container`;
+  
+  const img = document.createElement('img');
+  img.src = url;
+  img.alt = altText;
+  img.className = className;
+  img.crossOrigin = 'anonymous'; // Helps with CORS
+  
+  img.onerror = function() {
+    container.innerHTML = `
+      <div class="image-fallback">
+        <span class="error-icon">⚠️</span>
+        Image failed to load
+      </div>
+    `;
+    container.classList.add('image-failed');
+    
+    // Add clickable link to the image URL
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.textContent = 'Open image in new tab';
+    link.className = 'image-link';
+    container.appendChild(link);
+  };
+  
+  container.appendChild(img);
+  return container;
+}
+
+
+// Enhanced image URL detection
+function isImageUrl(url) {
+  if (typeof url !== 'string') return false;
+  try {
+    new URL(url); // Validate it's a proper URL
+    const imagePattern = /\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i;
+    return imagePattern.test(url) || 
+           url.includes('googleusercontent.com') ||
+           url.includes('gstatic.com');
+  } catch {
+    return false;
+  }
+}
+  
+        function showCurrentSection() {
+            document.querySelectorAll('.question-container').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const currentSection = sections[currentSectionIndex];
+            document.getElementById(`section-${currentSection.id}`).classList.add('active');
+            
+            document.querySelectorAll('.section-btn').forEach((btn, index) => {
+                btn.classList.remove('active');
+                if (index === currentSectionIndex) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            updateNavButtons();
+            
+            // Restore selected answers
+            const currentSectionQuestions = questions[currentSection.id];
+            currentSectionQuestions.forEach(question => {
+                const userAnswer = userResponses[currentSection.id][question.qid].userAnswer;
+                if (userAnswer) {
+                    const questionDiv = document.querySelector(
+                        `#section-${currentSection.id} .question-item[data-qid="${question.qid}"]`
+                    );
+                    if (questionDiv) {
+                        const optionDiv = questionDiv.querySelector(
+                            `.option[data-option="${userAnswer}"]`
+                        );
+                        if (optionDiv) {
+                            optionDiv.classList.add('selected');
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateNavButtons() {
+            prevSectionBtn.disabled = currentSectionIndex === 0;
+            nextSectionBtn.disabled = currentSectionIndex === sections.length - 1;
+        }
+        
+        function goToPreviousSection() {
+            if (currentSectionIndex > 0) {
+                currentSectionIndex--;
+                showCurrentSection();
+            }
+        }
+        
+        function goToNextSection() {
+            if (currentSectionIndex < sections.length - 1) {
+                currentSectionIndex++;
+                showCurrentSection();
+            }
+        }
+        
+        function startTimer() {
+            if (examTimer) clearInterval(examTimer);
+            
+            examTimer = setInterval(() => {
+                remainingTime--;
+                
+                if (remainingTime <= 0) {
+                    clearInterval(examTimer);
+                    submitExam();
+                    return;
+                }
+                
+                // Update timer display
+                const hours = Math.floor(remainingTime / 3600);
+                const minutes = Math.floor((remainingTime % 3600) / 60);
+                const seconds = remainingTime % 60;
+                
+                examTimerDisplay.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (remainingTime <= 300) {
+                    examTimerDisplay.style.color = '#e74c3c';
+                }
+            }, 1000);
+        }
+        
+        function confirmSubmitExam() {
+            if (confirm('Are you sure you want to submit the exam? You cannot change your answers after submission.')) {
+                submitExam();
+            }
+        }
+        
+        async function submitExam() {
+            clearInterval(examTimer);
+            
+            // Calculate scores
+            const { sectionScores, totalScore, totalPossibleScore } = calculateExamScores();
+            
+            // Prepare data to send
+            const postData = prepareSubmissionData(sectionScores);
+            
+            // Attempt Submission
+            await attemptSubmission(postData, sectionScores, totalScore, totalPossibleScore);
+        }
+        
+        function calculateExamScores() {
+            const sectionScores = {};
+            let totalScore = 0;
+            let totalPossibleScore = 0;
+            
+            sections.forEach(section => {
+                let sectionScore = 0;
+                let sectionPossibleScore = 0;
+                
+                questions[section.id].forEach(question => {
+                    const response = userResponses[section.id][question.qid];
+                    const marks = parseInt(question.marks);
+                    sectionPossibleScore += marks;
+                    
+                    if (response.userAnswer === response.correctAnswer) {
+                        sectionScore += marks;
+                    }
+                });
+                
+                sectionScores[section.id] = {
+                    name: section.name,
+                    score: sectionScore,
+                    possible: sectionPossibleScore
+                };
+                
+                totalScore += sectionScore;
+                totalPossibleScore += sectionPossibleScore;
+            });
+            
+            return { sectionScores, totalScore, totalPossibleScore };
+        }
+        
+        function prepareSubmissionData(sectionScores) {
+            return {
+                action: 'submitExam',
+                userId: userId,
+                examId: currentExam,
+                responses: Object.keys(userResponses).flatMap(sectionId => 
+                    Object.keys(userResponses[sectionId]).map(qid => {
+                        const response = userResponses[sectionId][qid];
+                        return {
+                            sectionId,
+                            qid,
+                            userAnswer: response.userAnswer,
+                            correctAnswer: response.correctAnswer,
+                            marksAwarded: response.userAnswer === response.correctAnswer ? 
+                                         parseInt(response.marks) : 0
+                        };
+                    })
+                ),
+                scores: sections.map(section => ({
+                    sectionId: section.id,
+                    sectionName: section.name,
+                    score: sectionScores[section.id].score
+                }))
+            };
+        }
+        
+        async function attemptSubmission(postData, sectionScores, totalScore, totalPossibleScore) {
+            loadingIndicator.style.display = 'block';
+            examInterface.style.display = 'none';
+            
+            try {
+                // Create a hidden form for submission
+                const form = document.createElement('form');
+                form.style.display = 'none';
+                form.method = 'POST';
+                form.action = scriptUrl;
+                
+                // Add data as hidden input
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'data';
+                input.value = JSON.stringify(postData);
+                form.appendChild(input);
+                
+                // Submit the form
+                document.body.appendChild(form);
+                form.submit();
+                
+                // Show results immediately (form submission will happen in background)
+                showResults(sectionScores, totalScore, totalPossibleScore);
+                saveLocalBackup(sectionScores, totalScore, totalPossibleScore);
+                
+                // Remove form after submission
+                setTimeout(() => document.body.removeChild(form), 5000);
+                
+            } catch (error) {
+                console.error('Submission error:', error);
+                handleSubmissionError(error, sectionScores, totalScore, totalPossibleScore);
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+        
+        function saveLocalBackup(sectionScores, totalScore, totalPossibleScore) {
+            localStorage.setItem(`examResult_${userId}_${currentExam}`, JSON.stringify({
+                sectionScores,
+                totalScore,
+                totalPossibleScore,
+                timestamp: new Date().toISOString()
+            }));
+        }
+        
+        function handleSubmissionError(error, sectionScores, totalScore, totalPossibleScore) {
+            console.error('Submission error:', error);
+            
+            const savedResults = localStorage.getItem(`examResult_${userId}_${currentExam}`);
+            if (savedResults) {
+                const parsedResults = JSON.parse(savedResults);
+                alert('Connection error. Showing last saved results.');
+                showResults(parsedResults.sectionScores, parsedResults.totalScore, parsedResults.totalPossibleScore);
+            } else {
+                alert('Error submitting exam results. Showing local results only.');
+                showResults(sectionScores, totalScore, totalPossibleScore);
+            }
+        }
+        
+        function showResults(sectionScores, totalScore, totalPossibleScore) {
+            examInterface.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            resultDetails.innerHTML = `
+                <div class="result-score">You scored ${totalScore} out of ${totalPossibleScore}</div>
+                <h3>Section-wise Results:</h3>
+            `;
+            
+            for (const sectionId in sectionScores) {
+                const section = sectionScores[sectionId];
+                const percentage = Math.round((section.score / section.possible) * 100);
+                
+                const sectionResult = document.createElement('div');
+                sectionResult.className = 'section-result';
+                sectionResult.innerHTML = `
+                    <strong>${section.name}:</strong> ${section.score} / ${section.possible} (${percentage}%)
+                `;
+                resultDetails.appendChild(sectionResult);
+            }
+        }
+        
+        function resetExam() {
+            resultContainer.style.display = 'none';
+            examSelect.disabled = false;
+            startExamBtn.disabled = !examSelect.value;
+            examSelect.value = '';
+            examTimerDisplay.style.color = '#e74c3c';
+        }
+    </script>
+</body>
+</html>
