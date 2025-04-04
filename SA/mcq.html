@@ -207,11 +207,15 @@
 		</div>
 
 		<script>
-			// Function to click the button on page load
-			window.onload = function() {
-				document.getElementById('saveConfig').click();
-			};
-		</script>
+    // Function to click the button on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the button element by its ID
+        var saveConfigButton = document.getElementById('saveConfig');
+        
+        // Click the button
+        saveConfigButton.click();
+    });
+</script>
         
         <div class="exam-selector">
             <h2>Select Exam</h2>
