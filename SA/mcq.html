@@ -196,24 +196,29 @@
     <div class="container">
         <h1>Online Exam</h1>
         
-        <div class="config-section" style="display:none">
-			<h2>Configuration</h2>
-			<div>
-				<label for="scriptUrl">Google Apps Script Web App URL:</label>
-				<input type="text" id="scriptUrl" value="https://script.google.com/macros/s/AKfycbz9wXVPoInRmLEW4nRYs0ppLnUPUbdoDuEssTCCrWQnYKIJ1TV2_XkU8utErtCoIJUPqw/exec" placeholder="https://script.google.com/macros/s/..." style="width: 100%; max-width: 600px; padding: 10px;">
-				<button id="saveConfig" style="margin-top: 10px;">Save Configuration</button>
-				<p id="configStatus" style="margin-top: 10px; color: #27ae60; display: none;">Configuration saved successfully!</p>
-			</div>
-		</div>
+<div class="config-section" style="display:none">
+    <h2>Configuration</h2>
+    <div>
+        <label for="scriptUrl">Google Apps Script Web App URL:</label>
+        <input type="text" id="scriptUrl" value="https://script.google.com/macros/s/AKfycbz9wXVPoInRmLEW4nRYs0ppLnUPUbdoDuEssTCCrWQnYKIJ1TV2_XkU8utErtCoIJUPqw/exec" placeholder="https://script.google.com/macros/s/..." style="width: 100%; max-width: 600px; padding: 10px;">
+        <button id="saveConfig" style="margin-top: 10px;">Save Configuration</button>
+        <p id="configStatus" style="margin-top: 10px; color: #27ae60; display: none;">Configuration saved successfully!</p>
+    </div>
+</div>
 
-		<script>
+<script>
     // Function to click the button on page load
     document.addEventListener('DOMContentLoaded', function() {
         // Get the button element by its ID
         var saveConfigButton = document.getElementById('saveConfig');
-        
-        // Click the button
-        saveConfigButton.click();
+
+        // Ensure the button is accessible even if the parent div is hidden
+        if (saveConfigButton) {
+            // Trigger the click event
+            saveConfigButton.click();
+        } else {
+            console.error('Button not found');
+        }
     });
 </script>
         
