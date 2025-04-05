@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #3367d6;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            display: block;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            display: block;
+        }
+        .info {
+            background-color: #d9edf7;
+            color: #31708f;
+            display: block;
+        }
+        #otpSection, #userInfoSection {
+            display: none;
+        }
+        .resend {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .resend a {
+            color: #4285f4;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .resend a:hover {
+            text-decoration: underline;
+        }
+        .resend .disabled {
+            color: #999;
+            cursor: default;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>OTP Login System</h2>
+        
+        <div id="emailSection">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <button id="sendOtpBtn" onclick="validateEmail()">Send OTP</button>
+        </div>
+        
+        <div id="userInfoSection">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label for="className">Class</label>
+                <input type="text" id="className" placeholder="Enter your class">
+            </div>
+            <button id="sendUserInfoBtn" onclick="sendOTP()">Send OTP</button>
+        </div>
+        
+        <div id="otpSection">
+            <div class="form-group">
+                <label for="otp">Enter 6-digit OTP</label>
+                <input type="text" id="otp" placeholder="123456" maxlength="6" 
+                       pattern="\d{6}" title="Please enter exactly 6 digits"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            <button onclick="verifyOTP()">Verify OTP</button>
+            <div class="resend">
+                Didn't receive OTP? <a id="resendLink" onclick="resendOTP()">Resend</a>
+                <span id="countdown"></span>
+            </div>
+        </div>
+        
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        // Replace with your Google Apps Script web app URL
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvWhqYsdeBCmmnXu1CKSQt8PBmoJJobGXJ65B8FTZXXpQBYA76BruJQyWb8i8xbKDi/exec";
+        let resendTimeout;
+        let countdownInterval;
+        const RESEND_DELAY = 60; // 60 seconds before allowing resend
+        let currentEmail = "";
+        
+        function validateEmail() {
+            const email = document.getElementById('email').value.trim();
+            currentEmail = email;
+            
+            if (!email) {
+                showMessage('Please enter your email', 'error');
+                return;
+            }
+            
+            // Simple email validation
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Hide email section, show user info section
+            document.getElementById('emailSection').style.display = 'none';
+            document.getElementById('userInfoSection').style.display = 'block';
+            showMessage('Please complete your information', 'info');
+        }
+        
+        function sendOTP() {
+            const email = currentEmail;
+            const name = document.getElementById('name').value.trim();
+            const className = document.getElementById('className').value.trim();
+            const sendBtn = document.getElementById('sendUserInfoBtn');
+            
+            if (!name || name.length < 2) {
+                showMessage('Please enter your full name', 'error');
+                return;
+            }
+            
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Sending...';
+            showMessage('Sending OTP to your email...');
+            
+            fetch(`${SCRIPT_URL}?action=generateOTP&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&className=${encodeURIComponent(className)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showMessage(`OTP sent to ${email}. Check your inbox.`, 'success');
+                        document.getElementById('userInfoSection').style.display = 'none';
+                        document.getElementById('otpSection').style.display = 'block';
+                        startResendCountdown();
+                    } else {
+                        showMessage(data.message, 'error');
+                    }
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = 'Send OTP';
+                })
+                .catch(error => {
+                    showMessage('Error sending OTP. Please try again.', 'error');
+                    console.error(error);
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = 'Send OTP';
+                });
+        }
+        
+        function verifyOTP() {
+            const email = currentEmail;
+            let otp = document.getElementById('otp').value.trim();
+            
+            otp = otp.replace(/\s+/g, '').replace(/-+/g, '');
+            
+            if (!otp || otp.length !== 6 || isNaN(otp)) {
+                showMessage('Please enter a valid 6-digit number', 'error');
+                return;
+            }
+            
+            showMessage('Verifying OTP...');
+            
+            fetch(`${SCRIPT_URL}?action=verifyOTP&email=${encodeURIComponent(email)}&otp=${otp}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Store user data in session storage
+                        sessionStorage.setItem('loggedIn', 'true');
+                        sessionStorage.setItem('userEmail', email);
+                        sessionStorage.setItem('userName', data.userData.name);
+                        sessionStorage.setItem('userClass', data.userData.className);
+                        sessionStorage.setItem('loginTime', Date.now());
+                        
+                        // Redirect to dashboard
+                        window.location.href = 'mcq.html';
+                    } else {
+                        showMessage(data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    showMessage('Error verifying OTP', 'error');
+                    console.error(error);
+                });
+        }
+        
+        function resendOTP() {
+            const resendLink = document.getElementById('resendLink');
+            if (resendLink.classList.contains('disabled')) return;
+            
+            clearTimeout(resendTimeout);
+            clearInterval(countdownInterval);
+            
+            document.getElementById('countdown').textContent = '';
+            resendLink.classList.add('disabled');
+            
+            // Re-show user info section to collect details again
+            document.getElementById('otpSection').style.display = 'none';
+            document.getElementById('userInfoSection').style.display = 'block';
+            document.getElementById('otp').value = '';
+            showMessage('Please verify your information', 'info');
+        }
+        
+        function startResendCountdown() {
+            let seconds = RESEND_DELAY;
+            const resendLink = document.getElementById('resendLink');
+            const countdownEl = document.getElementById('countdown');
+            
+            resendLink.classList.add('disabled');
+            countdownEl.textContent = ` (${seconds}s)`;
+            
+            countdownInterval = setInterval(() => {
+                seconds--;
+                countdownEl.textContent = ` (${seconds}s)`;
+                
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    resendLink.classList.remove('disabled');
+                    countdownEl.textContent = '';
+                }
+            }, 1000);
+        }
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message';
+            if (type) {
+                messageDiv.classList.add(type);
+            }
+        }
+    </script>
+</body>
+</html>
