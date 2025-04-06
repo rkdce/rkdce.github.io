@@ -140,7 +140,7 @@
 
     <script>
         // Replace with your Google Apps Script web app URL
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFVA0mdhwRR4kPIO7MWEwCzV5GGEYNwhutXUKgSLVP5FeId_dmWU56CXjt7Mv694CRgA/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxxJ8gWz-61eGOCsV39EYykPpyUJ7IdRDAbID_E5DqVsIirXNWl-MtdRLGrYxWy_yBQ/exec";
         let resendTimeout;
         let countdownInterval;
         const RESEND_DELAY = 60; // 60 seconds before allowing resend
@@ -229,7 +229,7 @@
                         sessionStorage.setItem('loginTime', Date.now());
                         
                         // Redirect to dashboard
-                        window.location.href = 'OnlineExam.html';
+                        window.location.href = 'mcq.html';
                     } else {
                         showMessage(data.message, 'error');
                     }
