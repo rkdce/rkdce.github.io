@@ -140,7 +140,7 @@
 
     <script>
         // Replace with your Google Apps Script web app URL
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPI4kkNbVr0baICoZSLTpYdVyxUWRQF_WZ1JUkKIIcwT88LSFB33r0OOKmms1h0rue/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykX3oVVshNpiQWauq588dhFqq04oE97_5_qWdY3H2VgOACM3oG1_lXP0R6OqtlzV7v/exec";
         let resendTimeout;
         let countdownInterval;
         const RESEND_DELAY = 60; // 60 seconds before allowing resend
@@ -182,7 +182,9 @@
             sendBtn.textContent = 'Sending...';
             showMessage('Sending OTP to your email...');
             
-            fetch(`${SCRIPT_URL}?action=generateOTP&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&className=${encodeURIComponent(className)}`)
+            // Add timestamp to prevent caching
+            const timestamp = new Date().getTime();
+            fetch(`${SCRIPT_URL}?action=generateOTP&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&className=${encodeURIComponent(className)}&_=${timestamp}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
@@ -217,7 +219,9 @@
             
             showMessage('Verifying OTP...');
             
-            fetch(`${SCRIPT_URL}?action=verifyOTP&email=${encodeURIComponent(email)}&otp=${otp}`)
+            // Add timestamp to prevent caching
+            const timestamp = new Date().getTime();
+            fetch(`${SCRIPT_URL}?action=verifyOTP&email=${encodeURIComponent(email)}&otp=${otp}&ipAddress=${encodeURIComponent(window.clientIp || 'Not tracked')}&_=${timestamp}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
@@ -285,6 +289,17 @@
                 messageDiv.classList.add(type);
             }
         }
+        
+        // Fetch IP address when the page loads
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                window.clientIp = data.ip;
+            })
+            .catch(error => {
+                console.error('Error fetching IP:', error);
+                window.clientIp = "Not tracked";
+            });
     </script>
 </body>
 </html>
