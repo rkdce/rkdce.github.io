@@ -222,25 +222,122 @@
             margin-bottom: 8px;
             font-weight: bold;
         }
-	    #examTimer {
-      position: fixed;
-      top: 15px;
-      right: 20px;
-      background-color: #2c3e50;
-      color: #ecf0f1;
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      transition: background-color 0.3s ease;
-    }
-
-    #examTimer:hover {
-      background-color: #34495e;
-    }
+        
+        /* Warning modal styles */
+        .warning-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .warning-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .warning-title {
+            color: #e74c3c;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .warning-message {
+            margin-bottom: 20px;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        .warning-count {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .warning-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+        .warning-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Floating timer styles */
+        .floating-timer {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        /* Exam rules modal */
+        .rules-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .rules-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .rules-title {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .rules-list {
+            margin-bottom: 25px;
+        }
+        .rules-list li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .rules-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 0 auto;
+        }
+        .rules-btn:hover {
+            background-color: #2980b9;
+        }
     </style>
 </head>
 <body>
@@ -270,7 +367,7 @@
             // Function to pre-fill the input box and click the button on page load
             window.onload = function() {
                 // Pre-fill the input box with the specified URL
-                document.getElementById('scriptUrl').value = 'https://script.google.com/macros/s/AKfycbxPI4kkNbVr0baICoZSLTpYdVyxUWRQF_WZ1JUkKIIcwT88LSFB33r0OOKmms1h0rue/exec';
+                document.getElementById('scriptUrl').value = 'https://script.google.com/macros/s/AKfycbykX3oVVshNpiQWauq588dhFqq04oE97_5_qWdY3H2VgOACM3oG1_lXP0R6OqtlzV7v/exec';
 
                 // Click the save button
                 document.getElementById('saveConfig').click();
@@ -304,7 +401,6 @@
         
         <div class="result-container" id="resultContainer">
             <h2>Exam Results</h2>
-            <h3>Also Marks have been sent to your E-mail ✉️"</h3>
             <div id="resultDetails"></div>
             <button id="retakeExamBtn">Take Another Exam</button>
         </div>
@@ -314,12 +410,47 @@
             <p>Loading exam data...</p>
         </div>
     </div>
+    
+    <!-- Warning Modal -->
+    <div class="warning-modal" id="warningModal">
+        <div class="warning-content">
+            <div class="warning-title">⚠️ Warning</div>
+            <div class="warning-message" id="warningMessage"></div>
+            <div>Warning count: <span class="warning-count" id="warningCount">1</span>/3</div>
+            <button class="warning-btn" id="warningBtn">I Understand</button>
+        </div>
+    </div>
+    
+    <!-- Exam Rules Modal -->
+    <div class="rules-modal" id="rulesModal">
+        <div class="rules-content">
+            <div class="rules-title">Exam Rules and Guidelines</div>
+            <div class="rules-list">
+                <ol>
+                    <li><strong>Stay in the exam window:</strong> You must remain in this browser window throughout the exam. Switching tabs or minimizing the window will result in a warning.</li>
+                    <li><strong>No external resources:</strong> Do not use any external resources, books, or websites during the exam.</li>
+                    <li><strong>No communication:</strong> Do not communicate with others during the exam.</li>
+                    <li><strong>Timer:</strong> The exam timer will be displayed in the top right corner. Once the time is up, your exam will be automatically submitted.</li>
+                    <li><strong>Warnings:</strong> You will receive warnings for any suspicious activity. After 3 warnings, your exam will be automatically submitted.</li>
+                    <li><strong>Submission:</strong> Once submitted, you cannot change your answers.</li>
+                </ol>
+            </div>
+            <div class="rules-list">
+                <p><strong>Important:</strong> Any illegal activity detected will result in immediate exam cancellation and automatic submission.</p>
+            </div>
+            <button class="rules-btn" id="acceptRulesBtn">I Accept and Start Exam</button>
+        </div>
+    </div>
+    
+    <!-- Floating Timer -->
+    <div class="floating-timer" id="floatingTimer" style="display: none;">00:00:00</div>
 
     <script>
-      // Check if user is logged in
+	            // Check if user is logged in
         if (!sessionStorage.getItem('loggedIn')) {
             window.location.href = 'Login.html';
         }
+        
         // Display user information
         document.getElementById('userName').textContent = sessionStorage.getItem('userName') || 'Not provided';
         document.getElementById('userEmail').textContent = sessionStorage.getItem('userEmail') || 'No email';
@@ -338,7 +469,7 @@
             sessionStorage.removeItem('loginTime');
             
             // Redirect to login page
-            window.location.href = 'Login.html';
+            window.location.href = 'index.html';
         }
         
         // Global variables
@@ -351,10 +482,18 @@
         let examTimer = null;
         let remainingTime = 0;
         let examStartTime = null;
+        let examEndTime = null;
         let userId = sessionStorage.getItem('userEmail'); // Use email as user ID
         let userName = sessionStorage.getItem('userName'); // User name
         let userClass = sessionStorage.getItem('userClass'); // User class
         let scriptUrl = localStorage.getItem('appScriptUrl') || '';
+        
+        // Security variables
+        let warningCount = 0;
+        let isExamActive = false;
+        let lastActivityTime = Date.now();
+        let inactivityTimer = null;
+        const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minutes in milliseconds
         
         // DOM elements
         const scriptUrlInput = document.getElementById('scriptUrl');
@@ -365,6 +504,7 @@
         const examInterface = document.getElementById('examInterface');
         const examTitle = document.getElementById('examTitle');
         const examTimerDisplay = document.getElementById('examTimer');
+        const floatingTimer = document.getElementById('floatingTimer');
         const sectionNav = document.getElementById('sectionNav');
         const questionSection = document.getElementById('questionSection');
         const prevSectionBtn = document.getElementById('prevSectionBtn');
@@ -374,6 +514,16 @@
         const resultDetails = document.getElementById('resultDetails');
         const retakeExamBtn = document.getElementById('retakeExamBtn');
         const loadingIndicator = document.getElementById('loadingIndicator');
+        
+        // Warning modal elements
+        const warningModal = document.getElementById('warningModal');
+        const warningMessage = document.getElementById('warningMessage');
+        const warningCountDisplay = document.getElementById('warningCount');
+        const warningBtn = document.getElementById('warningBtn');
+        
+        // Rules modal elements
+        const rulesModal = document.getElementById('rulesModal');
+        const acceptRulesBtn = document.getElementById('acceptRulesBtn');
         
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
@@ -388,16 +538,226 @@
                 }
             });
             
-            startExamBtn.addEventListener('click', startExam);
+            startExamBtn.addEventListener('click', showExamRules);
             prevSectionBtn.addEventListener('click', goToPreviousSection);
             nextSectionBtn.addEventListener('click', goToNextSection);
             submitExamBtn.addEventListener('click', confirmSubmitExam);
             retakeExamBtn.addEventListener('click', resetExam);
             
+            // Warning button event listener
+            warningBtn.addEventListener('click', function() {
+                warningModal.style.display = 'none';
+                lastActivityTime = Date.now();
+            });
+            
+            // Rules acceptance button event listener
+            acceptRulesBtn.addEventListener('click', function() {
+                rulesModal.style.display = 'none';
+                startExam();
+            });
+            
             if (scriptUrl) {
                 loadExamsFromAppScript();
             }
         });
+        
+        // Show exam rules before starting the exam
+        function showExamRules() {
+            // Check for developer tools before showing rules
+            if (isDevToolsOpen()) {
+                showWarning('Developer tools are not allowed during the exam. Please close them before proceeding.');
+                return;
+            }
+            rulesModal.style.display = 'flex';
+        }
+        
+        // Function to detect developer tools
+        function isDevToolsOpen() {
+            const widthThreshold = window.outerWidth - window.innerWidth > 160;
+            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            
+            // Check for common dev tools keyboard shortcuts
+            const devToolsKeys = {
+                'F12': false,
+                'I': false,
+                'J': false,
+                'C': false,
+                'Shift': false
+            };
+            
+            // Check if dev tools are open based on window size
+            if (widthThreshold || heightThreshold) {
+                return true;
+            }
+            
+            // Check for dev tools using console.log override
+            const devToolsCheck = /./;
+            devToolsCheck.toString = function() {
+                return true;
+            };
+            console.log('%c', devToolsCheck);
+            
+            // Check for dev tools using performance timing
+            const timing = performance.timing;
+            const loadTime = timing.loadEventEnd - timing.navigationStart;
+            if (loadTime > 10000) { // If page takes too long to load, might indicate dev tools
+                return true;
+            }
+            
+            return false;
+        }
+        
+        // Add event listeners for dev tools detection
+        document.addEventListener('keydown', function(e) {
+            if (isExamActive) {
+                // Check for F12
+                if (e.key === 'F12') {
+                    e.preventDefault();
+                    showWarning('Developer tools are not allowed during the exam.');
+                    return false;
+                }
+                
+                // Check for Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+                    e.preventDefault();
+                    showWarning('Developer tools are not allowed during the exam.');
+                    return false;
+                }
+                
+                // Check for Ctrl+U (View Source)
+                if (e.ctrlKey && e.key === 'u') {
+                    e.preventDefault();
+                    showWarning('Viewing page source is not allowed during the exam.');
+                    return false;
+                }
+            }
+        });
+        
+        // Add resize event listener to detect dev tools opening
+        let lastWidth = window.outerWidth;
+        let lastHeight = window.outerHeight;
+        
+        window.addEventListener('resize', function() {
+            if (isExamActive) {
+                const widthDiff = window.outerWidth - lastWidth;
+                const heightDiff = window.outerHeight - lastHeight;
+                
+                if (Math.abs(widthDiff) > 100 || Math.abs(heightDiff) > 100) {
+                    if (isDevToolsOpen()) {
+                        showWarning('Developer tools are not allowed during the exam.');
+                    }
+                }
+                
+                lastWidth = window.outerWidth;
+                lastHeight = window.outerHeight;
+            }
+        });
+        
+        // Security functions
+        function setupSecurityMeasures() {
+            // Tab visibility change detection
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            
+            // Window focus/blur detection
+            window.addEventListener('focus', handleWindowFocus);
+            window.addEventListener('blur', handleWindowBlur);
+            
+            // Mouse movement detection
+            document.addEventListener('mousemove', resetInactivityTimer);
+            document.addEventListener('keydown', resetInactivityTimer);
+            document.addEventListener('click', resetInactivityTimer);
+            
+            // Prevent right-click
+            document.addEventListener('contextmenu', preventRightClick);
+            
+            // Prevent keyboard shortcuts
+            document.addEventListener('keydown', preventKeyboardShortcuts);
+            
+            // Start inactivity timer
+            startInactivityTimer();
+        }
+        
+        function handleVisibilityChange() {
+            if (document.hidden && isExamActive) {
+                showWarning('You have switched to another tab. This is not allowed during the exam.');
+            }
+        }
+        
+        function handleWindowFocus() {
+            if (isExamActive) {
+                lastActivityTime = Date.now();
+            }
+        }
+        
+        function handleWindowBlur() {
+            if (isExamActive) {
+                showWarning('You have minimized the exam window. This is not allowed during the exam.');
+            }
+        }
+        
+        function resetInactivityTimer() {
+            if (isExamActive) {
+                lastActivityTime = Date.now();
+            }
+        }
+        
+        function startInactivityTimer() {
+            inactivityTimer = setInterval(() => {
+                if (isExamActive && Date.now() - lastActivityTime > INACTIVITY_TIMEOUT) {
+                    showWarning('You have been inactive for too long. Please continue with the exam.');
+                }
+            }, 10000); // Check every 10 seconds
+        }
+        
+        function preventRightClick(e) {
+            if (isExamActive) {
+                e.preventDefault();
+                showWarning('Right-clicking is not allowed during the exam.');
+            }
+        }
+        
+        function preventKeyboardShortcuts(e) {
+            if (isExamActive) {
+                // Prevent common keyboard shortcuts
+                if ((e.ctrlKey || e.metaKey) && 
+                    (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'a' || 
+                     e.key === 'p' || e.key === 's' || e.key === 'f' || e.key === 'r')) {
+                    e.preventDefault();
+                    showWarning('Keyboard shortcuts are not allowed during the exam.');
+                }
+            }
+        }
+        
+        function showWarning(message) {
+            if (!isExamActive) return;
+            
+            warningCount++;
+            warningMessage.textContent = message;
+            warningCountDisplay.textContent = warningCount;
+            warningModal.style.display = 'flex';
+            
+            if (warningCount >= 3) {
+                // Auto-submit after 3 warnings
+                setTimeout(() => {
+                    if (warningModal.style.display === 'flex') {
+                        warningModal.style.display = 'none';
+                        submitExam();
+                    }
+                }, 5000); // Give 5 seconds to acknowledge the warning
+            }
+        }
+        
+        function cleanupSecurityMeasures() {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('focus', handleWindowFocus);
+            window.removeEventListener('blur', handleWindowBlur);
+            document.removeEventListener('mousemove', resetInactivityTimer);
+            document.removeEventListener('keydown', resetInactivityTimer);
+            document.removeEventListener('click', resetInactivityTimer);
+            document.removeEventListener('contextmenu', preventRightClick);
+            document.removeEventListener('keydown', preventKeyboardShortcuts);
+            clearInterval(inactivityTimer);
+        }
         
         function saveConfig() {
             scriptUrl = scriptUrlInput.value.trim();
@@ -422,7 +782,9 @@
             examSelect.disabled = true;
             startExamBtn.disabled = true;
             
-            fetch(`${scriptUrl}?action=getExams`)
+            // Add timestamp to prevent caching
+            const timestamp = new Date().getTime();
+            fetch(`${scriptUrl}?action=getExams&_=${timestamp}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -461,111 +823,125 @@
             });
         }
         
-function startExam() {
-    currentExam = examSelect.value;
-    examTitle.textContent = currentExamName;
-    
-    loadingIndicator.style.display = 'block';
-    examInterface.style.display = 'none';
-    
-    // Check if the user has already taken the exam
-    fetch(`${scriptUrl}?action=checkUserExamStatus&userId=${userId}&examId=${currentExam}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.error) {
-                alert(data.error);
-                loadingIndicator.style.display = 'none';
-                return;
-            }
+        function startExam() {
+            currentExam = examSelect.value;
+            examTitle.textContent = currentExamName;
             
-            if (data.hasTakenExam) {
-                alert('You have already taken this exam and cannot start it again.');
-                loadingIndicator.style.display = 'none';
-                return;
-            }
+            loadingIndicator.style.display = 'block';
+            examInterface.style.display = 'none';
             
-            // Proceed with fetching exam data
-            fetchExamData();
-        })
-        .catch(error => {
-            console.error('Error checking exam status:', error);
-            alert('Error checking exam status: ' + error.message);
-            loadingIndicator.style.display = 'none';
-        });
-    
-    function fetchExamData() {
-        fetch(`${scriptUrl}?action=getExamData&examId=${currentExam}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                    loadingIndicator.style.display = 'none';
-                    return;
-                }
-                
-                if (!data.data || !data.data.sections || !data.data.questions) {
-                    throw new Error('Invalid exam data structure received');
-                }
-                
-                sections = data.data.sections;
-                questions = data.data.questions;
-                
-                if (!Array.isArray(sections)) {
-                    throw new Error('Sections data is not an array');
-                }
-                
-                if (typeof questions !== 'object' || questions === null) {
-                    throw new Error('Questions data is invalid');
-                }
-                
-                // Initialize user responses
-                sections.forEach(section => {
-                    if (!questions[section.id] || !Array.isArray(questions[section.id])) {
-                        throw new Error(`No questions found for section ${section.id}`);
+            // Add timestamp to prevent caching
+            const timestamp = new Date().getTime();
+            
+            // Check if the user has already taken the exam
+            fetch(`${scriptUrl}?action=checkUserExamStatus&userId=${userId}&examId=${currentExam}&_=${timestamp}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        loadingIndicator.style.display = 'none';
+                        return;
                     }
                     
-                    userResponses[section.id] = {};
-                    questions[section.id].forEach(question => {
-                        userResponses[section.id][question.qid] = {
-                            userAnswer: '',
-                            correctAnswer: question.correctAnswer,
-                            marks: question.marks
-                        };
-                    });
+                    if (data.hasTakenExam) {
+                        alert('You have already taken this exam and cannot start it again.');
+                        loadingIndicator.style.display = 'none';
+                        return;
+                    }
+                    
+                    // Proceed with fetching exam data
+                    fetchExamData();
+                })
+                .catch(error => {
+                    console.error('Error checking exam status:', error);
+                    alert('Error checking exam status: ' + error.message);
+                    loadingIndicator.style.display = 'none';
                 });
-                
-                // Calculate total exam time
-                const totalTime = sections.reduce((sum, section) => sum + (section.time || 0), 0);
-                remainingTime = totalTime * 60;
-                examStartTime = new Date();
-                
-                // Initialize UI
-                setupExamUI();
-                showCurrentSection();
-                startTimer();
-                
-                loadingIndicator.style.display = 'none';
-                examInterface.style.display = 'block';
-                examSelect.disabled = true;
-                startExamBtn.disabled = true;
-            })
-            .catch(error => {
-                console.error('Error starting exam:', error);
-                alert('Error loading exam: ' + error.message);
-                loadingIndicator.style.display = 'none';
-            });
-    }
-}
+            
+            function fetchExamData() {
+                // Add timestamp to prevent caching
+                const timestamp = new Date().getTime();
+                fetch(`${scriptUrl}?action=getExamData&examId=${currentExam}&_=${timestamp}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                            loadingIndicator.style.display = 'none';
+                            return;
+                        }
+                        
+                        if (!data.data || !data.data.sections || !data.data.questions) {
+                            throw new Error('Invalid exam data structure received');
+                        }
+                        
+                        sections = data.data.sections;
+                        questions = data.data.questions;
+                        
+                        if (!Array.isArray(sections)) {
+                            throw new Error('Sections data is not an array');
+                        }
+                        
+                        if (typeof questions !== 'object' || questions === null) {
+                            throw new Error('Questions data is invalid');
+                        }
+                        
+                        // Initialize user responses
+                        sections.forEach(section => {
+                            if (!questions[section.id] || !Array.isArray(questions[section.id])) {
+                                throw new Error(`No questions found for section ${section.id}`);
+                            }
+                            
+                            userResponses[section.id] = {};
+                            questions[section.id].forEach(question => {
+                                userResponses[section.id][question.qid] = {
+                                    userAnswer: '',
+                                    correctAnswer: question.correctAnswer,
+                                    marks: question.marks
+                                };
+                            });
+                        });
+                        
+                        // Calculate total exam time
+                        const totalTime = sections.reduce((sum, section) => sum + (section.time || 0), 0);
+                        remainingTime = totalTime * 60;
+                        examStartTime = new Date();
+                        
+                        // Initialize UI
+                        setupExamUI();
+                        showCurrentSection();
+                        startTimer();
+                        
+                        // Setup security measures
+                        isExamActive = true;
+                        warningCount = 0;
+                        lastActivityTime = Date.now();
+                        setupSecurityMeasures();
+                        
+                        // Show floating timer
+                        floatingTimer.style.display = 'block';
+                        
+                        loadingIndicator.style.display = 'none';
+                        examInterface.style.display = 'block';
+                        examSelect.disabled = true;
+                        startExamBtn.disabled = true;
+                    })
+                    .catch(error => {
+                        console.error('Error starting exam:', error);
+                        alert('Error loading exam: ' + error.message);
+                        loadingIndicator.style.display = 'none';
+                    });
+            }
+        }
         
         function setupExamUI() {
             sectionNav.innerHTML = '';
@@ -675,6 +1051,9 @@ function startExam() {
                                 `.section-btn[data-section-index="${sectionIndex}"]`
                             );
                             sectionBtn.classList.add('visited');
+                            
+                            // Reset inactivity timer
+                            resetInactivityTimer();
                         });
                         
                         optionsDiv.appendChild(optionDiv);
@@ -852,11 +1231,13 @@ function startExam() {
                 const minutes = Math.floor((remainingTime % 3600) / 60);
                 const seconds = remainingTime % 60;
                 
-                examTimerDisplay.textContent = 
-                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                examTimerDisplay.textContent = timeString;
+                floatingTimer.textContent = timeString;
                 
                 if (remainingTime <= 300) {
                     examTimerDisplay.style.color = '#e74c3c';
+                    floatingTimer.style.color = '#e74c3c';
                 }
             }, 1000);
         }
@@ -869,6 +1250,14 @@ function startExam() {
         
         async function submitExam() {
             clearInterval(examTimer);
+            examEndTime = new Date();
+            
+            // Clean up security measures
+            cleanupSecurityMeasures();
+            isExamActive = false;
+            
+            // Hide floating timer
+            floatingTimer.style.display = 'none';
             
             // Calculate scores
             const { sectionScores, totalScore, totalPossibleScore } = calculateExamScores();
@@ -912,33 +1301,40 @@ function startExam() {
             return { sectionScores, totalScore, totalPossibleScore };
         }
         
-function prepareSubmissionData(sectionScores) {
-    return {
-        action: 'submitExam',
-        userId: userId,
-        userName: userName, // Include user name
-        userClass: userClass, // Include user class
-        examId: currentExam,
-        responses: Object.keys(userResponses).flatMap(sectionId => 
-            Object.keys(userResponses[sectionId]).map(qid => {
-                const response = userResponses[sectionId][qid];
-                return {
-                    sectionId,
-                    qid,
-                    userAnswer: response.userAnswer,
-                    correctAnswer: response.correctAnswer,
-                    marksAwarded: response.userAnswer === response.correctAnswer ? 
-                                 parseInt(response.marks) : 0
-                };
-            })
-        ),
-        scores: sections.map(section => ({
-            sectionId: section.id,
-            sectionName: section.name, // Ensure correct section name is used
-            score: sectionScores[section.id].score
-        }))
-    };
-}
+        function prepareSubmissionData(sectionScores) {
+            return {
+                action: 'submitExam',
+                userId: userId,
+                userName: userName, // Include user name
+                userClass: userClass, // Include user class
+                examId: currentExam,
+                examName: currentExamName, // Include exam name
+                examStartTime: examStartTime.toISOString(), // Include exam start time
+                examEndTime: examEndTime.toISOString(), // Include exam end time
+                timeSpent: Math.floor((examEndTime - examStartTime) / 1000), // Time spent in seconds
+                warningCount: warningCount, // Include warning count
+                ipAddress: getClientIp(), // Include IP address
+                responses: Object.keys(userResponses).flatMap(sectionId => 
+                    Object.keys(userResponses[sectionId]).map(qid => {
+                        const response = userResponses[sectionId][qid];
+                        return {
+                            sectionId,
+                            qid,
+                            userAnswer: response.userAnswer,
+                            correctAnswer: response.correctAnswer,
+                            marksAwarded: response.userAnswer === response.correctAnswer ? 
+                                         parseInt(response.marks) : 0
+                        };
+                    })
+                ),
+                scores: sections.map(section => ({
+                    sectionId: section.id,
+                    sectionName: section.name, // Ensure correct section name is used
+                    score: sectionScores[section.id].score,
+                    possible: sectionScores[section.id].possible
+                }))
+            };
+        }
         
         async function attemptSubmission(postData, sectionScores, totalScore, totalPossibleScore) {
             loadingIndicator.style.display = 'block';
@@ -957,6 +1353,13 @@ function prepareSubmissionData(sectionScores) {
                 input.name = 'data';
                 input.value = JSON.stringify(postData);
                 form.appendChild(input);
+                
+                // Add timestamp to prevent caching
+                const timestampInput = document.createElement('input');
+                timestampInput.type = 'hidden';
+                timestampInput.name = '_';
+                timestampInput.value = new Date().getTime();
+                form.appendChild(timestampInput);
                 
                 // Submit the form
                 document.body.appendChild(form);
@@ -1004,8 +1407,10 @@ function prepareSubmissionData(sectionScores) {
             examInterface.style.display = 'none';
             resultContainer.style.display = 'block';
             
+            const percentage = Math.round((totalScore / totalPossibleScore) * 100);
+            
             resultDetails.innerHTML = `
-                <div class="result-score">You scored ${totalScore} out of ${totalPossibleScore}</div>
+                <div class="result-score">You scored ${totalScore} out of ${totalPossibleScore} (${percentage}%)</div>
                 <h3>Section-wise Results:</h3>
             `;
             
@@ -1020,6 +1425,18 @@ function prepareSubmissionData(sectionScores) {
                 `;
                 resultDetails.appendChild(sectionResult);
             }
+            
+            // Add exam details
+            const examDetails = document.createElement('div');
+            examDetails.className = 'exam-details';
+            examDetails.innerHTML = `
+                <h3>Exam Details:</h3>
+                <p><strong>Exam:</strong> ${currentExamName}</p>
+                <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
+                <p><strong>Duration:</strong> ${Math.floor((new Date() - examStartTime) / 60000)} minutes</p>
+            `;
+            resultDetails.appendChild(examDetails);
         }
         
         function resetExam() {
@@ -1029,6 +1446,32 @@ function prepareSubmissionData(sectionScores) {
             examSelect.value = '';
             examTimerDisplay.style.color = '#e74c3c';
         }
+        
+        /**
+         * Get client IP address using a third-party service
+         * @return {string} The client IP address
+         */
+        function getClientIp() {
+            // We'll use a third-party service to get the IP
+            // This is a simple implementation that will be executed when submitting the exam
+            return "Fetching...";
+        }
+        
+        // Fetch IP address when the page loads
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                window.clientIp = data.ip;
+            })
+            .catch(error => {
+                console.error('Error fetching IP:', error);
+                window.clientIp = "Not tracked";
+            });
+            
+        // Override the getClientIp function after the IP is fetched
+        window.getClientIp = function() {
+            return window.clientIp || "Not tracked";
+        };
     </script>
 </body>
 </html>
