@@ -25,7 +25,7 @@
             text-align: center;
             margin-bottom: 30px;
         }
-		.user-info {
+        .user-info {
             margin: 20px 0;
             padding: 20px;
             background-color: #f8f9fa;
@@ -357,22 +357,11 @@
             <h2>Configuration</h2>
             <div>
                 <label for="scriptUrl">Google Apps Script Web App URL:</label>
-                <input type="text" id="scriptUrl" placeholder="https://script.google.com/macros/s/ ..." style="width: 100%; max-width: 600px; padding: 10px;">
+                <input type="text" id="scriptUrl" placeholder="https://script.google.com/macros/s/..." style="width: 100%; max-width: 600px; padding: 10px;">
                 <button id="saveConfig" style="margin-top: 10px;">Save Configuration</button>
                 <p id="configStatus" style="margin-top: 10px; color: #27ae60; display: none;">Configuration saved successfully!</p>
             </div>
         </div>
-
-        <script>
-            // Function to pre-fill the input box and click the button on page load
-            window.onload = function() {
-                // Pre-fill the input box with the specified URL
-                document.getElementById('scriptUrl').value = 'https://script.google.com/macros/s/AKfycbykX3oVVshNpiQWauq588dhFqq04oE97_5_qWdY3H2VgOACM3oG1_lXP0R6OqtlzV7v/exec';
-
-                // Click the save button
-                document.getElementById('saveConfig').click();
-            };
-        </script>
         
         <div class="exam-selector">
             <h2>Select Exam</h2>
@@ -446,7 +435,7 @@
     <div class="floating-timer" id="floatingTimer" style="display: none;">00:00:00</div>
 
     <script>
-	            // Check if user is logged in
+        // Check if user is logged in
         if (!sessionStorage.getItem('loggedIn')) {
             window.location.href = 'Login.html';
         }
@@ -483,10 +472,10 @@
         let remainingTime = 0;
         let examStartTime = null;
         let examEndTime = null;
-        let userId = sessionStorage.getItem('userEmail'); // Use email as user ID
-        let userName = sessionStorage.getItem('userName'); // User name
-        let userClass = sessionStorage.getItem('userClass'); // User class
-        let scriptUrl = localStorage.getItem('appScriptUrl') || '';
+        let userId = sessionStorage.getItem('userEmail');
+        let userName = sessionStorage.getItem('userName');
+        let userClass = sessionStorage.getItem('userClass');
+        let scriptUrl = localStorage.getItem('appScriptUrl') || 'https://script.google.com/macros/s/AKfycbykX3oVVshNpiQWauq588dhFqq04oE97_5_qWdY3H2VgOACM3oG1_lXP0R6OqtlzV7v/exec';
         
         // Security variables
         let warningCount = 0;
@@ -556,102 +545,23 @@
                 startExam();
             });
             
-            if (scriptUrl) {
-                loadExamsFromAppScript();
-            }
+            // Load exams automatically
+            loadExamsFromAppScript();
         });
         
         // Show exam rules before starting the exam
         function showExamRules() {
-            // Check for developer tools before showing rules
-            if (isDevToolsOpen()) {
-                showWarning('Developer tools are not allowed during the exam. Please close them before proceeding.');
-                return;
-            }
             rulesModal.style.display = 'flex';
         }
         
         // Function to detect developer tools
         function isDevToolsOpen() {
-            const widthThreshold = window.outerWidth - window.innerWidth > 160;
-            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            // Only check for obvious cases to reduce false positives
+            const widthThreshold = window.outerWidth - window.innerWidth > 200;
+            const heightThreshold = window.outerHeight - window.innerHeight > 200;
             
-            // Check for common dev tools keyboard shortcuts
-            const devToolsKeys = {
-                'F12': false,
-                'I': false,
-                'J': false,
-                'C': false,
-                'Shift': false
-            };
-            
-            // Check if dev tools are open based on window size
-            if (widthThreshold || heightThreshold) {
-                return true;
-            }
-            
-            // Check for dev tools using console.log override
-            const devToolsCheck = /./;
-            devToolsCheck.toString = function() {
-                return true;
-            };
-            console.log('%c', devToolsCheck);
-            
-            // Check for dev tools using performance timing
-            const timing = performance.timing;
-            const loadTime = timing.loadEventEnd - timing.navigationStart;
-            if (loadTime > 10000) { // If page takes too long to load, might indicate dev tools
-                return true;
-            }
-            
-            return false;
+            return widthThreshold || heightThreshold;
         }
-        
-        // Add event listeners for dev tools detection
-        document.addEventListener('keydown', function(e) {
-            if (isExamActive) {
-                // Check for F12
-                if (e.key === 'F12') {
-                    e.preventDefault();
-                    showWarning('Developer tools are not allowed during the exam.');
-                    return false;
-                }
-                
-                // Check for Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
-                    e.preventDefault();
-                    showWarning('Developer tools are not allowed during the exam.');
-                    return false;
-                }
-                
-                // Check for Ctrl+U (View Source)
-                if (e.ctrlKey && e.key === 'u') {
-                    e.preventDefault();
-                    showWarning('Viewing page source is not allowed during the exam.');
-                    return false;
-                }
-            }
-        });
-        
-        // Add resize event listener to detect dev tools opening
-        let lastWidth = window.outerWidth;
-        let lastHeight = window.outerHeight;
-        
-        window.addEventListener('resize', function() {
-            if (isExamActive) {
-                const widthDiff = window.outerWidth - lastWidth;
-                const heightDiff = window.outerHeight - lastHeight;
-                
-                if (Math.abs(widthDiff) > 100 || Math.abs(heightDiff) > 100) {
-                    if (isDevToolsOpen()) {
-                        showWarning('Developer tools are not allowed during the exam.');
-                    }
-                }
-                
-                lastWidth = window.outerWidth;
-                lastHeight = window.outerHeight;
-            }
-        });
         
         // Security functions
         function setupSecurityMeasures() {
@@ -775,33 +685,32 @@
             loadExamsFromAppScript();
         }
         
-        function loadExamsFromAppScript() {
+        async function loadExamsFromAppScript() {
             if (!scriptUrl) return;
             
             loadingIndicator.style.display = 'block';
             examSelect.disabled = true;
             startExamBtn.disabled = true;
             
-            // Add timestamp to prevent caching
-            const timestamp = new Date().getTime();
-            fetch(`${scriptUrl}?action=getExams&_=${timestamp}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.error) throw new Error(data.error);
-                    populateExamSelect(data);
-                    loadingIndicator.style.display = 'none';
-                    examSelect.disabled = false;
-                })
-                .catch(error => {
-                    console.error('Error loading exams:', error);
-                    loadingIndicator.innerHTML = `<p>Error loading exams: ${error.message}</p>`;
-                    examSelect.innerHTML = '<option value="">-- Error loading exams --</option>';
-                });
+            try {
+                const response = await fetch(`${scriptUrl}?action=getExams`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                populateExamSelect(data);
+            } catch (error) {
+                console.error('Error loading exams:', error);
+                examSelect.innerHTML = '<option value="">-- Error loading exams --</option>';
+            } finally {
+                loadingIndicator.style.display = 'none';
+                examSelect.disabled = false;
+            }
         }
         
         function populateExamSelect(data) {
@@ -830,77 +739,72 @@
             loadingIndicator.style.display = 'block';
             examInterface.style.display = 'none';
             
-            // Add timestamp to prevent caching
-            const timestamp = new Date().getTime();
-            
-            // Check if the user has already taken the exam
-            fetch(`${scriptUrl}?action=checkUserExamStatus&userId=${userId}&examId=${currentExam}&_=${timestamp}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
+            // First check exam status
+            checkExamStatus()
+                .then(hasTakenExam => {
+                    if (hasTakenExam) {
+                        throw new Error('You have already taken this exam and cannot start it again.');
                     }
-                    return response.json();
+                    return fetchExamData();
                 })
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                        loadingIndicator.style.display = 'none';
-                        return;
-                    }
+                .then(() => {
+                    // Initialize exam UI and timer
+                    setupExamUI();
+                    showCurrentSection();
+                    startTimer();
                     
-                    if (data.hasTakenExam) {
-                        alert('You have already taken this exam and cannot start it again.');
-                        loadingIndicator.style.display = 'none';
-                        return;
-                    }
+                    // Setup security measures
+                    isExamActive = true;
+                    warningCount = 0;
+                    lastActivityTime = Date.now();
+                    setupSecurityMeasures();
                     
-                    // Proceed with fetching exam data
-                    fetchExamData();
+                    floatingTimer.style.display = 'block';
+                    loadingIndicator.style.display = 'none';
+                    examInterface.style.display = 'block';
+                    examSelect.disabled = true;
+                    startExamBtn.disabled = true;
                 })
                 .catch(error => {
-                    console.error('Error checking exam status:', error);
-                    alert('Error checking exam status: ' + error.message);
+                    console.error('Error starting exam:', error);
+                    alert('Error starting exam: ' + error.message);
                     loadingIndicator.style.display = 'none';
+                    rulesModal.style.display = 'none';
                 });
-            
-            function fetchExamData() {
-                // Add timestamp to prevent caching
-                const timestamp = new Date().getTime();
-                fetch(`${scriptUrl}?action=getExamData&examId=${currentExam}&_=${timestamp}`)
+
+            function checkExamStatus() {
+                return fetch(`${scriptUrl}?action=checkUserExamStatus&userId=${userId}&examId=${currentExam}`)
                     .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
+                        if (!response.ok) throw new Error('Network response was not ok');
                         return response.json();
                     })
                     .then(data => {
-                        if (data.error) {
-                            alert(data.error);
-                            loadingIndicator.style.display = 'none';
-                            return;
-                        }
-                        
+                        if (data.error) throw new Error(data.error);
+                        return data.hasTakenExam;
+                    });
+            }
+
+            function fetchExamData() {
+                return fetch(`${scriptUrl}?action=getExamData&examId=${currentExam}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.error) throw new Error(data.error);
                         if (!data.data || !data.data.sections || !data.data.questions) {
                             throw new Error('Invalid exam data structure received');
                         }
-                        
+
                         sections = data.data.sections;
                         questions = data.data.questions;
-                        
-                        if (!Array.isArray(sections)) {
-                            throw new Error('Sections data is not an array');
-                        }
-                        
-                        if (typeof questions !== 'object' || questions === null) {
-                            throw new Error('Questions data is invalid');
-                        }
-                        
+
                         // Initialize user responses
                         sections.forEach(section => {
-                            if (!questions[section.id] || !Array.isArray(questions[section.id])) {
+                            if (!questions[section.id]) {
                                 throw new Error(`No questions found for section ${section.id}`);
                             }
-                            
+
                             userResponses[section.id] = {};
                             questions[section.id].forEach(question => {
                                 userResponses[section.id][question.qid] = {
@@ -910,35 +814,11 @@
                                 };
                             });
                         });
-                        
+
                         // Calculate total exam time
                         const totalTime = sections.reduce((sum, section) => sum + (section.time || 0), 0);
                         remainingTime = totalTime * 60;
                         examStartTime = new Date();
-                        
-                        // Initialize UI
-                        setupExamUI();
-                        showCurrentSection();
-                        startTimer();
-                        
-                        // Setup security measures
-                        isExamActive = true;
-                        warningCount = 0;
-                        lastActivityTime = Date.now();
-                        setupSecurityMeasures();
-                        
-                        // Show floating timer
-                        floatingTimer.style.display = 'block';
-                        
-                        loadingIndicator.style.display = 'none';
-                        examInterface.style.display = 'block';
-                        examSelect.disabled = true;
-                        startExamBtn.disabled = true;
-                    })
-                    .catch(error => {
-                        console.error('Error starting exam:', error);
-                        alert('Error loading exam: ' + error.message);
-                        loadingIndicator.style.display = 'none';
                     });
             }
         }
@@ -1305,15 +1185,15 @@
             return {
                 action: 'submitExam',
                 userId: userId,
-                userName: userName, // Include user name
-                userClass: userClass, // Include user class
+                userName: userName,
+                userClass: userClass,
                 examId: currentExam,
-                examName: currentExamName, // Include exam name
-                examStartTime: examStartTime.toISOString(), // Include exam start time
-                examEndTime: examEndTime.toISOString(), // Include exam end time
-                timeSpent: Math.floor((examEndTime - examStartTime) / 1000), // Time spent in seconds
-                warningCount: warningCount, // Include warning count
-                ipAddress: getClientIp(), // Include IP address
+                examName: currentExamName,
+                examStartTime: examStartTime.toISOString(),
+                examEndTime: examEndTime.toISOString(),
+                timeSpent: Math.floor((examEndTime - examStartTime) / 1000),
+                warningCount: warningCount,
+                ipAddress: getClientIp(),
                 responses: Object.keys(userResponses).flatMap(sectionId => 
                     Object.keys(userResponses[sectionId]).map(qid => {
                         const response = userResponses[sectionId][qid];
@@ -1329,7 +1209,7 @@
                 ),
                 scores: sections.map(section => ({
                     sectionId: section.id,
-                    sectionName: section.name, // Ensure correct section name is used
+                    sectionName: section.name,
                     score: sectionScores[section.id].score,
                     possible: sectionScores[section.id].possible
                 }))
@@ -1353,13 +1233,6 @@
                 input.name = 'data';
                 input.value = JSON.stringify(postData);
                 form.appendChild(input);
-                
-                // Add timestamp to prevent caching
-                const timestampInput = document.createElement('input');
-                timestampInput.type = 'hidden';
-                timestampInput.name = '_';
-                timestampInput.value = new Date().getTime();
-                form.appendChild(timestampInput);
                 
                 // Submit the form
                 document.body.appendChild(form);
@@ -1416,12 +1289,12 @@
             
             for (const sectionId in sectionScores) {
                 const section = sectionScores[sectionId];
-                const percentage = Math.round((section.score / section.possible) * 100);
+                const sectionPercentage = Math.round((section.score / section.possible) * 100);
                 
                 const sectionResult = document.createElement('div');
                 sectionResult.className = 'section-result';
                 sectionResult.innerHTML = `
-                    <strong>${section.name}:</strong> ${section.score} / ${section.possible} (${percentage}%)
+                    <strong>${section.name}:</strong> ${section.score} / ${section.possible} (${sectionPercentage}%)
                 `;
                 resultDetails.appendChild(sectionResult);
             }
@@ -1452,9 +1325,7 @@
          * @return {string} The client IP address
          */
         function getClientIp() {
-            // We'll use a third-party service to get the IP
-            // This is a simple implementation that will be executed when submitting the exam
-            return "Fetching...";
+            return window.clientIp || "Not tracked";
         }
         
         // Fetch IP address when the page loads
@@ -1467,11 +1338,6 @@
                 console.error('Error fetching IP:', error);
                 window.clientIp = "Not tracked";
             });
-            
-        // Override the getClientIp function after the IP is fetched
-        window.getClientIp = function() {
-            return window.clientIp || "Not tracked";
-        };
     </script>
 </body>
 </html>
