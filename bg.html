@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro BG Remover | AI-Powered Background Removal</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            color: #2d3436;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            transform: translateY(-20px);
+            animation: slideDown 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .header h1 {
+            color: #2b2d42;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .header p {
+            color: #6c757d;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Upload Section */
+        .upload-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .upload-container:hover {
+            transform: translateY(-3px);
+        }
+
+        .drop-zone {
+            border: 2px dashed #a0d2eb;
+            border-radius: 15px;
+            padding: 3rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drop-zone::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23a0d2eb" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>') no-repeat center;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        .drop-zone:hover {
+            border-color: #69db7c;
+            background: rgba(160, 210, 235, 0.05);
+        }
+
+        .drop-zone:hover::before {
+            opacity: 0.2;
+        }
+
+        .drop-zone h3 {
+            color: #2b2d42;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .drop-zone p {
+            color: #6c757d;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Preview Section */
+        #preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        #preview.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        /* Background Options */
+        .background-options {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .background-options h3 {
+            color: #2b2d42;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .color-picker-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .color-picker-container label {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .color-picker-container input[type="color"] {
+            width: 60px;
+            height: 40px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .color-picker-container input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 6px;
+        }
+
+        .color-picker-container input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #69db7c 0%, #a0d2eb 100%);
+        }
+
+        .payment-section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .payment-options {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .payment-method {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .payment-method:hover {
+            transform: translateY(-5px);
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border: 2px solid #e9ecef;
+            transition: transform 0.3s ease;
+        }
+
+        .qr-code:hover {
+            transform: scale(1.05);
+        }
+
+        .upi-id {
+            background: #f1f3f5;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #2b2d42;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upi-id:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .upi-id::before {
+            content: '📲';
+            font-size: 1.2rem;
+        }
+
+        /* Download Button */
+        .download-btn {
+            background: linear-gradient(135deg, #69db7c 0%, #40c057 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .download-btn:hover::after {
+            left: 100%;
+        }
+
+        .download-btn:disabled {
+            background: #ced4da;
+            cursor: not-allowed;
+        }
+
+        /* Loader Animation */
+        .loader {
+            display: none;
+            width: 50px;
+            height: 50px;
+            margin: 2rem auto;
+            position: relative;
+        }
+
+        .loader div {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-top-color: #69db7c;
+            border-radius: 50%;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+
+        .loader div:nth-child(1) {
+            animation-delay: -0.45s;
+        }
+
+        .loader div:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+
+        .loader div:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+
+        /* Checkbox Styling */
+        .payment-confirm {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 2rem 0;
+        }
+
+        .payment-confirm input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #69db7c;
+            cursor: pointer;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .upload-container {
+                padding: 2rem 1rem;
+            }
+
+            .payment-options {
+                gap: 1.5rem;
+            }
+
+            .payment-method {
+                padding: 1.5rem;
+            }
+
+            .qr-code {
+                width: 180px;
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Pro BG Remover</h1>
+            <p>Transform your images with AI-powered background removal in seconds</p>
+        </div>
+
+        <div class="upload-container">
+            <div class="drop-zone" id="dropZone">
+                <h3>Drop Image Here</h3>
+                <p>Supported formats: PNG, JPG, JPEG</p>
+                <input type="file" id="fileInput" accept="image/*" hidden>
+            </div>
+
+            <div id="preview"></div>
+            <div class="loader" id="loader">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div class="background-options" id="backgroundOptions">
+                <h3>Background Options</h3>
+                <div class="color-picker-container">
+                    <label for="bgColorPicker">Choose a background color:</label>
+                    <input type="color" id="bgColorPicker" value="#ffffff">
+                    <button id="applyBgColorBtn" class="download-btn" style="margin-top: 0; padding: 0.5rem 1.5rem;">
+                        Apply Background
+                    </button>
+                    <button id="transparentBgBtn" class="download-btn" style="margin-top: 0; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #a0d2eb 0%, #8458B3 100%);">
+                        Transparent
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-section" id="paymentSection">
+            <h2>Unlock Premium Download - ₹25</h2>
+            <div class="payment-options">
+                <div class="payment-method">
+                    <p>Scan QR Code</p>
+                    <img src="./QR Code.png" alt="QR Code" class="qr-code">
+                </div>
+                <div class="payment-method">
+                    <p>Instant UPI Payment</p>
+                    <div class="upi-id">rkdonline@ybl</div>
+                </div>
+            </div>
+            <div class="payment-confirm">
+                <input type="checkbox" id="paymentConfirm">
+                <label for="paymentConfirm">I've successfully completed the payment</label>
+            </div>
+            <button class="download-btn" id="downloadBtn" disabled>
+                Download Processed Image
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const preview = document.getElementById('preview');
+        const loader = document.getElementById('loader');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const paymentConfirm = document.getElementById('paymentConfirm');
+        const paymentSection = document.getElementById('paymentSection');
+        const backgroundOptions = document.getElementById('backgroundOptions');
+        const bgColorPicker = document.getElementById('bgColorPicker');
+        const applyBgColorBtn = document.getElementById('applyBgColorBtn');
+        const transparentBgBtn = document.getElementById('transparentBgBtn');
+
+        let processedImageUrl = null;
+        let originalImageUrl = null;
+        let currentBgColor = 'transparent';
+
+        // Initialize Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // File Handling
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        ['dragover', 'dragleave', 'drop'].forEach(event => {
+            dropZone.addEventListener(event, (e) => {
+                e.preventDefault();
+                dropZone.style.borderColor =
+                    event === 'dragover' ? '#69db7c' : '#a0d2eb';
+            });
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            handleFile(e.dataTransfer.files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFile(e.target.files[0]);
+        });
+
+        // Payment Confirmation
+        paymentConfirm.addEventListener('change', () => {
+            downloadBtn.disabled = !paymentConfirm.checked;
+            if (!paymentConfirm.checked) return;
+            downloadBtn.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                downloadBtn.style.transform = 'scale(1)';
+            }, 200);
+        });
+
+        // Background color application
+        applyBgColorBtn.addEventListener('click', () => {
+            currentBgColor = bgColorPicker.value;
+            updatePreview(processedImageUrl, currentBgColor);
+        });
+
+        transparentBgBtn.addEventListener('click', () => {
+            currentBgColor = 'transparent';
+            updatePreview(processedImageUrl);
+        });
+
+        // File Processing
+        async function handleFile(file) {
+            if (!file) return;
+
+            // Show loader and reset UI
+            loader.style.display = 'flex';
+            preview.classList.remove('active');
+            paymentSection.classList.remove('active');
+            backgroundOptions.style.display = 'none';
+            paymentConfirm.checked = false;
+            downloadBtn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('image_file', file);
+
+                const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+                    method: 'POST',
+                    headers: {
+                        'X-Api-Key': '1ym3KDZ6efoxmtAQEf7sNbFH'
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Processing failed. Please try again.');
+
+                const result = await response.blob();
+                processedImageUrl = URL.createObjectURL(result);
+                originalImageUrl = URL.createObjectURL(file);
+
+                updatePreview(processedImageUrl);
+                
+                // Show background options and payment section
+                backgroundOptions.style.display = 'block';
+                preview.classList.add('active');
+                paymentSection.classList.add('active');
+                observer.observe(preview);
+                observer.observe(paymentSection);
+
+                // Set up download button
+                downloadBtn.onclick = () => downloadImageWithBackground();
+
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Update preview with optional background color
+        function updatePreview(imageUrl, bgColor = 'transparent') {
+            preview.innerHTML = `
+                <div class="image-container">
+                    <img src="${originalImageUrl}" alt="Original">
+                </div>
+                <div class="image-container">
+                    <div style="width: 100%; height: 300px; background-color: ${bgColor}; display: flex; justify-content: center; align-items: center; border-radius: 8px;">
+                        <img src="${imageUrl}" alt="Result" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+            `;
+        }
+
+        // Download image with selected background
+        function downloadImageWithBackground() {
+            // Create a canvas to composite the image with background color
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                
+                // If transparent background was selected, just use the original image
+                if (currentBgColor === 'transparent') {
+                    ctx.drawImage(img, 0, 0);
+                } else {
+                    // Fill with selected color first
+                    ctx.fillStyle = currentBgColor;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    // Then draw the image on top
+                    ctx.drawImage(img, 0, 0);
+                }
+                
+                // Download the composite image
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `bg-removed-${Date.now()}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+            };
+            
+            img.src = processedImageUrl;
+        }
+    </script>
+</body>
+
+</html>
