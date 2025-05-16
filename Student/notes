@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Notes Repository</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .filter-section {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .notes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .note-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .note-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+        }
+        
+        .note-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .note-class {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .note-body {
+            padding: 1.5rem;
+        }
+        
+        .note-subject {
+            display: inline-block;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .note-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .note-link {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .note-link:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 2rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        .no-notes {
+            text-align: center;
+            padding: 2rem;
+            grid-column: 1/-1;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .notes-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>School Notes Repository</h1>
+            <p class="subtitle">Access study materials for all classes and subjects</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="filter-section">
+            <div class="filter-group">
+                <label for="class-filter">Filter by Class</label>
+                <select id="class-filter">
+                    <option value="">All Classes</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="subject-filter">Filter by Subject</label>
+                <select id="subject-filter">
+                    <option value="">All Subjects</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="search">Search Notes</label>
+                <input type="text" id="search" placeholder="Type to search...">
+            </div>
+        </section>
+        
+        <div id="loading" class="loading">Loading notes...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <div id="notes-container" class="notes-container"></div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 School Notes Repository. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Google Sheets CSV URL (Replace with your published CSV URL)
+        const SHEET_ID = '2PACX-1vTeIq2AFsALYCoHTV3ISYSWiissUcJfTUdPK-fiG4FagyrLOpNMBFbazLkx3PyIJ4waGQ5eCNbGMVJz';
+        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/pub?output=csv`;
+        
+        // DOM Elements
+        const notesContainer = document.getElementById('notes-container');
+        const classFilter = document.getElementById('class-filter');
+        const subjectFilter = document.getElementById('subject-filter');
+        const searchInput = document.getElementById('search');
+        const loadingElement = document.getElementById('loading');
+        const errorElement = document.getElementById('error');
+        
+        // Global variables
+        let allNotes = [];
+        let filteredNotes = [];
+        let uniqueClasses = new Set();
+        let uniqueSubjects = new Set();
+        
+        // CSV to JSON parser
+        function parseCSV(csv) {
+            const lines = csv.split('\n').filter(line => line.trim() !== '');
+            if (lines.length < 2) return [];
+            
+            const headers = lines[0].split(',').map(h => h.trim());
+            
+            return lines.slice(1).map(line => {
+                // Handle commas within quoted fields
+                const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.trim().replace(/^"|"$/g, ''));
+                
+                const note = {};
+                headers.forEach((header, index) => {
+                    note[header] = values[index] || '';
+                });
+                return note;
+            }).filter(note => note.Title && note.Link);
+        }
+        
+        // Load CSV using Google Visualization API (bypasses CORS)
+        async function fetchNotes() {
+            try {
+                loadingElement.textContent = "Loading notes...";
+                errorElement.style.display = 'none';
+                
+                // Use Google Visualization API to bypass CORS
+                const response = await new Promise((resolve, reject) => {
+                    google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).getData();
+                });
+                
+                // Fallback to direct fetch if visualization API fails
+                if (!response) {
+                    const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`);
+                    const csvData = await res.text();
+                    return parseCSV(csvData);
+                }
+                return response;
+            } catch (error) {
+                console.error('Error fetching notes:', error);
+                showError('Failed to load notes. Please try again later.');
+                return [];
+            }
+        }
+        
+        // Display notes in the UI
+        function displayNotes(notes) {
+            if (notes.length === 0) {
+                notesContainer.innerHTML = '<p class="no-notes">No notes found matching your criteria.</p>';
+                return;
+            }
+            
+            notesContainer.innerHTML = notes.map(note => `
+                <div class="note-card">
+                    <div class="note-header">
+                        <h3 class="note-title">${note.Title || 'Untitled Note'}</h3>
+                        <p class="note-class">Class ${note.Class || 'N/A'}</p>
+                    </div>
+                    <div class="note-body">
+                        <span class="note-subject">${note.Subject || 'General'}</span>
+                        <p class="note-description">${note.Description || 'No description provided.'}</p>
+                        <a href="${note.Link}" class="note-link" target="_blank">View Notes</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Populate filter dropdowns
+        function populateFilters(notes) {
+            uniqueClasses.clear();
+            uniqueSubjects.clear();
+            
+            notes.forEach(note => {
+                if (note.Class) uniqueClasses.add(note.Class);
+                if (note.Subject) uniqueSubjects.add(note.Subject);
+            });
+            
+            // Class filter
+            classFilter.innerHTML = '<option value="">All Classes</option>';
+            Array.from(uniqueClasses).sort().forEach(cls => {
+                classFilter.innerHTML += `<option value="${cls}">Class ${cls}</option>`;
+            });
+            
+            // Subject filter
+            subjectFilter.innerHTML = '<option value="">All Subjects</option>';
+            Array.from(uniqueSubjects).sort().forEach(subject => {
+                subjectFilter.innerHTML += `<option value="${subject}">${subject}</option>`;
+            });
+        }
+        
+        // Filter notes
+        function filterNotes() {
+            const selectedClass = classFilter.value;
+            const selectedSubject = subjectFilter.value;
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            filteredNotes = allNotes.filter(note => {
+                const matchesClass = !selectedClass || note.Class === selectedClass;
+                const matchesSubject = !selectedSubject || note.Subject === selectedSubject;
+                const matchesSearch = !searchTerm || 
+                    (note.Title && note.Title.toLowerCase().includes(searchTerm)) ||
+                    (note.Description && note.Description.toLowerCase().includes(searchTerm)) ||
+                    (note.Subject && note.Subject.toLowerCase().includes(searchTerm));
+                
+                return matchesClass && matchesSubject && matchesSearch;
+            });
+            
+            displayNotes(filteredNotes);
+        }
+        
+        // Show error message
+        function showError(message) {
+            loadingElement.style.display = 'none';
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+        
+        // Initialize
+        async function init() {
+            // Load Google Visualization API
+            const script = document.createElement('script');
+            script.src = 'https://www.gstatic.com/charts/loader.js';
+            script.onload = async () => {
+                google.charts.load('current', { packages: ['corechart'] });
+                google.charts.setOnLoadCallback(async () => {
+                    allNotes = await fetchNotes();
+                    
+                    if (allNotes.length > 0) {
+                        loadingElement.style.display = 'none';
+                        populateFilters(allNotes);
+                        filteredNotes = [...allNotes];
+                        displayNotes(filteredNotes);
+                        
+                        // Event listeners
+                        classFilter.addEventListener('change', filterNotes);
+                        subjectFilter.addEventListener('change', filterNotes);
+                        searchInput.addEventListener('input', filterNotes);
+                    } else {
+                        showError('No notes found in the database.');
+                    }
+                });
+            };
+            document.head.appendChild(script);
+        }
+        
+        // Start
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
