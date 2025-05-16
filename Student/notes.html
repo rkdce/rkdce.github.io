@@ -281,28 +281,52 @@
             }).filter(note => note.Title && note.Link);
         }
         
-        // Load CSV using Google Visualization API (bypasses CORS)
+        // Fetch CSV data with CORS workaround
         async function fetchNotes() {
             try {
                 loadingElement.textContent = "Loading notes...";
                 errorElement.style.display = 'none';
                 
-                // Use Google Visualization API to bypass CORS
-                const response = await new Promise((resolve, reject) => {
-                    google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).getData();
-                });
-                
-                // Fallback to direct fetch if visualization API fails
-                if (!response) {
-                    const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`);
-                    const csvData = await res.text();
+                // Method 1: Try direct fetch first
+                try {
+                    const response = await fetch(CSV_URL);
+                    if (!response.ok) throw new Error('Direct fetch failed');
+                    const csvData = await response.text();
+                    return parseCSV(csvData);
+                } catch (directError) {
+                    console.log('Direct fetch failed, trying alternative method');
+                    
+                    // Method 2: Use proxy via CORS Anywhere
+                    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+                    const response = await fetch(proxyUrl + CSV_URL, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    const csvData = await response.text();
                     return parseCSV(csvData);
                 }
-                return response;
             } catch (error) {
                 console.error('Error fetching notes:', error);
-                showError('Failed to load notes. Please try again later.');
-                return [];
+                showError('Failed to load notes. Please try again later or check your internet connection.');
+                
+                // Return sample data if both methods fail
+                return [
+                    {
+                        "Title": "Sample Math Notes",
+                        "Class": "9",
+                        "Subject": "Mathematics",
+                        "Description": "Sample description of math notes",
+                        "Link": "https://example.com/math.pdf"
+                    },
+                    {
+                        "Title": "Sample Science Notes",
+                        "Class": "10",
+                        "Subject": "Science",
+                        "Description": "Sample description of science notes",
+                        "Link": "https://example.com/science.pdf"
+                    }
+                ];
             }
         }
         
@@ -378,35 +402,26 @@
             errorElement.style.display = 'block';
         }
         
-        // Initialize
+        // Initialize the application
         async function init() {
-            // Load Google Visualization API
-            const script = document.createElement('script');
-            script.src = 'https://www.gstatic.com/charts/loader.js';
-            script.onload = async () => {
-                google.charts.load('current', { packages: ['corechart'] });
-                google.charts.setOnLoadCallback(async () => {
-                    allNotes = await fetchNotes();
-                    
-                    if (allNotes.length > 0) {
-                        loadingElement.style.display = 'none';
-                        populateFilters(allNotes);
-                        filteredNotes = [...allNotes];
-                        displayNotes(filteredNotes);
-                        
-                        // Event listeners
-                        classFilter.addEventListener('change', filterNotes);
-                        subjectFilter.addEventListener('change', filterNotes);
-                        searchInput.addEventListener('input', filterNotes);
-                    } else {
-                        showError('No notes found in the database.');
-                    }
-                });
-            };
-            document.head.appendChild(script);
+            allNotes = await fetchNotes();
+            
+            if (allNotes.length > 0) {
+                loadingElement.style.display = 'none';
+                populateFilters(allNotes);
+                filteredNotes = [...allNotes];
+                displayNotes(filteredNotes);
+                
+                // Event listeners
+                classFilter.addEventListener('change', filterNotes);
+                subjectFilter.addEventListener('change', filterNotes);
+                searchInput.addEventListener('input', filterNotes);
+            } else {
+                showError('No notes found in the database.');
+            }
         }
         
-        // Start
+        // Start the application
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
