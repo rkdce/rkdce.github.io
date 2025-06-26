@@ -3,6 +3,7 @@
   <head>
     <base target="_top">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="icon" href="https://drive.google.com/thumbnail?id=1AfmX3kHR6q3UkbAqyKY8HSDiyBVn1VzW&sz=64x64" type="image/png">
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
     /* General Reset */
@@ -640,7 +641,7 @@ background-color: lightseagreen;
     <td><label for="dobDisplay">D.O.B:</label></td>
     <td><input type="text" id="dobDisplay" name="dobDisplay" readonly></td>
     <td><label for="rollNumberDisplay">Roll Number:</label></td>
-    <td><input type="text" id="rollNumberDisplay" name="rollNumberDisplay" ><br></td>
+    <td><input type="text" id="rollNumberDisplay" name="rollNumberDisplay" style="background:yellow;"><br></td>
   </tr>
 </table>
     
@@ -874,7 +875,7 @@ background-color: lightseagreen;
 
 
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwP-UeteK5eIVq3WOHi24TFRRUglhEuYL0Sn95Q6iS3_kHr6odQkdKbvIjCYfAMcA4/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzt1h-Lfu71Fvmoy8fCCxkOJHxeBSLlaaVS2yTkdygqRQDNBsITdRtfc8yVWxehuIgk/exec";
  function hideSearch() {
   // Hide the search button
   document.getElementById('searchButton').style.display = "none";
@@ -1379,6 +1380,9 @@ function saveMarks() {
     var examType = document.getElementById('examType').value;
     var statusDisplay = document.getElementById('statusDisplay').value;
     var teacherNameDisplay = document.getElementById('teacherNameDisplay').value;
+	
+	var rollNumberDisplay = document.getElementById('rollNumberDisplay').value;
+
 
    // Subject 1
 var subject1Name = document.getElementById('subject1Name').value;
@@ -1526,6 +1530,8 @@ var subject4FinalAssessment = document.getElementById('subject4FinalAssessment')
         admissionNumber: admissionNumber,
         teacherNameDisplay: teacherNameDisplay,
         statusDisplay: statusDisplay,
+		
+		rollNumberDisplay: rollNumberDisplay,
 
 subject1Name: subject1Name,
 subject1FullMarks: subject1FullMarks,
