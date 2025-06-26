@@ -643,7 +643,7 @@
     <td><label for="dobDisplay">D.O.B:</label></td>
     <td><input type="text" id="dobDisplay" name="dobDisplay" readonly></td>
     <td><label for="rollNumberDisplay">Roll Number:</label></td>
-    <td><input type="text" id="rollNumberDisplay" name="rollNumberDisplay" ><br></td>
+    <td><input type="text" id="rollNumberDisplay" name="rollNumberDisplay" style="background:yellow;"><br></td>
   </tr>
   
 </table>
@@ -1202,7 +1202,7 @@
 
   
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyXDxe3B7v9LXE2lYT5HLIcCAFhx4TWR9P4Oib0PKUYgkZGLLiEcRdVQLNbzYlpbRrx/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzt1h-Lfu71Fvmoy8fCCxkOJHxeBSLlaaVS2yTkdygqRQDNBsITdRtfc8yVWxehuIgk/exec";
  function hideSearch() {
   // Hide the search button
   document.getElementById('searchButton').style.display = "none";
@@ -1351,15 +1351,15 @@ document.addEventListener('DOMContentLoaded', initializeAccordion);
 	    //document.getElementById('examTypeDisplay').textContent = data[0] || '';
 	//	document.getElementById('admissionNumberDisplay').textContent = data[1] || '';
       //  document.getElementById('examTypeDisplay').value = data[0] || '';
-		document.getElementById('admissionNumberDisplay').value = data[1] || '';
-		document.getElementById('classDisplay').value = data[2] || '';
-		document.getElementById('nameDisplay').value = data[3] || '';
-		document.getElementById('fatherNameDisplay').value = data[4] || '';
-		document.getElementById('motherNameDisplay').value = data[5] || '';
-		document.getElementById('dobDisplay').value = data[6] || '';
-		document.getElementById('rollNumberDisplay').value = data[7] || '';
-		document.getElementById('teacherNameDisplay').value = data[9] || '';
-		document.getElementById('statusDisplay').value = data[10] || '';
+		document.getElementById('admissionNumberDisplay').value = data[1] ;
+		document.getElementById('classDisplay').value = data[2] ;
+		document.getElementById('nameDisplay').value = data[3] ;
+		document.getElementById('fatherNameDisplay').value = data[4] ;
+		document.getElementById('motherNameDisplay').value = data[5] ;
+		document.getElementById('dobDisplay').value = data[6] ;
+		document.getElementById('rollNumberDisplay').value = data[7] ;
+		document.getElementById('teacherNameDisplay').value = data[9] ;
+		document.getElementById('statusDisplay').value = data[10] ;
 
 		// Set image source for display
 		const imageId = data[8] || '';
@@ -1368,144 +1368,144 @@ document.addEventListener('DOMContentLoaded', initializeAccordion);
 		  document.getElementById('photoDisplay').src = imageUrl;
 		}
 		// English
-document.getElementById('englishReadingValue').value = data[11] || '';
-document.getElementById('englishReadingGrade').value = data[12] || '';
-document.getElementById('englishWritingValue').value = data[13] || '';
-document.getElementById('englishWritingGrade').value = data[14] || '';
-document.getElementById('englishSpellingValue').value = data[15] || '';
-document.getElementById('englishSpellingGrade').value = data[16] || '';
-document.getElementById('englishHandwritingValue').value = data[17] || '';
-document.getElementById('englishHandwritingGrade').value = data[18] || '';
-document.getElementById('englishSpeakingValue').value = data[19] || ''; // Corrected index
-document.getElementById('englishSpeakingGrade').value = data[20] || ''; // Corrected index
-document.getElementById('englishListeningValue').value = data[21] || '';
-document.getElementById('englishListeningGrade').value = data[22] || '';
-document.getElementById('englishTotalValue').value = data[23] || '';
-document.getElementById('englishTotalGrade').value = data[24] || '';
-document.getElementById('englishProjectValue').value = data[25] || ''; // New Project Value
-document.getElementById('englishProjectGrade').value = data[26] || ''; // New Project Grade
-document.getElementById('englishAssignmentValue').value = data[27] || ''; // New Assignment Value
-document.getElementById('englishAssignmentGrade').value = data[28] || ''; // New Assignment Grade
+document.getElementById('englishReadingValue').value = data[11] ;
+document.getElementById('englishReadingGrade').value = data[12] ;
+document.getElementById('englishWritingValue').value = data[13] ;
+document.getElementById('englishWritingGrade').value = data[14] ;
+document.getElementById('englishSpellingValue').value = data[15] ;
+document.getElementById('englishSpellingGrade').value = data[16] ;
+document.getElementById('englishHandwritingValue').value = data[17] ;
+document.getElementById('englishHandwritingGrade').value = data[18] ;
+document.getElementById('englishSpeakingValue').value = data[19] ; // Corrected index
+document.getElementById('englishSpeakingGrade').value = data[20] ; // Corrected index
+document.getElementById('englishListeningValue').value = data[21] ;
+document.getElementById('englishListeningGrade').value = data[22] ;
+document.getElementById('englishTotalValue').value = data[23]  ;
+document.getElementById('englishTotalGrade').value = data[24] ;
+document.getElementById('englishProjectValue').value = data[25] ; // New Project Value
+document.getElementById('englishProjectGrade').value = data[26] ; // New Project Grade
+document.getElementById('englishAssignmentValue').value = data[27] ; // New Assignment Value
+document.getElementById('englishAssignmentGrade').value = data[28] ; // New Assignment Grade
 
 // Hindi
-document.getElementById('hindiReadingValue').value = data[29] || '';
-document.getElementById('hindiReadingGrade').value = data[30] || '';
-document.getElementById('hindiWritingValue').value = data[31] || '';
-document.getElementById('hindiWritingGrade').value = data[32] || '';
-document.getElementById('hindiSpellingValue').value = data[33] || '';
-document.getElementById('hindiSpellingGrade').value = data[34] || '';
-document.getElementById('hindiHandwritingValue').value = data[35] || '';
-document.getElementById('hindiHandwritingGrade').value = data[36] || '';
-document.getElementById('hindiSpeakingValue').value = data[37] || ''; // Corrected index
-document.getElementById('hindiSpeakingGrade').value = data[38] || ''; // Corrected index
-document.getElementById('hindiListeningValue').value = data[39] || '';
-document.getElementById('hindiListeningGrade').value = data[40] || '';
-document.getElementById('hindiTotalValue').value = data[41] || '';
-document.getElementById('hindiTotalGrade').value = data[42] || '';
-document.getElementById('hindiProjectValue').value = data[43] || ''; // New Project Value
-document.getElementById('hindiProjectGrade').value = data[44] || ''; // New Project Grade
-document.getElementById('hindiAssignmentValue').value = data[45] || ''; // New Assignment Value
-document.getElementById('hindiAssignmentGrade').value = data[46] || ''; // New Assignment Grade
+document.getElementById('hindiReadingValue').value = data[29] ;
+document.getElementById('hindiReadingGrade').value = data[30] ;
+document.getElementById('hindiWritingValue').value = data[31] ;
+document.getElementById('hindiWritingGrade').value = data[32] ;
+document.getElementById('hindiSpellingValue').value = data[33] ;
+document.getElementById('hindiSpellingGrade').value = data[34] ;
+document.getElementById('hindiHandwritingValue').value = data[35] ;
+document.getElementById('hindiHandwritingGrade').value = data[36] ;
+document.getElementById('hindiSpeakingValue').value = data[37] ; // Corrected index
+document.getElementById('hindiSpeakingGrade').value = data[38] ; // Corrected index
+document.getElementById('hindiListeningValue').value = data[39] ;
+document.getElementById('hindiListeningGrade').value = data[40] ;
+document.getElementById('hindiTotalValue').value = data[41] ;
+document.getElementById('hindiTotalGrade').value = data[42] ;
+document.getElementById('hindiProjectValue').value = data[43] ; // New Project Value
+document.getElementById('hindiProjectGrade').value = data[44] ; // New Project Grade
+document.getElementById('hindiAssignmentValue').value = data[45] ; // New Assignment Value
+document.getElementById('hindiAssignmentGrade').value = data[46] ; // New Assignment Grade
 
 // Bengali
-document.getElementById('bengaliReadingValue').value = data[47] || '';
-document.getElementById('bengaliReadingGrade').value = data[48] || '';
-document.getElementById('bengaliWritingValue').value = data[49] || '';
-document.getElementById('bengaliWritingGrade').value = data[50] || '';
-document.getElementById('bengaliSpellingValue').value = data[51] || '';
-document.getElementById('bengaliSpellingGrade').value = data[52] || '';
-document.getElementById('bengaliHandwritingValue').value = data[53] || '';
-document.getElementById('bengaliHandwritingGrade').value = data[54] || '';
-document.getElementById('bengaliSpeakingValue').value = data[55] || ''; // Corrected index
-document.getElementById('bengaliSpeakingGrade').value = data[56] || ''; // Corrected index
-document.getElementById('bengaliListeningValue').value = data[57] || '';
-document.getElementById('bengaliListeningGrade').value = data[58] || '';
-document.getElementById('bengaliTotalValue').value = data[59] || '';
-document.getElementById('bengaliTotalGrade').value = data[60] || '';
-document.getElementById('bengaliProjectValue').value = data[61] || ''; // New Project Value
-document.getElementById('bengaliProjectGrade').value = data[62] || ''; // New Project Grade
-document.getElementById('bengaliAssignmentValue').value = data[63] || ''; // New Assignment Value
-document.getElementById('bengaliAssignmentGrade').value = data[64] || ''; // New Assignment Grade
+document.getElementById('bengaliReadingValue').value = data[47] ;
+document.getElementById('bengaliReadingGrade').value = data[48] ;
+document.getElementById('bengaliWritingValue').value = data[49] ;
+document.getElementById('bengaliWritingGrade').value = data[50] ;
+document.getElementById('bengaliSpellingValue').value = data[51] ;
+document.getElementById('bengaliSpellingGrade').value = data[52] ;
+document.getElementById('bengaliHandwritingValue').value = data[53] ;
+document.getElementById('bengaliHandwritingGrade').value = data[54] ;
+document.getElementById('bengaliSpeakingValue').value = data[55] ; // Corrected index
+document.getElementById('bengaliSpeakingGrade').value = data[56] ; // Corrected index
+document.getElementById('bengaliListeningValue').value = data[57] ;
+document.getElementById('bengaliListeningGrade').value = data[58] ;
+document.getElementById('bengaliTotalValue').value = data[59] ;
+document.getElementById('bengaliTotalGrade').value = data[60] ;
+document.getElementById('bengaliProjectValue').value = data[61] ; // New Project Value
+document.getElementById('bengaliProjectGrade').value = data[62] ; // New Project Grade
+document.getElementById('bengaliAssignmentValue').value = data[63] ; // New Assignment Value
+document.getElementById('bengaliAssignmentGrade').value = data[64] ; // New Assignment Grade
 
 // Maths
-document.getElementById('mathsFNCValue').value = data[65] || '';
-document.getElementById('mathsFNCGrade').value = data[66] || '';
-document.getElementById('mathsUBCValue').value = data[67] || '';
-document.getElementById('mathsUBCGrade').value = data[68] || '';
-document.getElementById('mathsACValue').value = data[69] || '';
-document.getElementById('mathsACGrade').value = data[70] || '';
-document.getElementById('mathsPSAValue').value = data[71] || '';
-document.getElementById('mathsPSAGrade').value = data[72] || '';
-document.getElementById('mathsIAValue').value = data[73] || '';
-document.getElementById('mathsIAGrade').value = data[74] || '';
-document.getElementById('mathsTotalValue').value = data[75] || '';
-document.getElementById('mathsTotalGrade').value = data[76] || '';
-document.getElementById('mathsProjectValue').value = data[77] || ''; // New Project Value
-document.getElementById('mathsProjectGrade').value = data[78] || ''; // New Project Grade
-document.getElementById('mathsAssignmentValue').value = data[79] || ''; // New Assignment Value
-document.getElementById('mathsAssignmentGrade').value = data[80] || ''; // New Assignment Grade
+document.getElementById('mathsFNCValue').value = data[65] ;
+document.getElementById('mathsFNCGrade').value = data[66] ;
+document.getElementById('mathsUBCValue').value = data[67] ;
+document.getElementById('mathsUBCGrade').value = data[68] ;
+document.getElementById('mathsACValue').value = data[69] ;
+document.getElementById('mathsACGrade').value = data[70] ;
+document.getElementById('mathsPSAValue').value = data[71] ;
+document.getElementById('mathsPSAGrade').value = data[72] ;
+document.getElementById('mathsIAValue').value = data[73] ;
+document.getElementById('mathsIAGrade').value = data[74] ;
+document.getElementById('mathsTotalValue').value = data[75] ;
+document.getElementById('mathsTotalGrade').value = data[76] ;
+document.getElementById('mathsProjectValue').value = data[77] ; // New Project Value
+document.getElementById('mathsProjectGrade').value = data[78] ; // New Project Grade
+document.getElementById('mathsAssignmentValue').value = data[79] ; // New Assignment Value
+document.getElementById('mathsAssignmentGrade').value = data[80] ; // New Assignment Grade
 
 // EVS
-document.getElementById('evsObservationValue').value = data[81] || '';
-document.getElementById('evsObservationGrade').value = data[82] || '';
-document.getElementById('evsIdentificationValue').value = data[83] || '';
-document.getElementById('evsIdentificationGrade').value = data[84] || '';
-document.getElementById('evsDiscoveryFactsValue').value = data[85] || '';
-document.getElementById('evsDiscoveryFactsGrade').value = data[86] || '';
-document.getElementById('evsGroupActValue').value = data[87] || '';
-document.getElementById('evsGroupActGrade').value = data[88] || '';
-document.getElementById('evsIAValue').value = data[89] || '';
-document.getElementById('evsIAGrade').value = data[90] || '';
-document.getElementById('evsTotalValue').value = data[91] || '';
-document.getElementById('evsTotalGrade').value = data[92] || '';
-document.getElementById('evsProjectValue').value = data[93] || ''; // New Project Value
-document.getElementById('evsProjectGrade').value = data[94] || ''; // New Project Grade
-document.getElementById('evsAssignmentValue').value = data[95] || ''; // New Assignment Value
-document.getElementById('evsAssignmentGrade').value = data[96] || ''; // New Assignment Grade
+document.getElementById('evsObservationValue').value = data[81] ;
+document.getElementById('evsObservationGrade').value = data[82] ;
+document.getElementById('evsIdentificationValue').value = data[83] ;
+document.getElementById('evsIdentificationGrade').value = data[84] ;
+document.getElementById('evsDiscoveryFactsValue').value = data[85] ;
+document.getElementById('evsDiscoveryFactsGrade').value = data[86] ;
+document.getElementById('evsGroupActValue').value = data[87] ;
+document.getElementById('evsGroupActGrade').value = data[88] ;
+document.getElementById('evsIAValue').value = data[89] ;
+document.getElementById('evsIAGrade').value = data[90] ;
+document.getElementById('evsTotalValue').value = data[91] ;
+document.getElementById('evsTotalGrade').value = data[92] ;
+document.getElementById('evsProjectValue').value = data[93] ; // New Project Value
+document.getElementById('evsProjectGrade').value = data[94] ; // New Project Grade
+document.getElementById('evsAssignmentValue').value = data[95] ; // New Assignment Value
+document.getElementById('evsAssignmentGrade').value = data[96] ; // New Assignment Grade
 
 // Social Science (SST)
-document.getElementById('socialScienceObservationValue').value = data[97] || '';
-document.getElementById('socialScienceObservationGrade').value = data[98] || '';
-document.getElementById('socialScienceIdentificationValue').value = data[99] || '';
-document.getElementById('socialScienceIdentificationGrade').value = data[100] || '';
-document.getElementById('socialScienceDiscoveryFactsValue').value = data[101] || '';
-document.getElementById('socialScienceDiscoveryFactsGrade').value = data[102] || '';
-document.getElementById('socialScienceGroupActValue').value = data[103] || '';
-document.getElementById('socialScienceGroupActGrade').value = data[104] || '';
-document.getElementById('socialScienceIAValue').value = data[105] || '';
-document.getElementById('socialScienceIAGrade').value = data[106] || '';
-document.getElementById('socialScienceTotalValue').value = data[107] || '';
-document.getElementById('socialScienceTotalGrade').value = data[108] || '';
-document.getElementById('socialScienceProjectValue').value = data[109] || ''; // New Project Value
-document.getElementById('socialScienceProjectGrade').value = data[110] || ''; // New Project Grade
-document.getElementById('socialScienceAssignmentValue').value = data[111] || ''; // New Assignment Value
-document.getElementById('socialScienceAssignmentGrade').value = data[112] || ''; // New Assignment Grade
+document.getElementById('socialScienceObservationValue').value = data[97] ;
+document.getElementById('socialScienceObservationGrade').value = data[98] ;
+document.getElementById('socialScienceIdentificationValue').value = data[99] ;
+document.getElementById('socialScienceIdentificationGrade').value = data[100] ;
+document.getElementById('socialScienceDiscoveryFactsValue').value = data[101] ;
+document.getElementById('socialScienceDiscoveryFactsGrade').value = data[102] ;
+document.getElementById('socialScienceGroupActValue').value = data[103] ;
+document.getElementById('socialScienceGroupActGrade').value = data[104] ;
+document.getElementById('socialScienceIAValue').value = data[105] ;
+document.getElementById('socialScienceIAGrade').value = data[106] ;
+document.getElementById('socialScienceTotalValue').value = data[107] ;
+document.getElementById('socialScienceTotalGrade').value = data[108] ;
+document.getElementById('socialScienceProjectValue').value = data[109] ; // New Project Value
+document.getElementById('socialScienceProjectGrade').value = data[110] ; // New Project Grade
+document.getElementById('socialScienceAssignmentValue').value = data[111] ; // New Assignment Value
+document.getElementById('socialScienceAssignmentGrade').value = data[112] ; // New Assignment Grade
 
 // Computer
-document.getElementById('computerTheoryValue').value = data[113] || '';
-document.getElementById('computerTheoryGrade').value = data[114] || '';
-document.getElementById('computerPracticalValue').value = data[115] || '';
-document.getElementById('computerPracticalGrade').value = data[116] || '';
-document.getElementById('computerTotalValue').value = data[117] || '';
-document.getElementById('computerTotalGrade').value = data[118] || '';
-document.getElementById('computerProjectValue').value = data[119] || ''; // New Project Value
-document.getElementById('computerProjectGrade').value = data[120] || ''; // New Project Grade
-document.getElementById('computerAssignmentValue').value = data[121] || ''; // New Assignment Value
-document.getElementById('computerAssignmentGrade').value = data[122] || ''; // New Assignment Grade
+document.getElementById('computerTheoryValue').value = data[113] ;
+document.getElementById('computerTheoryGrade').value = data[114] ;
+document.getElementById('computerPracticalValue').value = data[115] ;
+document.getElementById('computerPracticalGrade').value = data[116] ;
+document.getElementById('computerTotalValue').value = data[117] ;
+document.getElementById('computerTotalGrade').value = data[118] ;
+document.getElementById('computerProjectValue').value = data[119] ; // New Project Value
+document.getElementById('computerProjectGrade').value = data[120] ; // New Project Grade
+document.getElementById('computerAssignmentValue').value = data[121] ; // New Assignment Value
+document.getElementById('computerAssignmentGrade').value = data[122] ; // New Assignment Grade
 
 
 // English
-document.getElementById('english1stPT').value = data[125] || ''; //games
-document.getElementById('english2ndPT').value = data[126] || ''; //arts
-document.getElementById('englishPT10Percent').value = data[127] || ''; //craft
-document.getElementById('english1stPTProject').value = data[128] || ''; //music
-document.getElementById('english2ndPTProject').value = data[129] || ''; //attendance
-document.getElementById('englishProject10Percent').value = data[130] || ''; //initiative
-document.getElementById('english1stPTAssignment').value = data[131] || '';  //originality
-document.getElementById('english2ndPTAssignment').value = data[132] || '';  //observation
-document.getElementById('englishAssignment10Percent').value = data[133] || ''; //selfConfidence
-document.getElementById('englishHY').value = data[134] || '';   //coOperation
-document.getElementById('englishHY20Percent').value = data[135] || '';  // Personal Cleanliness and Hygine
+document.getElementById('english1stPT').value = data[125] ; //games
+document.getElementById('english2ndPT').value = data[126] ; //arts
+document.getElementById('englishPT10Percent').value = data[127] ; //craft
+document.getElementById('english1stPTProject').value = data[128] ; //music
+document.getElementById('english2ndPTProject').value = data[129] ; //attendance
+document.getElementById('englishProject10Percent').value = data[130] ; //initiative
+document.getElementById('english1stPTAssignment').value = data[131] ;  //originality
+document.getElementById('english2ndPTAssignment').value = data[132] ;  //observation
+document.getElementById('englishAssignment10Percent').value = data[133] ; //selfConfidence
+document.getElementById('englishHY').value = data[134] ;   //coOperation
+document.getElementById('englishHY20Percent').value = data[135] ;  // Personal Cleanliness and Hygine
 //document.getElementById('englishAnnual').value = data[136] || '';
 //document.getElementById('englishAnnual50Percent').value = data[137] || '';
 //document.getElementById('englishFinalTotal').value = data[138] || '';
@@ -1545,6 +1545,9 @@ function saveMarks() {
     var examType = document.getElementById('examType').value;
     var statusDisplay = document.getElementById('statusDisplay').value;
     var teacherNameDisplay = document.getElementById('teacherNameDisplay').value;
+	
+	var rollNumberDisplay = document.getElementById('rollNumberDisplay').value;
+
 
     // English
     var englishReadingValue = document.getElementById('englishReadingValue').value;
@@ -1696,8 +1699,12 @@ function saveMarks() {
         action: 'save',
         examType: examType,
         admissionNumber: admissionNumber,
+		
+		rollNumberDisplay: rollNumberDisplay,
         teacherNameDisplay: teacherNameDisplay,
         statusDisplay: statusDisplay,
+		
+		
 
         englishReadingValue: englishReadingValue,
         englishReadingGrade: englishReadingGrade,
