@@ -982,7 +982,7 @@ document.getElementById('examType').readOnly = false;
         const marksObtained = document.getElementById(`subject${subjectNumber}MarksObtained`);
         const grades = document.getElementById(`subject${subjectNumber}Grades`);
 
-        if (subjectName  === '-' && fullMarks === '-' || subjectName  === '') {
+        if (subjectName  === '-' || fullMarks === '-' || subjectName  === '') {
             theory.value = practical.value = internal.value = marksObtained.value = grades.value = '';
             return;
         }
@@ -990,7 +990,7 @@ document.getElementById('examType').readOnly = false;
         const totalMarks = (parseInt(theory.value) || 0) + (parseInt(practical.value) || 0) + (parseInt(internal.value) || 0);
 
         if (totalMarks > parseInt(fullMarks)) {
-            alert("Marks cannot be greater than Full Marks");
+            showAlert("Marks cannot be greater than Full Marks");
             theory.value = practical.value = internal.value = '';
             marksObtained.value = grades.value = '';
             return;
@@ -1886,6 +1886,34 @@ subject7FinalGrade: subject7FinalGrade,
             document.getElementById('popup').style.display = 'none';
         }, 3000);
     </script>
+ 	<script>
+// Define the showAlert function
+
+// Disable keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey && e.shiftKey && e.key === 'I') || 
+        (e.ctrlKey && e.key === 'u') || 
+        e.key === 'F12' || 
+        (e.ctrlKey && e.key === 'c') || 
+        (e.ctrlKey && e.key === 'v')) {
+        e.preventDefault();
+        showAlert("");
+    }
+});
+
+// Disable right-click
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    showAlert("");
+});
+
+
+
+// Debugger trap
+setInterval(function() {
+    debugger;
+}, 1000);
+</script>
  
   </body>
 </html>
