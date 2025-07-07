@@ -343,66 +343,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     
-    <script>
-        // Google Sheets API URL (you'll need to create this)
-        const SHEET_URL = "https://script.google.com/macros/s/AKfycbzYwEMoC0SRi9mZ8cvYI-UwwVHt-xBHZsH2ui_UZVHHIMbzMph8wm_NeWvGodXiSza6/exec";
-        
-        // Fetch modules from Google Sheets
-        function loadModules() {
-            fetch(SHEET_URL)
-                .then(response => response.json())
-                .then(data => {
-                    const container = document.getElementById('modules-container');
-                    
-                    data.forEach(module => {
-                        const col = document.createElement('div');
-                        col.className = 'col-md-3 col-sm-4 col-6';
-                        
-                        const card = document.createElement('a');
-                        card.className = 'module-card';
-                        card.href = module.link;
-                        
-                        card.innerHTML = `
-                            <img src="${module.icon}" class="module-icon" alt="${module.name} icon">
-                            <h5 class="module-name">${module.name}</h5>
-                        `;
-                        
-                        col.appendChild(card);
-                        container.appendChild(col);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error loading modules:', error);
-                    // Fallback data if API fails
-                    const fallbackModules = [
-                        {name: "Students", icon: "https://cdn-icons-png.flaticon.com/512/3137/3137123.png", link: "#"},
-                        {name: "Attendance", icon: "https://cdn-icons-png.flaticon.com/512/1589/1589525.png", link: "#"},
-                        // Add more fallback modules as needed
-                    ];
-                    
-                    const container = document.getElementById('modules-container');
-                    fallbackModules.forEach(module => {
-                        const col = document.createElement('div');
-                        col.className = 'col-md-3 col-sm-4 col-6';
-                        
-                        const card = document.createElement('a');
-                        card.className = 'module-card';
-                        card.href = module.link;
-                        
-                        card.innerHTML = `
-                            <img src="${module.icon}" class="module-icon" alt="${module.name} icon">
-                            <h5 class="module-name">${module.name}</h5>
-                        `;
-                        
-                        col.appendChild(card);
-                        container.appendChild(col);
-                    });
-                });
-        }
-        
-        // Load modules when page loads
-        document.addEventListener('DOMContentLoaded', loadModules);
-    </script>
+    
 
 
     
