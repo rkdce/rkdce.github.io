@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Student Registration</title>
+  <link rel="icon" href="https://drive.google.com/thumbnail?id=1AfmX3kHR6q3UkbAqyKY8HSDiyBVn1VzW&sz=64x64" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #2d3748;
+      min-height: 100vh;
+      padding: 20px;
+      font-size: 16px;
+    }
+
+    /* Header */
+    .header {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    /* Main Container */
+    .main-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* Form Container */
+    .form-container {
+      padding: 40px;
+    }
+
+    /* Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    /* Form Group */
+    .form-group {
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      background: #f8fafc;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* File Upload Styling */
+    .file-upload-group {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 30px;
+      border: 2px dashed #cbd5e0;
+      border-radius: 15px;
+      background: #f7fafc;
+      transition: all 0.3s ease;
+    }
+
+    .file-upload-group:hover {
+      border-color: #667eea;
+      background: #edf2f7;
+    }
+
+    .file-upload-group input[type="file"] {
+      display: none;
+    }
+
+    .file-upload-label {
+      display: inline-block;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .file-upload-label:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .photo-preview {
+      margin-top: 20px;
+      max-width: 200px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Button Container */
+    .button-container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .btn {
+      padding: 15px 40px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      min-width: 150px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(113, 128, 150, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      color: white;
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+    }
+
+    /* Result Display */
+    .result-container {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .result-success {
+      background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+      color: #22543d;
+      border: 2px solid #68d391;
+    }
+
+    .result-error {
+      background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+      color: #742a2a;
+      border: 2px solid #fc8181;
+    }
+
+    /* Loader */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #667eea;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      .header {
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .form-container {
+        padding: 20px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .button-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+
+    /* Alert Styling */
+    .alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      border-radius: 10px;
+      color: white;
+      font-weight: 600;
+      z-index: 1001;
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+    }
+
+    .alert.show {
+      transform: translateX(0);
+    }
+
+    .alert-success {
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    }
+
+    .alert-error {
+      background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    }
+
+    /* Search Section */
+    .search-section {
+      background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .search-section h3 {
+      color: #2d3748;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-form input {
+      max-width: 200px;
+    }
+
+    /* Status Indicators */
+    .status-indicator {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
+    .status-new {
+      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+      color: white;
+    }
+
+    .status-update {
+      background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+      color: white;
+    }
+
+
+
+    .user-info-bar {
+            background: rgba(255,255,255,0.95);
+            color: #4f46e5;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 10px 18px 10px 14px;
+            
+            align-items: center;
+            gap: 14px;
+            font-size: 0.98rem;
+            min-width: 0;
+            margin-left: 20px;
+        }
+        .user-info-bar span { font-weight: 600; }
+        .user-info-bar .logout-btn {
+            background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 7px 18px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .user-info-bar .logout-btn:hover {
+            background: linear-gradient(135deg, #ff6b81 0%, #ff4757 100%);
+        }
+        @media (max-width: 768px) {
+            .container { margin: 10px; border-radius: 15px; }
+            .header { flex-direction: column; align-items: stretch; text-align: center; }
+            .user-info-bar {
+                margin: 12px auto 0 auto;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 12px;
+                font-size: 0.95rem;
+            }
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #999;
+            text-align: center;
+        }
+  </style>
+</head>
+<body>
+  
+  <!-- Loader -->
+  <div id="loader" class="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+
+    <div class="user-info-bar">
+      <span><i class="fas fa-user"></i> <span id="username"> </span></span>
+      <span><i class="fas fa-graduation-cap"></i> <span id="tClass"> </span></span>
+      <span><i class="fas fa-user-tag"></i> <span id="userType"> </span> </span>
+      <button class="logout-btn" onclick="handleLogout()"> <i class="fas fa-sign-out-alt"></i> Go Back</button>
+  </div><br>
+
+    <h1>🎓 Student Registration System</h1>
+    <p>Register new students or update existing student information</p>
+  </div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <div class="form-container">
+      <!-- Registration Form -->
+      <form id="uploadForm">
+        <div class="form-grid">
+          <!-- Basic Information -->
+          <div class="form-group">
+            <label for="adm">🔢 Admission Number *</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <input type="text" id="adm" name="adm" placeholder="Enter admission number" required style="flex: 1;">
+              <button type="button" class="btn btn-secondary" onclick="searchStudent()" style="white-space: nowrap; padding: 15px 20px;">
+                🔍 Search
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="sname">👤 Student Name *</label>
+            <input type="text" id="sname" name="sname" placeholder="Enter full name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="fname">👨 Father's Name *</label>
+            <input type="text" id="fname" name="fname" placeholder="Enter father's name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="mname">👩 Mother's Name</label>
+            <input type="text" id="mname" name="mname" placeholder="Enter mother's name">
+          </div>
+
+          <div class="form-group">
+            <label for="classno">📚 Class *</label>
+            <select id="classno" name="classno" required>
+                <option value="">-- Select Class --</option>
+                <option value="NURSERY">NURSERY</option>
+                <option value="KG1">KG1</option>
+                <option value="KG2">KG2</option>
+                <option value="I">I</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V">V</option>
+                <option value="VI">VI</option>
+                <option value="VII">VII</option>
+                <option value="VIII">VIII</option>
+                <option value="IX">IX</option>
+                <option value="X">X</option>
+                <option value="XI SCIENCE">XI SCIENCE</option>
+				<option value="XI SCIENCE">XI COMMERCE</option>
+                <option value="XI ARTS">XI ARTS</option>
+                <option value="XII SCIENCE">XII SCIENCE</option>
+				<option value="XI SCIENCE">XII COMMERCE</option>
+                <option value="XII ARTS">XII ARTS</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="roll">🔢 Roll Number *</label>
+            <input type="number" id="roll" name="roll" placeholder="Enter roll number" required>
+          </div>
+
+          <div class="form-group">
+            <label for="doa">📅 Date of Admission *</label>
+            <input type="date" id="doa" name="doa" required>
+          </div>
+
+          <div class="form-group">
+            <label for="dob">🎂 Date of Birth *</label>
+            <input type="date" id="dob" name="dob" required>
+          </div>
+
+          <div class="form-group">
+            <label for="gender">👥 Gender *</label>
+            <select id="gender" name="gender" required>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="phone_number">📞 Phone Number *</label>
+            <input type="tel" id="phone_number" name="phone_number" placeholder="Enter phone number" required>
+          </div>
+
+          <div class="form-group">
+            <label for="address">📍 Address *</label>
+            <textarea id="address" name="address" placeholder="Enter complete address" required></textarea>
+          </div>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="file-upload-group">
+          <label for="studentPhoto" class="file-upload-label">
+            📷 Upload Student Photo
+          </label>
+          <input type="file" id="studentPhoto" name="myFile" accept="image/*" required>
+          <img id="photoPreview" class="photo-preview" style="display: none;">
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-container">
+          <button type="submit" class="btn btn-primary" id="uploadBtn">
+            ✅ Register Student
+          </button>
+          <button type="button" class="btn btn-success" id="updateBtn" style="display: none;">
+            🔄 Update Student
+          </button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">
+            🔄 Reset Form
+          </button>
+        </div>
+      </form>
+
+      <!-- Result Display -->
+      <div id="result" class="result-container" style="display: none;"></div>
+
+    </div>
+
+    <div class="footer">
+      &copy; 2025 Rajesh Kumar Das. All rights reserved.
+  </div><br>
+  </div>
+
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyX3UaVxfv_6nYUIUMKVW27l8WlXXvJvADB-LTh3iMxUCHilmgqKnyTQET1U14yPkPp/exec";
+    const form = document.getElementById("uploadForm");
+    const result = document.getElementById("result");
+    const preview = document.getElementById("photoPreview");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const updateBtn = document.getElementById("updateBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const admInput = document.getElementById("adm");
+
+    // File preview
+    document.getElementById("studentPhoto").addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+      } else {
+        preview.style.display = "none";
+      }
+    });
+
+    // Search student
+    async function searchStudent() {
+      const adm = admInput.value.trim();
+      if (!adm) {
+        showAlert("Please enter an admission number to search", "error");
+        return;
+      }
+
+      showLoader();
+      const url = `${GAS_URL}?action=getStudentDetails&adm=${encodeURIComponent(adm)}`;
+      
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.status === "success") {
+          const fields = data.student;
+          populateForm(fields);
+          showAlert("✅ Student found! You can now update the information.", "success");
+          uploadBtn.style.display = "none";
+          updateBtn.style.display = "inline-block";
+          admInput.readOnly = true;
+        } else {
+          showAlert("❌ Student not found. You can register a new student.", "error");
+          uploadBtn.style.display = "inline-block";
+          updateBtn.style.display = "none";
+          preview.style.display = "none";
+          // Clear form for new registration
+          form.sname.value = '';
+          form.fname.value = '';
+          form.mname.value = '';
+          form.classno.value = '';
+          form.roll.value = '';
+          form.doa.value = '';
+          form.dob.value = '';
+          form.gender.value = '';
+          form.phone_number.value = '';
+          form.address.value = '';
+        }
+      } catch (error) {
+        showAlert("❌ Error fetching student data.", "error");
+        console.error(error);
+      } finally {
+        hideLoader();
+      }
+    }
+
+    // Populate form with student data
+    function populateForm(fields) {
+      form.adm.value = fields.adm || '';
+      form.sname.value = fields.sname || '';
+      form.fname.value = fields.fname || '';
+      form.mname.value = fields.mname || '';
+      form.classno.value = fields.classno || '';
+      form.roll.value = fields.roll || '';
+      form.doa.value = fields.doa ? formatDateForInput(fields.doa) : '';
+      form.dob.value = fields.dob ? formatDateForInput(fields.dob) : '';
+      form.gender.value = fields.gender || '';
+      form.phone_number.value = fields.phone_number || '';
+      form.address.value = fields.address || '';
+
+      if (fields.photoUrl) {
+        const match = fields.photoUrl.match(/[-\w]{25,}/);
+        if (match) {
+          preview.src = `https://drive.google.com/thumbnail?id=${match[0]}`;
+          preview.style.display = "block";
+        }
+      }
+    }
+
+    // Format date for input
+    function formatDateForInput(isoDate) {
+      const date = new Date(isoDate);
+      const tzOffset = date.getTimezoneOffset() * 60000;
+      return new Date(date - tzOffset).toISOString().split("T")[0];
+    }
+
+    // Form submission
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      // Validate admission number
+      const adm = form.adm.value.trim();
+      if (!adm) {
+        showAlert("Please enter an admission number", "error");
+        return;
+      }
+      
+      // Check if this is an update or new registration
+      const isUpdate = updateBtn.style.display !== "none";
+      const action = isUpdate ? "updateStudent" : "registerStudent";
+      
+      await submitForm(action);
+    });
+
+    // Update button
+    updateBtn.onclick = async () => {
+      // Validate admission number
+      const adm = form.adm.value.trim();
+      if (!adm) {
+        showAlert("Please enter an admission number", "error");
+        return;
+      }
+      
+      await submitForm("updateStudent");
+    };
+
+    // Submit form function
+    async function submitForm(action) {
+      const fileInput = document.getElementById("studentPhoto");
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async () => {
+        const base64 = reader.result?.split(",")[1] || "";
+        const formData = new URLSearchParams();
+
+        // Append form fields
+        for (let element of form.elements) {
+          if (element.name && element.type !== "file") {
+            formData.append(element.name, element.value);
+          }
+        }
+
+        // Append file data if present
+        if (file) {
+          formData.append("data", base64);
+          formData.append("mimetype", file.type);
+          formData.append("filename", file.name);
+        }
+
+        formData.append("action", action);
+
+        showLoader();
+        try {
+          const response = await fetch(GAS_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData
+          });
+
+          const text = await response.text();
+          showResult(text, action === "registerStudent" ? "success" : "update");
+        } catch (err) {
+          showAlert("❌ Error uploading data.", "error");
+          console.error(err);
+        } finally {
+          hideLoader();
+        }
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        reader.onload();
+      }
+    }
+
+    // Reset form
+    resetBtn.onclick = () => {
+      form.reset();
+      admInput.readOnly = false;
+      preview.style.display = "none";
+      result.style.display = "none";
+      uploadBtn.style.display = "inline-block";
+      updateBtn.style.display = "none";
+    };
+
+    // Show/hide loader
+    function showLoader() {
+      document.getElementById('loader').style.display = 'flex';
+    }
+
+    function hideLoader() {
+      document.getElementById('loader').style.display = 'none';
+    }
+
+    // Show result
+    function showResult(message, type) {
+      result.innerHTML = message;
+      result.className = `result-container result-${type === "success" ? "success" : "error"}`;
+      result.style.display = "block";
+      
+      if (type === "success") {
+        form.reset();
+        preview.style.display = "none";
+        uploadBtn.style.display = "inline-block";
+        updateBtn.style.display = "none";
+        admInput.readOnly = false;
+      }
+    }
+
+     // User info bar logic
+     (function() {
+            const userString = localStorage.getItem('user');
+            if (userString) {
+                const user = JSON.parse(userString);
+                document.getElementById('username').textContent = user.username;
+                document.getElementById('tClass').textContent = user.tClass;
+                document.getElementById('userType').textContent = user.userType;
+            } else {
+                window.location.href = 'LoginATS.html';
+            }
+        })();
+        function handleLogout() {
+            
+            window.location.href = 'dashboardATS.html';
+        }
+
+    // Show alert
+    function showAlert(message, type) {
+      const alert = document.createElement('div');
+      alert.className = `alert alert-${type}`;
+      alert.textContent = message;
+      document.body.appendChild(alert);
+      
+      setTimeout(() => alert.classList.add('show'), 100);
+      setTimeout(() => {
+        alert.classList.remove('show');
+        setTimeout(() => document.body.removeChild(alert), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

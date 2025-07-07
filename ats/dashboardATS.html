@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Dashboard</title>
+     <link rel="icon" href="https://drive.google.com/thumbnail?id=1AfmX3kHR6q3UkbAqyKY8HSDiyBVn1VzW&sz=64x64" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .header .logout-button {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .header .logout-button:hover {
+            background-color: #ff6b81;
+        }
+
+        /* Main Content */
+        .main-content {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Cards */
+        .card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #999;
+            text-align: center;
+        }
+    </style>
+    <title>My Page</title>
+    <style>
+    /* Visitor Counter */
+        #visitorCount {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.98);
+            color: #475569;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+            z-index: 100;
+        }
+        
+        #visitorCount:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+    </style>
+    
+    
+    
+   
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+       <!-- 
+        .dashboard-header {
+            background-color: #b61924;
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logout-btn {
+            color: white;
+            text-decoration: none;
+        }
+        -->
+        .module-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .module-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .module-name {
+            font-weight: 600;
+            color: #333;
+            margin-top: 10px;
+        }
+    </style>
+    
+    
+      <style>
+
+
+    h2 {
+      text-align: center;
+      color: #2d3748;
+    }
+
+    .scroll-box {
+      height: 200px;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 10px;
+      margin-top: 20px;
+      margin: 20px;
+    }
+
+    .scroll-content {
+      position: absolute;
+      width: 100%;
+      animation: scrollUp linear infinite;
+    }
+
+    .notification {
+      padding: 10px 15px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #1a202c;
+      font-size: 16px;
+    }
+
+    .notification-title {
+      font-weight: bold;
+      color: #4f46e5;
+    }
+
+    @keyframes scrollUp {
+      0% {
+        top: 100%;
+      }
+      100% {
+        top: -100%;
+      }
+    }
+  </style>
+    
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Welcome, <span id="username"></span>!</h1>
+        <p>Class: <span id="tClass"></span> | Role: <span id="userType"></span></p>
+        <button class="logout-button" onclick="handleLogout()">Logout</button>
+    </div>
+
+    <!-- Main Content -->
+    
+    
+        <h2>📢 Notice from the Principal's Desk</h2>
+<div class="scroll-box">
+  <div id="scrollContent" class="scroll-content">
+    <div class="notification">Loading notifications...</div>
+  </div>
+</div>
+    
+	<div class="main-content" >
+       
+ 
+        
+        <div class="card" onclick="window.location.href='UploadMarkATS.html'">
+            <h2>Upload Mark</h2>
+            <p>Upload Mark</p>
+        </div>
+	</div>
+	<br>
+	
+	
+    <div class="main-content" id="adminDiv" style="display: none;">
+       
+ 
+       <div class="card" id="std" style="display: none;" onclick="window.location.href='StudentsDataATS.html'">
+            <h2>Student Details</h2>
+            <p>Student Details</p>
+        </div><br>
+
+        <div class="card" onclick="window.location.href='student_registration.html'">
+            <h2>Student Registration Link</h2>
+            <p>Register for new Student Only</p>
+        </div>
+        <br>
+        
+
+         <div >
+          <div class="card" onclick="window.location.href='Paste_Link'">
+          <h2>MARKSHEET</h2>
+            <p>MARKSHEET</p>
+        </div>
+        </div>
+
+        
+        
+        
+    </div>
+<br>
+        <div class="card" onclick="window.location.href='aboutdeveloper.html'">
+            <h2>About Me</h2>
+            <p>Developer:Rajesh Kumar Das</p>
+        </div>
+<!------------------------------------------------- -->
+
+
+ <!-- Module Grid -->
+    <div class="container my-5">
+        <div class="row" id="modules-container">
+            <!-- Modules will be loaded here from Google Sheets -->
+        </div>
+    </div>
+
+
+
+    <!-- Visitor Counter -->
+    <div id="visitorCount">
+        <i class="fas fa-users"></i> Loading...
+    </div>
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    
+    <script>
+        // Google Sheets API URL (you'll need to create this)
+        const SHEET_URL = "https://script.google.com/macros/s/AKfycbzYwEMoC0SRi9mZ8cvYI-UwwVHt-xBHZsH2ui_UZVHHIMbzMph8wm_NeWvGodXiSza6/exec";
+        
+        // Fetch modules from Google Sheets
+        function loadModules() {
+            fetch(SHEET_URL)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('modules-container');
+                    
+                    data.forEach(module => {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-3 col-sm-4 col-6';
+                        
+                        const card = document.createElement('a');
+                        card.className = 'module-card';
+                        card.href = module.link;
+                        
+                        card.innerHTML = `
+                            <img src="${module.icon}" class="module-icon" alt="${module.name} icon">
+                            <h5 class="module-name">${module.name}</h5>
+                        `;
+                        
+                        col.appendChild(card);
+                        container.appendChild(col);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading modules:', error);
+                    // Fallback data if API fails
+                    const fallbackModules = [
+                        {name: "Students", icon: "https://cdn-icons-png.flaticon.com/512/3137/3137123.png", link: "#"},
+                        {name: "Attendance", icon: "https://cdn-icons-png.flaticon.com/512/1589/1589525.png", link: "#"},
+                        // Add more fallback modules as needed
+                    ];
+                    
+                    const container = document.getElementById('modules-container');
+                    fallbackModules.forEach(module => {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-3 col-sm-4 col-6';
+                        
+                        const card = document.createElement('a');
+                        card.className = 'module-card';
+                        card.href = module.link;
+                        
+                        card.innerHTML = `
+                            <img src="${module.icon}" class="module-icon" alt="${module.name} icon">
+                            <h5 class="module-name">${module.name}</h5>
+                        `;
+                        
+                        col.appendChild(card);
+                        container.appendChild(col);
+                    });
+                });
+        }
+        
+        // Load modules when page loads
+        document.addEventListener('DOMContentLoaded', loadModules);
+    </script>
+
+
+    
+<!------------------------------------------------- -->
+
+
+
+
+    
+
+
+<!-- JavaScript to check the text content and show the div -->
+<script>
+  // Ensure script runs after DOM is fully loaded
+  window.addEventListener("DOMContentLoaded", function () {
+    // Get the userType content
+    const userTypeElement = document.getElementById("userType").textContent.trim();
+
+    // Get the adminDiv
+    const adminDiv = document.getElementById("adminDiv");
+    const adminDiv1 = document.getElementById("std");
+
+    // Show the div if user is Admin
+    if (userTypeElement === "Admin" ) {
+      adminDiv.style.display = "block"; // Ensure visibility
+      adminDiv1.style.display = "block"; // Ensure visibility
+    }
+  });
+</script>
+
+
+
+
+    
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2025 Rajesh Kumar Das. All rights reserved.
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Retrieve the user's information from localStorage
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            const user = JSON.parse(userString);
+            document.getElementById('username').textContent = user.username; // Display username
+            document.getElementById('tClass').textContent = user.tClass; // Display class
+            document.getElementById('userType').textContent = user.userType; // Display user type
+        } else {
+            window.location.href = 'LoginATS.html'; // Redirect to login page if no user data
+        }
+
+        // Logout Functionality
+        function handleLogout() {
+            localStorage.removeItem('user'); // Clear user data
+            window.location.href = 'LoginATS.html'; // Redirect to login page
+        }
+    </script>
+
+     <script>
+      // Visitor Counter
+        function showCount(data) {
+            document.getElementById('visitorCount').innerHTML = `<i class="fas fa-users"></i> ${data.count}`;
+        }
+        const script = document.createElement('script');
+        script.src = 'https://script.google.com/macros/s/AKfycbxFt7iTpLgs_Spz6Q9qQktW_U8ICeAur2pqgy_KHtQQ4LJugb-p9O0dM9f_kfO-6Vk-/exec?getCount=true';
+        document.head.appendChild(script);
+    </script>
+    
+    
+    
+    
+
+
+<script>
+  const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFLNosC9SUMAqAT4KrQTtocV7oWwdvdN99qWe9FURLP7zqof6OAMpoFAtLSj1dv9593EpbAh3T6cCQ/pub?gid=166849373&single=true&output=csv';
+  const scrollContent = document.getElementById('scrollContent');
+
+  function parseCSV(csvText) {
+    const rows = [];
+    let current = '', inQuotes = false, row = [];
+
+    for (let i = 0; i < csvText.length; i++) {
+      const char = csvText[i];
+
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        row.push(current.trim());
+        current = '';
+      } else if ((char === '\n' || char === '\r') && !inQuotes) {
+        if (current || row.length > 0) row.push(current.trim());
+        if (row.length > 0) rows.push(row);
+        current = '';
+        row = [];
+      } else {
+        current += char;
+      }
+    }
+    if (current || row.length > 0) {
+      row.push(current.trim());
+      rows.push(row);
+    }
+    return rows;
+  }
+
+  function loadScrollingNotifications() {
+    fetch(csvUrl)
+      .then(res => res.text())
+      .then(csv => {
+        const rows = parseCSV(csv).filter(r => r.length >= 2 && r[0].trim());
+        rows.reverse(); // show newest first
+
+        if (rows.length === 0) {
+          scrollContent.innerHTML = '<div class="notification">No notifications available.</div>';
+          return;
+        }
+
+        const contentHTML = rows.map(row =>
+          `<div class="notification">
+             <div class="notification-title">${row[0]}</div>
+             <div>${row[1]}</div>
+           </div>`
+        ).join('');
+
+        scrollContent.innerHTML = contentHTML + contentHTML; // duplicate for continuous scroll
+        const scrollSpeed = 40; // px per second
+        const totalHeight = scrollContent.scrollHeight / 2;
+        const duration = totalHeight / scrollSpeed;
+
+        scrollContent.style.animationDuration = `${duration}s`;
+      })
+      .catch(err => {
+        scrollContent.innerHTML = `<div class="notification">Error loading notifications: ${err.message}</div>`;
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', loadScrollingNotifications);
+</script>    
+    
+</body>
+</html>

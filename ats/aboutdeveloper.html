@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rajesh Kumar Das — RKD Computer Education</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --secondary: #1e40af;
+      --accent: #f59e0b;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.3rem;
+    }
+    .address {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+    }
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 3px solid var(--accent);
+      
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 1.6rem;
+      color: var(--secondary);
+      margin: 0.2rem 0;
+    }
+    .title {
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+    }
+    .section-title {
+      font-size: 1.1rem;
+      margin: 1.8rem 0 0.8rem;
+      color: #111827;
+      font-weight: 600;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+      display: inline-block;
+    }
+    .list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .item {
+      background: #f1f5f9;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+    }
+    .contact {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+    .contact a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .contact i {
+      margin-right: 6px;
+    }
+    .social {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .social a {
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+    .footer {
+      margin-top: 1.8rem;
+      font-size: 0.85rem;
+      color: #64748b;
+      font-style: italic;
+    }
+    @media (max-width: 600px) {
+      .card { padding: 1.5rem; }
+      .list-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">RKD Computer Education</div>
+    <div class="address">Tarapur, Silchar, Assam – 788003</div>
+
+    <img class="avatar" src="https://drive.google.com/thumbnail?id=1y-NQgDEMEOzRY4T18wuUSpcySDYdq6Ca&sz=w400" alt="Rajesh Kumar Das">
+    <h1>Rajesh Kumar Das</h1>
+    <div class="title">Founder • Tech Educator • Developer</div>
+
+    <div class="section-title">Teaching Subjects</div>
+    <div class="list-grid">
+      <div class="item">Computer Science</div>
+      <div class="item">Artificial Intelligence</div>
+      <div class="item">Information Technology</div>
+      <div class="item">Informatics Practices</div>
+      <div class="item">MS Word, Excel, PowerPoint</div>
+      <div class="item">Android App + Database</div>
+    </div>
+
+    <div class="section-title">Services Offered</div>
+    <div class="list-grid">
+      <div class="item">School ID Cards</div>
+      <div class="item">Student Database System</div>
+      <div class="item">Marks & Grade System</div>
+      <div class="item">Attendance System</div>
+      <div class="item">Google Apps Script Tools</div>
+      <div class="item">Custom Web Apps</div>
+    </div>
+
+    <div class="section-title">Contact</div>
+    <div class="contact">
+      <div><i class="fas fa-phone"></i> <a href="tel:+917002323169">7002323169</a></div>
+      <div><i class="fas fa-envelope"></i> <a href="mailto:emailrajeshkumardas@gmail.com">Email</a></div>
+    </div>
+
+    <div class="social">
+      <a href="https://youtube.com/@Rkdcs" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+    </div>
+
+    <div class="footer">“Teaching minds. Building systems. Empowering futures.”</div>
+  </div>
+</body>
+</html>

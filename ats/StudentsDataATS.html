@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABHYASH TECHNO SCHOOL,PADMAPUR</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: #f0f2f5;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        /* Developer Credit - Responsive */
+        .developer-credit {
+            text-align: center;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            margin: 15px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #4a56b2 0%, #6a3093 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .developer-name {
+            font-size: clamp(1.5em, 5vw, 1.8em);
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
+        }
+        
+        /* New Header Styles */
+        .header {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 1.5em;
+            margin: 0 0 10px 0;
+            color: white;
+        }
+        
+        .header p {
+            margin: 0 0 15px 0;
+            color: #e2e8f0;
+            font-size: 1em;
+        }
+        
+        .logout-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+        
+        .logout-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .copyright {
+            font-size: clamp(0.8em, 3vw, 0.95em);
+            opacity: 0.9;
+            font-weight: 300;
+            margin-top: 15px;
+            text-align:center;
+        }
+
+        /* Rest of your existing styles... */
+        /* Heading */
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin: 15px 0 10px;
+            font-weight: 600;
+            font-size: clamp(1.5em, 6vw, 2em);
+        }
+
+        /* Search Container */
+        .search-container {
+            margin: 20px 0;
+            width: 100%;
+        }
+        
+        #searchInput {
+            width: 100%;
+            padding: 14px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: clamp(14px, 4vw, 16px);
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        
+        #searchInput:focus {
+            outline: none;
+            border-color: #4f46e5;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        /* Dark Accordion System */
+        .accordion {
+            background-color: #1e293b;
+            color: #f8fafc;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: clamp(15px, 4.5vw, 16px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border-left: 4px solid #4f46e5;
+            font-weight: 500;
+        }
+
+        .accordion:hover {
+            background-color: #0f172a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            color: #ffffff;
+        }
+
+        .accordion.active {
+            background-color: #0f172a;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        
+        .accordion:after {
+            content: '\002B';
+            color: #f8fafc;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+            transition: all 0.3s;
+            font-size: 1.2em;
+            background: rgba(79, 70, 229, 0.7);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .accordion.active:after {
+            content: '\2212';
+            background: rgba(79, 70, 229, 0.9);
+        }
+
+        .panel {
+            padding: 0 18px;
+            background-color: #ffffff;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin-bottom: 5px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            border-top: none;
+        }
+
+        .panel.show {
+            max-height: 5000px;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* Data Content */
+        .row-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .data-item {
+            flex: 1 1 220px;
+            padding: 12px;
+            background: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            min-width: calc(100% - 24px);
+        }
+
+        .data-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: clamp(0.9em, 4vw, 0.95em);
+        }
+
+        .data-photo {
+            max-width: 50%;
+            max-height: 180px;
+            border-radius: 6px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: block;
+            margin: 12px auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Status Messages */
+        .loading, .no-results {
+            text-align: center;
+            padding: 30px;
+            font-style: italic;
+            color: #718096;
+            font-size: clamp(0.95em, 4vw, 1em);
+        }
+
+        .error {
+            color: #e53e3e;
+            padding: 20px;
+            text-align: center;
+            background: #fff5f5;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #fed7d7;
+            font-size: clamp(0.95em, 4vw, 1em);
+        }
+
+        /* Media Queries for Larger Screens */
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            .data-item {
+                min-width: auto;
+                flex: 1 1 220px;
+            }
+            
+            .data-photo {
+                max-width: 50%;
+            }
+            
+            .developer-credit {
+                margin: 20px 0;
+                padding: 20px;
+            }
+        }
+
+        /* Very small devices */
+        @media (max-width: 400px) {
+            .accordion {
+                padding: 16px;
+            }
+            
+            .panel {
+                padding: 0 12px;
+            }
+            
+            .panel.show {
+                padding: 15px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="developer-credit">
+        <div class="developer-name">ABHYASH TECHNO SCHOOL,PADMAPUR</div>
+        
+        <div class="header">
+            <h1>Welcome, <span id="username"></span>!</h1>
+            <p>Class: <span id="tClass"></span> | Role: <span id="userType"></span></p>
+            <button class="logout-button" onclick="handleLogout()">Go Back</button>
+        </div>
+        
+        <div class="copyright">© 2023 RKD Computer Education. All Rights Reserved</div>
+    </div>
+    
+    <h1>Student Data 2024-25</h1>
+    
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search students by name, class, or other details..." onkeyup="filterAccordions()">
+    </div>
+    
+    <div id="accordionContainer">
+        <div class="loading">Loading student data...</div>
+    </div>
+
+    <div class="copyright">© 2023 RKD Computer Education. All Rights Reserved</div>
+     <script>
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      document.getElementById('username').textContent = user.username;
+      document.getElementById('tClass').textContent = user.tClass;
+      document.getElementById('userType').textContent = user.userType;
+    } else {
+      window.location.href = 'LoginATS.html';
+    }
+
+    function handleLogout() {
+      window.location.href = 'dashboardATS.html';
+    }
+
+    let allAccordions = [];
+
+    function parseCSV(csvText) {
+      const rows = [];
+      let currentRow = [];
+      let currentField = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < csvText.length; i++) {
+        const char = csvText[i];
+
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          currentRow.push(currentField.trim());
+          currentField = '';
+        } else if (char === '\n' && !inQuotes) {
+          currentRow.push(currentField.trim());
+          rows.push(currentRow);
+          currentRow = [];
+          currentField = '';
+        } else {
+          currentField += char;
+        }
+      }
+
+      if (currentField.trim() || currentRow.length > 0) {
+        currentRow.push(currentField.trim());
+        rows.push(currentRow);
+      }
+
+      return rows;
+    }
+
+    function extractFileId(url) {
+      if (!url) return null;
+      if (url.includes('drive.google.com/open?id=')) {
+        return url.split('drive.google.com/open?id=')[1].split('&')[0];
+      } else if (url.includes('drive.google.com/file/d/')) {
+        return url.split('/file/d/')[1].split('/')[0];
+      } else if (url.match(/^[a-zA-Z0-9_-]{25,}$/)) {
+        return url;
+      }
+      return null;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFLNosC9SUMAqAT4KrQTtocV7oWwdvdN99qWe9FURLP7zqof6OAMpoFAtLSj1dv9593EpbAh3T6cCQ/pub?gid=1346872689&single=true&output=csv';
+      const container = document.getElementById('accordionContainer');
+
+      fetch(csvUrl)
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.text();
+        })
+        .then(csvData => {
+          container.innerHTML = '';
+
+          const rows = parseCSV(csvData);
+          if (rows.length === 0) {
+            container.innerHTML = '<div class="error">No data found in CSV</div>';
+            return;
+          }
+
+          const headers = rows[0].map(h => h.trim());
+
+          // ✅ SORT ROWS BY CLASS (column index 5)
+          const dataRows = rows.slice(1).filter(r => r.length > 0 && r.some(field => field.trim() !== ''));
+          dataRows.sort((a, b) => {
+            const classA = a[5] ? a[5].toLowerCase() : '';
+            const classB = b[5] ? b[5].toLowerCase() : '';
+            return classA.localeCompare(classB, undefined, { numeric: true });
+          });
+
+          dataRows.forEach((columns, i) => {
+            const accordion = document.createElement('button');
+            accordion.className = 'accordion';
+            accordion.textContent = `${columns[1] || ''} ${columns[2] || ''} Class: ${columns[5] || ''}` || `Item ${i}`;
+            accordion.dataset.searchContent = columns.join(' ').toLowerCase();
+
+            const panel = document.createElement('div');
+            panel.className = 'panel';
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'row-content';
+
+            for (let j = 0; j < headers.length; j++) {
+              if (j >= columns.length) continue;
+
+              const itemDiv = document.createElement('div');
+              itemDiv.className = 'data-item';
+
+              const label = document.createElement('div');
+              label.className = 'data-label';
+              label.textContent = headers[j] || `Column ${j + 1}`;
+
+              const value = document.createElement('div');
+              if (columns[j] && (columns[j].includes('drive.google.com') || columns[j].match(/^[a-zA-Z0-9_-]{25,}$/))) {
+                const fileId = extractFileId(columns[j]);
+                if (fileId) {
+                  const img = document.createElement('img');
+                  img.src = `https://drive.google.com/thumbnail?id=${fileId}`;
+                  img.className = 'data-photo';
+                  img.alt = headers[j] || 'Photo';
+                  value.appendChild(img);
+                } else {
+                  value.textContent = columns[j] || 'N/A';
+                }
+              } else {
+                value.textContent = columns[j] || 'N/A';
+              }
+
+              itemDiv.appendChild(label);
+              itemDiv.appendChild(value);
+              contentDiv.appendChild(itemDiv);
+            }
+
+            panel.appendChild(contentDiv);
+            container.appendChild(accordion);
+            container.appendChild(panel);
+
+            allAccordions.push({ button: accordion, panel: panel });
+
+            accordion.addEventListener('click', function () {
+              this.classList.toggle('active');
+              const panel = this.nextElementSibling;
+
+              if (panel.classList.contains('show')) {
+                panel.classList.remove('show');
+                panel.style.maxHeight = null;
+              } else {
+                document.querySelectorAll('.panel.show').forEach(openPanel => {
+                  openPanel.classList.remove('show');
+                  openPanel.style.maxHeight = null;
+                  openPanel.previousElementSibling.classList.remove('active');
+                });
+                panel.classList.add('show');
+                panel.style.maxHeight = panel.scrollHeight + 'px';
+              }
+            });
+          });
+        })
+        .catch(error => {
+          container.innerHTML = `<div class="error">Failed to load data: ${error.message}</div>`;
+          console.error('Error loading CSV:', error);
+        });
+    });
+
+    function filterAccordions() {
+      const input = document.getElementById('searchInput');
+      const filter = input.value.toLowerCase();
+      const container = document.getElementById('accordionContainer');
+      let hasResults = false;
+
+      if (allAccordions.length === 0) return;
+
+      allAccordions.forEach(item => {
+        const textContent = item.button.dataset.searchContent;
+        if (textContent.includes(filter)) {
+          item.button.style.display = '';
+          item.panel.style.display = '';
+          hasResults = true;
+        } else {
+          item.button.style.display = 'none';
+          item.panel.style.display = 'none';
+          item.button.classList.remove('active');
+          item.panel.classList.remove('show');
+          item.panel.style.maxHeight = null;
+        }
+      });
+
+      const existingNoResults = document.getElementById('noResults');
+      if (existingNoResults) {
+        existingNoResults.remove();
+      }
+
+      if (!hasResults) {
+        const noResults = document.createElement('div');
+        noResults.id = 'noResults';
+        noResults.className = 'no-results';
+        noResults.textContent = 'No matching results found';
+        container.appendChild(noResults);
+      }
+    }
+  </script>
+</body>
+</html>
+

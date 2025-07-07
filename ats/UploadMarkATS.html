@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f0f4f8; /* Light blue-gray background */
+        color: #2d3748; /* Dark gray text */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 150vh;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    /* Header */
+    .header {
+        width: 80%;
+        max-width: 100%;
+        background-color: ivory;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #2d3748; /* Dark gray */
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        font-size: 1.1rem;
+        color: #4a5568; /* Medium gray */
+    }
+
+    .header .logout-button {
+        background-color: #e53e3e; /* Red */
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .header .logout-button:hover {
+        background-color: #c53030; /* Darker red */
+    }
+
+    /* Main Content */
+    .main-content {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* Cards */
+    .card {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2d3748; /* Dark gray */
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        font-size: 1.1rem;
+        color: #4a5568; /* Medium gray */
+    }
+
+    /* Footer */
+    .footer {
+        margin-top: 20px;
+        font-size: 1rem;
+        color: #718096; /* Light gray */
+        text-align: center;
+    }
+
+    .loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.2);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border-left-color: #48bb78; /* Green */
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    body.no-interaction {
+        pointer-events: none;
+    }
+
+    .alert-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .alert-box {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        pointer-events: auto;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .alert-button {
+        padding: 10px 20px;
+        background: #2d3748; /* Dark gray */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 1rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    th, td {
+        border: 0px solid #ddd;
+        padding: 12px;
+        text-align: left;
+        font-size: 1.1rem;
+    }
+
+    th {
+        background-color: #edf2f7; /* Light blue-gray */
+    }
+
+    input {
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 1.1rem;
+    }
+
+    .accordion-toggle {
+        background-color: darkcyan; /* Green */
+        color: white;
+        border: none;
+        padding: 5px 15px;
+        font-size: 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .accordion-item {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .accordion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: papayawhip; 
+        cursor: pointer;
+        font-size: 1.2rem;
+    }
+
+    .accordion-content {
+        padding: 20px;
+        display: none;
+        font-size: 1.1rem;
+background-color: papayawhip;
+    }
+
+    .accordion-item.open .accordion-content {
+        display: block;
+    }
+
+    .accordion {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .accordion-table th{
+        border: 1px solid #ccc;
+        padding: 3px;
+        text-align: Center;
+        vertical-align: middle;
+        min-width: 130px;
+        font-size: 1rem;
+    }
+    .accordion-table td {
+        border: 1px solid #ccc;
+        padding: 0px;
+        text-align: Center;
+        vertical-align: middle;
+        min-width: 70px;
+        font-size: 1.1rem;
+background-color: white;
+    }
+    .accordion-table th {
+        background-color: #edf2f7; /* Light blue-gray */
+    }
+
+    .accordion-table input {
+        width: calc(100%);
+        height: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        margin: 0;
+        border: none;
+        background-color: transparent;
+        text-align: center;
+        font-size: 1.1rem;
+        font-style: normal;
+    }
+
+    .accordion-table select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #aaa;
+        font-size: 1.1rem;
+    }
+
+    .accordion-table select option.separator {
+        font-weight: bold;
+        background: #f0f0f0;
+        color: #555;
+    }
+
+    .accordion-table select optgroup {
+        font-style: normal;
+    }
+
+    .accordion-table td {
+        position: relative;
+    }
+
+    #searchForm {
+        max-width: 100%;
+        margin: 15px auto;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #searchForm label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #2d3748; /* Dark gray */
+        font-size: 1.1rem;
+    }
+
+    #searchForm input[type="text"],
+    #searchForm select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 0px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        box-sizing: border-box;
+background-color: #ffffff;
+    }
+
+    #searchForm button {
+        padding: 12px 24px;
+        margin-top: 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        cursor: pointer;
+    }
+
+    #searchButton {
+        background-color: #48bb78; /* Green */
+        color: white;
+    }
+
+    #searchButton:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    #resetButton {
+        background-color: #718096; /* Medium gray */
+        color: white;
+        margin-left: 10px;
+    }
+
+    #searchForm input:disabled,
+    #searchForm select:disabled {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+    }
+
+    /* Base Table Styling */
+    .student-info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        overflow: hidden;
+
+    }
+
+    /* Table Cells */
+    .student-info-table th, .student-info-table td {
+        padding: 3px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+background-color: lightseagreen;
+    }
+
+    /* Labels */
+    .student-info-table label {
+        font-weight: bold;
+        color: snow; /* Dark gray */
+    }
+
+    /* Input Fields */
+    .student-info-table input {
+        border: none;
+        outline: none;
+        background: #eaeaea;
+        padding: 3px;
+        border-radius: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    /* Student Photo */
+    .student-info-table img {
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        max-width: 120px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Hover Effect */
+    .student-info-table tr:hover {
+        background-color: #f0f4f8; /* Light blue-gray */
+    }
+
+    /* Responsive Layout for Small Screens */
+    @media (max-width: 768px) {
+        .student-info-table,
+        .student-info-table tbody,
+        .student-info-table tr,
+        .student-info-table td,
+        .student-info-table input {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Adjust cell layout */
+        .student-info-table td {
+            padding: 2px 10px;
+            border: none;
+        }
+
+        /* Display label above input */
+        .student-info-table td label {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        /* Move student photo to the top */
+        .photo-cell {
+            order: -1;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        /* Ensure photo scales properly */
+        .student-info-table img {
+            max-width: 150px;
+        }
+    }
+
+    .unique-body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .unique-form-container {
+        max-width: 70%;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 10px;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: auto;
+    }
+
+    .unique-form-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .unique-form-row .unique-label {
+        font-weight: bold;
+        color: #2d3748; /* Dark gray */
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+    }
+
+    .unique-input-group {
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .unique-input-group input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        box-sizing: border-box;
+    }
+
+    .unique-custom-checkbox {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        cursor: pointer;
+        accent-color: #48bb78; /* Green */
+    }
+
+    .unique-save-button {
+        margin: 10px 0;
+        padding: 14px 28px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .unique-save-button:hover {
+        background: linear-gradient(135deg, #2575fc, #6a11cb);
+        transform: translateY(-2px);
+    }
+
+    .unique-save-button:active {
+        transform: translateY(0);
+    }
+</style>
+    <style>
+        /* Popup styling */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #C9EC71;
+            color: Black;
+            padding: 10px 10px;
+            border-radius: 18px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            font-size: 16px;
+            text-align: center;
+            z-index: 9999;
+            opacity: 0;
+            animation: fadeInOut 3s ease forwards;
+        }
+
+        /* Fade in and out animation */
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+
+</head>
+  <body>
+  <!-- Header -->
+    <div class="header">
+        <h1>Welcome, <span id="username"></span>!</h1>
+        <p>Class: <span id="tClass"></span> | Role: <span id="userType"></span></p>
+        <button class="logout-button" onclick="handleLogout()">Logout</button>
+    </div>
+<div id="loader" class="loader" style="display: none;">
+    <div class="spinner"></div>
+</div>
+    <h1>Student Marksheet</h1>
+      <form id="searchForm">
+    <label for="admissionNumber">Admission Number:</label>
+    <input type="text" id="admissionNumber" name="admissionNumber" required>
+    
+    <label for="examType">Select Exam Type:</label>
+    <select id="examType" name="examType" required>
+  <option value="">-- Select Exam --</option>
+      <option value="Pre Mid Term Examination">Pre Mid Term Examination</option>
+      <option value="Post Mid Term Examination">Post Mid Term Examination</option>
+      <option value="Halfyearly Examination">Halfyearly Examination</option>
+      <option value="Annual Examination">Annual Examination</option>
+    </select>
+    
+    <button type="button" id="searchButton" onclick="hideSearch()">Search</button>
+    <button type="button" id="resetButton" onclick="location.reload()" style="display:none;">Reset</button>
+  </form>
+
+    <div id="marksTable" style="display:none;">
+
+
+<table class="student-info-table">
+  <tr>
+    <td><label for="admissionNumberDisplay">Admission Number:</label></td>
+    <td ><input type="text" id="admissionNumberDisplay" name="admissionNumberDisplay" readonly></td>
+    <td><label for="classDisplay">Class:</label></td>
+    <td><input type="text" id="classDisplay" name="classDisplay" readonly></td>
+  </tr>
+
+  <tr>
+    
+    <td rowspan="3" class="photo-cell">
+      <img id="photoDisplay" src="" alt="Student Photo" width="100">
+    </td>
+    <td ><label for="nameDisplay">Name:</label></td>
+    <td colspan="2"><input type="text" id="nameDisplay" name="nameDisplay" style="width:100%" readonly></td>
+  </tr>
+
+  <tr>
+    <td><label for="fatherNameDisplay">Father's Name:</label></td>
+    <td colspan="2"><input type="text" id="fatherNameDisplay" name="fatherNameDisplay" style="width:100%" readonly></td>
+  </tr>
+
+  <tr>
+    <td><label for="motherNameDisplay">Mother's Name:</label></td>
+    <td colspan="2"><input type="text" id="motherNameDisplay" name="motherNameDisplay" style="width:100%" readonly></td>
+  </tr>
+
+  <tr>
+    <td><label for="dobDisplay">D.O.B:</label></td>
+    <td><input type="text" id="dobDisplay" name="dobDisplay" readonly></td>
+    <td><label for="rollNumberDisplay">Roll Number:</label></td>
+    <td><input type="text" id="rollNumberDisplay" name="rollNumberDisplay" ><br></td>
+  </tr>
+</table>
+    
+    
+    
+    
+<div class="accordion">
+  
+         <div id="accordion-container1"></div>
+
+</div>    
+
+
+
+
+
+
+   <br><hr><h2>Overall Results</h2><hr><br>
+<div class="accordion">
+  <div class="accordion-item">
+<div class="accordion-header">
+  <span>Overall Results</span>
+  <button class="accordion-toggle">+</button>
+</div>
+<div class="accordion-content">
+     <table class="accordion-table">
+<tr>
+  <th>Overall Marks</th>
+  <td><input type="number" id="overallMarks" readonly></td>
+</tr>
+<tr>
+  <th>Full Subject Marks</th>
+  <td><input type="number" id="fullSubjectMarks" readonly></td>
+</tr>
+<tr>
+  <th>Percentage</th>
+  <td><input type="number" id="percentage" readonly></td>
+</tr>
+
+  </table>
+  
+  <br><br>
+  <h2 style="text-align: center;">Attendance & Promotion Record</h2>
+
+
+    <table class="accordion-table">
+        <tr>
+            <th>Total Present</th>
+            <th>Total No. of Days</th>
+            </tr>
+            
+        <tr>
+            <td><input type="number" id="totalPresent" placeholder="Enter Total Present"></td>
+            <td><input type="number" id="totalDays" placeholder="Enter Total No. of Days"></td>
+            </tr>
+            <tr>
+            <th>Promotion Status</th>
+            <th>Select Class</th>
+        </tr>
+        <tr>
+            <td>
+                <select style="width: calc(100%);height: 100%;box-sizing: border-box;padding: 0;margin: 0;border: none;background-color: transparent;text-align: center;" id="promotionStatus">
+                    <option value="">-- Select Status --</option>
+                    <option value="Promoted to Class">Promoted to Class</option>
+                    <option value="Deetained in Class">Detained in Class</option>
+                </select>
+            </td>
+            <td>
+                <select style="width: calc(100%);height: 100%;box-sizing: border-box;padding: 0;margin: 0;border: none;background-color: transparent;text-align: center;" id="selectClass">
+                    <option value="">-- Select Class --</option>
+                    <option value="Nursery">Nursery</option>
+                    <option value="LKG">KG1</option>
+                    <option value="UKG">KG2</option>
+                    <option value="I">I</option>
+                    <option value="II">II</option>
+                    <option value="III">III</option>
+                    <option value="IV">IV</option>
+                    <option value="V">V</option>
+                    <option value="VI">VI</option>
+                    <option value="VII">VII</option>
+                    <option value="VIII">VIII</option>
+                    <option value="IX">IX</option>
+                    <option value="X">X</option>
+                    <option value="XI">XI</option>
+                    <option value="XII">XII</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+  
+  
+  
+</div>
+</div>
+</div>
+
+
+ <!-- <button id="saveButton" style="display:none;" onclick="saveMarks()">Save Marks</button> -->
+<br><br>
+<div class="unique-form-container">
+  <div class="unique-form-row">
+<div class="unique-input-group">
+  <label class="unique-label">Status:</label>
+ 
+   <select style="width: calc(100%);height: 30px;box-sizing: border-box;padding: 0;margin: 0;background-color: transparent;text-align: center;" id="statusDisplay">
+                    <option value="Unchecked">Unchecked</option>
+                    <option value="Checked">Checked</option>
+                </select>
+  
+  
+</div>
+  </div>
+
+  <div class="unique-form-row">
+<label for="teacherNameDisplay" class="unique-label">Teacher Name:</label>
+<div class="unique-input-group">
+  <input type="text" id="teacherNameDisplay" name="teacherNameDisplay">
+</div>
+  </div>
+
+  <!--<div class="unique-form-row">
+<label for="examTypeDisplay" class="unique-label">Exam Type:</label>
+<div class="unique-input-group">
+  <input type="text" id="examTypeDisplay" name="examTypeDisplay">
+</div>
+  </div> -->
+
+  <!-- Centered Save Button -->
+  <button id="saveButton" class="unique-save-button" onclick="saveUserMarks()">Save Marks</button>
+</div>
+<br><br><br><br>
+</div>
+
+  
+  <!-- Footer -->
+    <div class="footer">
+        &copy; 2025 Rajesh Kumar Das. All rights reserved.
+    </div>
+
+
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwa9xfUwKUwsfnIyfIHMuFmFa065e15hcfv9jOFs-ahZVAZxnjLYTsPhzSDqlt5kFbB/exec";
+ function hideSearch() {
+  // Hide the search button
+  document.getElementById('searchButton').style.display = "none";
+
+  // Show the reset button after search
+  document.getElementById('resetButton').style.display = "inline-block";
+  
+  document.getElementById('admissionNumber').readOnly = true;
+  document.getElementById('examType').readOnly = true;
+
+
+  
+    
+  // Call the searchStudent function
+  searchStudent();
+
+}
+
+function saveUserMarks() {
+    // Get the elements
+    const classDisplayElement = document.getElementById('classDisplay');
+    const tClassElement = document.getElementById('tClass');
+    const userTypeElement = document.getElementById('userType');
+
+    // Ensure elements exist
+    if (!classDisplayElement || !tClassElement || !userTypeElement) {
+        showAlert("Missing required elements."); 
+        return;
+    }
+
+    // Fetch values
+    const classDisplay = classDisplayElement.value;
+    const tClass = tClassElement.textContent;
+    const userType = userTypeElement.textContent;
+
+    // Log values for debugging
+    //console.log("classDisplay:", classDisplay);
+    //console.log("tClass:", tClass);
+    //console.log("userType:", userType);
+
+    // Check if classes match
+    const classesMatch = classDisplay.trim() === tClass.trim();
+    console.log("Classes Match:", classesMatch);
+
+    // Permission check
+    if ((userType === 'User' && classesMatch) || userType === 'Admin') {
+        if (typeof saveMarks === "function") {
+            saveMarks();  // Call the saveMarks function
+        } else {
+            showAlert("Something Wrong");
+        }
+    } else {
+        showAlert("You are not the class teacher.");
+    }
+}
+
+
+
+
+
+
+function resetPage() {
+  // Clear input and select values
+  document.getElementById('admissionNumber').value = "";
+  document.getElementById('examType').value = "1st Periodic Test";
+
+  // Re-enable input fields and select dropdown
+  document.getElementById('admissionNumber').readOnly = false;
+document.getElementById('examType').readOnly = false;
+
+  // Show the search button again
+  document.getElementById('searchButton').style.display = "inline-block";
+
+  // Hide the reset button
+  document.getElementById('resetButton').style.display = "none";
+
+  // Hide the marksTable div
+  document.getElementById('marksTable').style.display = "none";
+  
+  // Hide the saveButton 
+  document.getElementById('saveButton').style.display = "none";
+  
+}
+
+  </script>
+  <script>
+    function createSubjectAccordion(subjectNumber) {
+        return `
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <span>Subject ${subjectNumber}</span>
+                <button class="accordion-toggle">+</button>
+            </div>
+            <div class="accordion-content">
+<table class="accordion-table">
+                    <tr>
+                        <th>Subject Name</th>
+                        <td>
+                           <select id="subject${subjectNumber}Name" onchange="syncSubjectName(${subjectNumber})">
+                                <option value="">-- Select Subject --</option>
+                                <option value="-">-</option>
+                        
+                            <!-- Common Subjects -->
+<option class="separator" disabled>─── Common Subjects ───</option>
+<option value="Artificial Intelligence">Artificial Intelligence</option>
+<option value="Bengali">Bengali</option>
+<option value="Computer Applications">Computer Applications</option>
+<option value="English">English</option>
+<option value="Food Production">Food Production</option>
+<option value="Hindi">Hindi</option>
+<option value="Home Science">Home Science</option>
+<option value="Information Technology">Information Technology</option>
+<option value="Mathematics">Mathematics</option>
+<option value="Music">Music</option>
+<option value="Painting">Painting</option>
+<option value="Physical Education">Physical Education</option>
+<option value="Sanskrit">Sanskrit</option>
+<option value="Science">Science</option>
+<option value="Social Science">Social Science</option>
+<option value="Yoga">Yoga</option>
+
+<!-- Science Stream -->
+<option class="separator" disabled>─── Science Stream ───</option>
+<option value="Biology">Biology</option>
+<option value="Chemistry">Chemistry</option>
+<option value="Computer Science">Computer Science</option>
+<option value="Informatics Practices">Informatics Practices</option>
+<option value="Mathematics">Mathematics</option>
+<option value="Physics">Physics</option>
+
+<!-- Commerce Stream -->
+<option class="separator" disabled>─── Commerce Stream ───</option>
+<option value="Accountancy">Accountancy</option>
+<option value="Business Studies">Business Studies</option>
+<option value="Economics">Economics</option>
+<option value="Entrepreneurship">Entrepreneurship</option>
+<option value="Mathematics">Mathematics</option>
+
+<!-- Arts Stream -->
+<option class="separator" disabled>─── Arts Stream ───</option>
+<option value="Geography">Geography</option>
+<option value="History">History</option>
+<option value="Legal Studies">Legal Studies</option>
+<option value="Philosophy">Philosophy</option>
+<option value="Political Science">Political Science</option>
+<option value="Psychology">Psychology</option>
+<option value="Sociology">Sociology</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Full Marks</th>
+                        <td>
+                            <input id="subject${subjectNumber}FullMarks" onchange="calculateMarksObtained(${subjectNumber})">
+                             
+                        </td>
+                    </tr>
+                    <tr><th>Theory Obtained</th><td><input type="number" id="subject${subjectNumber}Theory" oninput="calculateMarksObtained(${subjectNumber})"></td></tr>
+                    <tr><th>Practical Obtained</th><td><input type="number" id="subject${subjectNumber}Practical" oninput="calculateMarksObtained(${subjectNumber})"></td></tr>
+                    <tr><th>Marks Obtained</th><td><input type="text" id="subject${subjectNumber}MarksObtained" readonly></td></tr>
+                    
+                </table>
+            </div>
+        </div>`;
+    }
+
+
+
+
+    function calculateMarksObtained(subjectNumber) {
+        const subjectName = document.getElementById(`subject${subjectNumber}Name`).value;
+        const fullMarks = document.getElementById(`subject${subjectNumber}FullMarks`).value;
+        const theory = document.getElementById(`subject${subjectNumber}Theory`);
+        const practical = document.getElementById(`subject${subjectNumber}Practical`);
+        const marksObtained = document.getElementById(`subject${subjectNumber}MarksObtained`);
+      
+
+        if (subjectName  === '-' || fullMarks === '-' || subjectName  === '' || fullMarks === " " ) {
+            theory.value = practical.value  = marksObtained.value = '';
+            return;
+        }
+
+        const totalMarks = (parseInt(theory.value) || 0) + (parseInt(practical.value) || 0);
+
+        if (totalMarks > parseInt(fullMarks)) {
+            showAlert("Marks cannot be greater than Full Marks");
+            theory.value = practical.value = '';
+            marksObtained.value = '';
+            return;
+        }
+
+        marksObtained.value = totalMarks;
+    }
+
+
+
+
+function updateAllSubjectHeaders() {
+for (let i = 1; i <= 9; i++) {
+syncSubjectName(i);
+}
+// Keep checking until all subjects are updated
+requestAnimationFrame(updateAllSubjectHeaders);
+}
+
+// Initialize the accordion and wait for DOM to update
+function initializeAccordion1() {
+const container = document.getElementById("accordion-container1");
+for (let i = 1; i <= 9; i++) {
+container.innerHTML += createSubjectAccordion(i);
+}
+// Ensure spans update after the DOM is populated
+requestAnimationFrame(updateAllSubjectHeaders);
+}
+
+// Synchronize subject name and update headers
+function syncSubjectName(subjectNumber) {
+const subjectName = document.getElementById(`subject${subjectNumber}Name`).value;
+const headerSpan1 = document.querySelector(`#accordion-container1 .accordion-item:nth-child(${subjectNumber}) .accordion-header span`);
+const finalSubject = document.getElementById(`finalSubject${subjectNumber}Name`);
+
+// Update the final subject field if present
+if (finalSubject) {
+finalSubject.value = subjectName;
+}
+
+// Update the headers in both containers
+const updatedText = (subjectName !== " " && subjectName !== "-")
+? `Subject ${subjectNumber} - ${subjectName}`
+: `Subject ${subjectNumber}`;
+
+if (headerSpan1) headerSpan1.textContent = updatedText;
+
+}
+
+
+     initializeAccordion1();
+</script>
+
+
+
+
+
+ <script>
+ function toggleAccordion() {
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const toggle = this.querySelector('.accordion-toggle');
+
+            // Close all other accordion items
+            accordionHeaders.forEach(otherHeader => {
+                const otherContent = otherHeader.nextElementSibling;
+                const otherToggle = otherHeader.querySelector('.accordion-toggle');
+
+                if (otherHeader !== this) {
+                    otherContent.style.display = 'none';
+                    otherToggle.textContent = '+';
+                }
+            });
+
+            // Toggle the current header
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                toggle.textContent = '+';
+            } else {
+                content.style.display = 'block';
+                toggle.textContent = '-';
+            }
+        });
+    });
+}
+// Call initializeAccordion on initial page load
+document.addEventListener('DOMContentLoaded', toggleAccordion);
+  </script>
+    <script>
+     function searchStudent() {
+  var admissionNumber = document.getElementById('admissionNumber').value;
+  var examType = document.getElementById('examType').value;
+  var userType = document.getElementById('userType').textContent;
+  
+    // Show the loader
+    document.getElementById('loader').style.display = 'flex';
+  
+  var params = new URLSearchParams({
+    action: 'search1',
+    admissionNumber: admissionNumber,
+    examType: examType,
+userType: userType
+  });
+  
+  fetch(`${GAS_URL}?${params}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data) {
+    //document.getElementById('examTypeDisplay').textContent = data[0] || '';
+//document.getElementById('admissionNumberDisplay').textContent = data[1] || '';
+      //  document.getElementById('examTypeDisplay').value = data[0] || '';
+document.getElementById('admissionNumberDisplay').value = data[1] || '';
+document.getElementById('classDisplay').value = data[2] || '';
+document.getElementById('nameDisplay').value = data[3] || '';
+document.getElementById('fatherNameDisplay').value = data[4] || '';
+document.getElementById('motherNameDisplay').value = data[5] || '';
+
+
+// Usage
+document.getElementById('dobDisplay').value = formatDateToDDMMYYYY(data[6]);
+
+document.getElementById('rollNumberDisplay').value = data[7] || '';
+document.getElementById('teacherNameDisplay').value = data[9] || '';
+document.getElementById('statusDisplay').value = data[10] || '';
+
+
+
+
+function formatDateToDDMMYYYY(isoString) {
+  if (!isoString) return '';
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+// Set image source for display
+const imageId = data[8] || '';
+if (imageId) {
+  const imageUrl = `https://drive.google.com/thumbnail?id=${imageId}&sz=w95-h95`;
+  document.getElementById('photoDisplay').src = imageUrl;
+}
+
+
+
+
+
+document.getElementById('subject1Name').value = data[11] || '';
+document.getElementById('subject1FullMarks').value = data[12] || '';
+document.getElementById('subject1Theory').value = data[13] || '';
+document.getElementById('subject1Practical').value = data[14] || '';
+document.getElementById('subject1MarksObtained').value = data[15] || '';
+
+document.getElementById('subject2Name').value = data[16] || '';
+document.getElementById('subject2FullMarks').value = data[17] || '';
+document.getElementById('subject2Theory').value = data[18] || '';
+document.getElementById('subject2Practical').value = data[19] || '';
+document.getElementById('subject2MarksObtained').value = data[20] || '';
+
+document.getElementById('subject3Name').value = data[21] || '';
+document.getElementById('subject3FullMarks').value = data[22] || '';
+document.getElementById('subject3Theory').value = data[23] || '';
+document.getElementById('subject3Practical').value = data[24] || '';
+document.getElementById('subject3MarksObtained').value = data[25] || '';
+
+document.getElementById('subject4Name').value = data[26] || '';
+document.getElementById('subject4FullMarks').value = data[27] || '';
+document.getElementById('subject4Theory').value = data[28] || '';
+document.getElementById('subject4Practical').value = data[29] || '';
+document.getElementById('subject4MarksObtained').value = data[30] || '';
+
+document.getElementById('subject5Name').value = data[31] || '';
+document.getElementById('subject5FullMarks').value = data[32] || '';
+document.getElementById('subject5Theory').value = data[33] || '';
+document.getElementById('subject5Practical').value = data[34] || '';
+document.getElementById('subject5MarksObtained').value = data[35] || '';
+
+document.getElementById('subject6Name').value = data[36] || '';
+document.getElementById('subject6FullMarks').value = data[37] || '';
+document.getElementById('subject6Theory').value = data[38] || '';
+document.getElementById('subject6Practical').value = data[39] || '';
+document.getElementById('subject6MarksObtained').value = data[40] || '';
+
+document.getElementById('subject7Name').value = data[41] || '';
+document.getElementById('subject7FullMarks').value = data[42] || '';
+document.getElementById('subject7Theory').value = data[43] || '';
+document.getElementById('subject7Practical').value = data[44] || '';
+document.getElementById('subject7MarksObtained').value = data[45] || '';
+
+document.getElementById('subject8Name').value = data[46] || '';
+document.getElementById('subject8FullMarks').value = data[47] || '';
+document.getElementById('subject8Theory').value = data[48] || '';
+document.getElementById('subject8Practical').value = data[49] || '';
+document.getElementById('subject8MarksObtained').value = data[50] || '';
+
+document.getElementById('subject9Name').value = data[51] || '';
+document.getElementById('subject9FullMarks').value = data[52] || '';
+document.getElementById('subject9Theory').value = data[53] || '';
+document.getElementById('subject9Practical').value = data[54] || '';
+document.getElementById('subject9MarksObtained').value = data[55] || '';
+
+
+document.getElementById('overallMarks').value = data[56] || '';
+document.getElementById('fullSubjectMarks').value = data[57] || '';
+document.getElementById('percentage').value = data[58] || '';
+document.getElementById('totalPresent').value = data[59] || '';
+document.getElementById('totalDays').value = data[60] || '';
+document.getElementById('promotionStatus').value = data[61] || '';
+document.getElementById('selectClass').value = data[62] || '';
+
+
+
+        document.getElementById('marksTable').style.display = 'block';
+        document.getElementById('saveButton').style.display = 'block';
+      } else {
+        showAlert('No matching student found.');
+      }
+  })
+     .catch(error => {
+            console.error('Error:', error);
+            showAlert('An error occurred while searching for the student.');
+        })
+        .finally(() => {
+            // Hide the loader
+            document.getElementById('loader').style.display = 'none';
+        });
+}
+      
+    </script>
+
+
+<script>
+function saveMarks() {
+    // Show the loader
+    document.getElementById('loader').style.display = 'flex';
+
+    var admissionNumber = document.getElementById('admissionNumber').value;
+    var examType = document.getElementById('examType').value;
+    var statusDisplay = document.getElementById('statusDisplay').value;
+    var teacherNameDisplay = document.getElementById('teacherNameDisplay').value;
+
+    // Subject 1
+	var subject1Name = document.getElementById('subject1Name').value;
+	var subject1FullMarks = document.getElementById('subject1FullMarks').value;
+	var subject1Theory = document.getElementById('subject1Theory').value;
+	var subject1Practical = document.getElementById('subject1Practical').value;
+	var subject1MarksObtained = document.getElementById('subject1MarksObtained').value;
+
+	// Subject 2
+	var subject2Name = document.getElementById('subject2Name').value;
+	var subject2FullMarks = document.getElementById('subject2FullMarks').value;
+	var subject2Theory = document.getElementById('subject2Theory').value;
+	var subject2Practical = document.getElementById('subject2Practical').value;
+	var subject2MarksObtained = document.getElementById('subject2MarksObtained').value;
+
+	// Subject 3
+	var subject3Name = document.getElementById('subject3Name').value;
+	var subject3FullMarks = document.getElementById('subject3FullMarks').value;
+	var subject3Theory = document.getElementById('subject3Theory').value;
+	var subject3Practical = document.getElementById('subject3Practical').value;
+	var subject3MarksObtained = document.getElementById('subject3MarksObtained').value;
+
+	// Subject 4
+	var subject4Name = document.getElementById('subject4Name').value;
+	var subject4FullMarks = document.getElementById('subject4FullMarks').value;
+	var subject4Theory = document.getElementById('subject4Theory').value;
+	var subject4Practical = document.getElementById('subject4Practical').value;
+	var subject4MarksObtained = document.getElementById('subject4MarksObtained').value;
+
+	// Subject 5
+	var subject5Name = document.getElementById('subject5Name').value;
+	var subject5FullMarks = document.getElementById('subject5FullMarks').value;
+	var subject5Theory = document.getElementById('subject5Theory').value;
+	var subject5Practical = document.getElementById('subject5Practical').value;
+	var subject5MarksObtained = document.getElementById('subject5MarksObtained').value;
+
+	// Subject 6
+	var subject6Name = document.getElementById('subject6Name').value;
+	var subject6FullMarks = document.getElementById('subject6FullMarks').value;
+	var subject6Theory = document.getElementById('subject6Theory').value;
+	var subject6Practical = document.getElementById('subject6Practical').value;
+	var subject6MarksObtained = document.getElementById('subject6MarksObtained').value;
+
+	// Subject 7
+	var subject7Name = document.getElementById('subject7Name').value;
+	var subject7FullMarks = document.getElementById('subject7FullMarks').value;
+	var subject7Theory = document.getElementById('subject7Theory').value;
+	var subject7Practical = document.getElementById('subject7Practical').value;
+	var subject7MarksObtained = document.getElementById('subject7MarksObtained').value;
+
+	// Subject 8
+	var subject8Name = document.getElementById('subject8Name').value;
+	var subject8FullMarks = document.getElementById('subject8FullMarks').value;
+	var subject8Theory = document.getElementById('subject8Theory').value;
+	var subject8Practical = document.getElementById('subject8Practical').value;
+	var subject8MarksObtained = document.getElementById('subject8MarksObtained').value;
+
+	// Subject 9
+	var subject9Name = document.getElementById('subject9Name').value;
+	var subject9FullMarks = document.getElementById('subject9FullMarks').value;
+	var subject9Theory = document.getElementById('subject9Theory').value;
+	var subject9Practical = document.getElementById('subject9Practical').value;
+	var subject9MarksObtained = document.getElementById('subject9MarksObtained').value;
+
+
+    // Overall
+    var overallMarks = document.getElementById('overallMarks').value;
+    var fullSubjectMarks = document.getElementById('fullSubjectMarks').value;
+    var percentage = document.getElementById('percentage').value;
+    
+
+    var totalPresent = document.getElementById('totalPresent').value;
+    var totalDays = document.getElementById('totalDays').value;
+    var promotionStatus = document.getElementById('promotionStatus').value;
+    var selectClass = document.getElementById('selectClass').value;
+
+    // Encode the parameters to ensure special characters are handled correctly
+    var params = new URLSearchParams({
+        action: 'save1',
+        examType: examType,
+        admissionNumber: admissionNumber,
+        teacherNameDisplay: teacherNameDisplay,
+        statusDisplay: statusDisplay,
+
+		// Subject 1
+		  subject1Name: subject1Name,
+		  subject1FullMarks: subject1FullMarks,
+		  subject1Theory: subject1Theory,
+		  subject1Practical: subject1Practical,
+		  subject1MarksObtained: subject1MarksObtained,
+
+		  // Subject 2
+		  subject2Name: subject2Name,
+		  subject2FullMarks: subject2FullMarks,
+		  subject2Theory: subject2Theory,
+		  subject2Practical: subject2Practical,
+		  subject2MarksObtained: subject2MarksObtained,
+
+		  // Subject 3
+		  subject3Name: subject3Name,
+		  subject3FullMarks: subject3FullMarks,
+		  subject3Theory: subject3Theory,
+		  subject3Practical: subject3Practical,
+		  subject3MarksObtained: subject3MarksObtained,
+
+		  // Subject 4
+		  subject4Name: subject4Name,
+		  subject4FullMarks: subject4FullMarks,
+		  subject4Theory: subject4Theory,
+		  subject4Practical: subject4Practical,
+		  subject4MarksObtained: subject4MarksObtained,
+
+		  // Subject 5
+		  subject5Name: subject5Name,
+		  subject5FullMarks: subject5FullMarks,
+		  subject5Theory: subject5Theory,
+		  subject5Practical: subject5Practical,
+		  subject5MarksObtained: subject5MarksObtained,
+
+		  // Subject 6
+		  subject6Name: subject6Name,
+		  subject6FullMarks: subject6FullMarks,
+		  subject6Theory: subject6Theory,
+		  subject6Practical: subject6Practical,
+		  subject6MarksObtained: subject6MarksObtained,
+
+		  // Subject 7
+		  subject7Name: subject7Name,
+		  subject7FullMarks: subject7FullMarks,
+		  subject7Theory: subject7Theory,
+		  subject7Practical: subject7Practical,
+		  subject7MarksObtained: subject7MarksObtained,
+
+		  // Subject 8
+		  subject8Name: subject8Name,
+		  subject8FullMarks: subject8FullMarks,
+		  subject8Theory: subject8Theory,
+		  subject8Practical: subject8Practical,
+		  subject8MarksObtained: subject8MarksObtained,
+
+		  // Subject 9
+		  subject9Name: subject9Name,
+		  subject9FullMarks: subject9FullMarks,
+		  subject9Theory: subject9Theory,
+		  subject9Practical: subject9Practical,
+		  subject9MarksObtained: subject9MarksObtained,
+
+
+        overallMarks: overallMarks,
+        fullSubjectMarks: fullSubjectMarks,
+        percentage: percentage,
+
+        totalPresent: totalPresent,
+        totalDays: totalDays,
+        promotionStatus: promotionStatus,
+        selectClass: selectClass        
+    });
+
+    fetch(`${GAS_URL}?${params}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert('Marks updated successfully!');
+            } else {
+                showAlert('Failed to update marks. Error: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('An error occurred while saving marks.');
+        })
+        .finally(() => {
+            // Hide the loader
+            document.getElementById('loader').style.display = 'none';
+        });
+}
+</script>
+
+
+
+<script>
+function calculateTotalAssessment() {
+    let totalMarks = 0;
+    let fullMarks = 0;
+
+    for (let i = 1; i <= 9; i++) {
+        const marksObtainedField = document.getElementById(`subject${i}MarksObtained`);
+        const fullMarksField = document.getElementById(`subject${i}FullMarks`);
+
+        if (marksObtainedField && fullMarksField) {
+            const marksObtained = parseFloat(marksObtainedField.value) || 0;
+            const subjectFullMarks = parseFloat(fullMarksField.value) || 0;
+
+            totalMarks += marksObtained;
+            fullMarks += subjectFullMarks;
+        }
+    }
+
+    document.getElementById('overallMarks').value = totalMarks.toFixed(2);
+    document.getElementById('fullSubjectMarks').value = fullMarks;
+
+    const percentage = fullMarks > 0 ? (totalMarks / fullMarks) * 100 : 0;
+    document.getElementById('percentage').value = percentage.toFixed(2);
+}
+
+// Recalculate whenever any input changes
+document.addEventListener('input', calculateTotalAssessment);
+
+</script>
+ 
+  <!-- JavaScript -->
+    <script>
+        // Retrieve the user's information from localStorage
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            const user = JSON.parse(userString);
+            document.getElementById('username').textContent = user.username; // Display username
+            document.getElementById('tClass').textContent = user.tClass; // Display class
+            document.getElementById('userType').textContent = user.userType; // Display user type
+        } else {
+            window.location.href = 'LoginATS.html'; // Redirect to login page if no user data
+        }
+
+      function handleLogout() {
+            // Clear the user's information from localStorage
+            //localStorage.removeItem('user');
+            // Redirect to the login page
+            window.location.href = 'dashboardATS.html';
+        }
+    </script>
+
+<div id="alertOverlay" class="alert-overlay">
+        <div id="alertBox" class="alert-box"></div>
+    </div>
+
+    <script>
+        function showAlert(msg) {
+            alertBox.innerHTML = `
+                <b>MESSAGE</b>
+                <p>${msg}</p>
+                <b>Developer:</b> Rajesh Kumar Das<br>
+                <button class="alert-button" onclick="hideAlert()">OK</button>
+            `;
+            alertOverlay.style.display = 'flex';
+            document.body.classList.add('no-interaction');
+        }
+
+        function hideAlert() {
+            alertOverlay.style.display = 'none';
+            document.body.classList.remove('no-interaction');
+        }
+    </script>
+ <!-- Popup Message -->
+    <div id="popup" class="popup">
+        🚀 Welcome to RKD CE! <br>
+        👨‍💻&nbsp;Developer&nbsp;:&nbsp;Rajesh&nbsp;Kumar&nbsp;Das
+    </div>
+
+    <script>
+        // Hide popup after 3 seconds (animation handles fade-out)
+        setTimeout(() => {
+            document.getElementById('popup').style.display = 'none';
+        }, 3000);
+    </script>
+ 	<script>
+// Define the showAlert function
+
+/*
+// Disable keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey && e.shiftKey && e.key === 'I') || 
+        (e.ctrlKey && e.key === 'u') || 
+        e.key === 'F12' || 
+        (e.ctrlKey && e.key === 'c') || 
+        (e.ctrlKey && e.key === 'v') || 
+		(e.ctrlKey && e.key === 'p')) {
+        e.preventDefault();
+        showAlert("");
+    }
+});
+
+// Disable right-click
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    showAlert("");
+});
+
+
+
+// Debugger trap
+setInterval(function() {
+    debugger;
+}, 1000);
+ */
+</script>
+
+  </body>
+</html>
+  
