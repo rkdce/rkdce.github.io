@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Settings</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #1976d2;
+      --primary-dark: #125ea7;
+      --error: #d32f2f;
+      --success: #388e3c;
+      --text: #2c3e50;
+      --text-light: #34495e;
+      --bg: #f4f6f8;
+      --card-bg: #ffffff;
+      --user-bar: #e3f2fd;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    
+    h1, h2, h3 {
+      font-weight: 600;
+    }
+    
+    h1 {
+      text-align: center;
+      margin: 1.5rem 0;
+      font-size: 2rem;
+    }
+    
+     /* Header */
+     .header {
+      width: 80%;
+    max-width: 100%;
+    background-color: ivory;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    margin: 0 auto 20px auto; /* Center horizontally */
+    }
+
+    .header h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #2d3748; /* Dark gray */
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        font-size: 1.1rem;
+        color: #4a5568; /* Medium gray */
+    }
+
+    .header .logout-button {
+        background-color: #e53e3e; /* Red */
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .header .logout-button:hover {
+        background-color: #c53030; /* Darker red */
+    }
+    
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn-danger {
+      background: var(--error);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      opacity: 0.9;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      background: var(--card-bg);
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+    }
+    
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-light);
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 0.25rem;
+      font-size: 1rem;
+      background: #fafbfc;
+      transition: border 0.2s;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+    }
+    
+    textarea {
+      min-height: 5rem;
+      resize: vertical;
+    }
+    
+    .row {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .row .form-group {
+      flex: 1;
+    }
+    
+    .actions {
+      text-align: center;
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    #status {
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .success {
+      color: var(--success);
+    }
+    
+    .error {
+      color: var(--error);
+    }
+    
+    #loader {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: 1100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    
+    .modal {
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+      padding: 2rem;
+      width: 100%;
+      max-width: 24rem;
+      text-align: center;
+    }
+    
+    .modal h3 {
+      margin-bottom: 1rem;
+    }
+    
+    .modal input {
+      margin: 1rem 0;
+    }
+    
+    .modal .btn {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 1.5rem;
+        margin: 0 1rem 2rem;
+      }
+      
+      .row {
+        flex-direction: column;
+        gap: 0;
+      }
+      
+      .actions {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.75rem;
+        margin: 1rem 0;
+      }
+      
+      .user-info-bar {
+                margin: 12px auto 0 auto;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 12px;
+                font-size: 0.95rem;
+            }
+      
+      .container {
+        padding: 1rem;
+        border-radius: 0;
+        margin: 0 0 1.5rem;
+      }
+      
+      h2 {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loader"><div class="spinner"></div></div>
+
+  <div id="passwordOverlay" class="overlay">
+    <div class="modal">
+      <h3>Password Required</h3>
+      <input type="password" id="passwordInput" placeholder="Enter password" autofocus />
+      <div id="passwordError" class="error"></div>
+      <button class="btn btn-primary" onclick="checkPassword()">Enter</button>
+    </div>
+  </div>
+
+  <h1>School Settings</h1>
+  <div class="header">
+        <h1>Welcome, <span id="username"></span>!</h1>
+        <p>Class: <span id="tClass"></span> | Role: <span id="userType"></span></p>
+        <button class="logout-button" onclick="handleLogout()">Home</button>
+    </div>
+
+  <div class="container" id="mainContainer" style="display:none;">
+    <h2>School Configuration</h2>
+    <form id="settingsForm" autocomplete="off">
+      <div class="form-group"><label>School Name</label><input type="text" id="schoolName"></div>
+      <div class="form-group"><label>Type of School</label><input type="text" id="typeOfSchool"></div>
+      <div class="form-group"><label>Affiliation</label><input type="text" id="affiliation"></div>
+      <div class="form-group"><label>Address</label><textarea id="schoolAddress"></textarea></div>
+      <div class="form-group"><label>Phone</label><input type="text" id="phone"></div>
+      <div class="form-group"><label>Academic Session</label><input type="text" id="academicSession"></div>
+
+      <div class="row">
+        <div class="form-group"><label>Pre Mid TEST</label><select id="preMidTest"><option>Yes</option><option>No</option></select></div>
+        <div class="form-group"><label>Pre Mid TEST Date</label><input type="date" id="preMidTestDate"></div>
+      </div>
+      <div class="row">
+        <div class="form-group"><label>Halfyearly Examination</label><select id="halfYearlyExam"><option>Yes</option><option>No</option></select></div>
+        <div class="form-group"><label>Halfyearly Exam Date</label><input type="date" id="halfYearlyExamDate"></div>
+      </div>
+      <div class="row">
+        <div class="form-group"><label>Post Mid TEST</label><select id="postMidTest"><option>Yes</option><option>No</option></select></div>
+        <div class="form-group"><label>Post Mid TEST Date</label><input type="date" id="postMidTestDate"></div>
+      </div>
+      <div class="row">
+        <div class="form-group"><label>Annual Exam</label><select id="annualExam"><option>Yes</option><option>No</option></select></div>
+        <div class="form-group"><label>Annual Exam Date</label><input type="date" id="annualExamDate"></div>
+      </div>
+      <div class="form-group"><label>Banner Notice</label><textarea id="bannerNotice"></textarea></div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" onclick="loadSettings()">Load Settings</button>
+        <button type="button" class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+      </div>
+      <div id="status"></div>
+    </form>
+  </div>
+
+  <script>
+    const SETTINGS_URL = 'https://script.google.com/macros/s/AKfycby796xqdpZ2fm6xJD0A7Jn-ERlmLj5lLRWueVOKFDFq5AGRW0igSN074nJUT65hfvwi/exec';
+
+    // Helper function to convert date format from yyyy-mm-dd to dd-mm-yyyy
+    function formatDateToDMY(dateString) {
+      if (!dateString) return '';
+      const [year, month, day] = dateString.split('-');
+      return `${day}-${month}-${year}`;
+    }
+
+    // Helper function to convert date format from dd-mm-yyyy to yyyy-mm-dd
+    function formatDateToYMD(dateString) {
+      if (!dateString) return '';
+      const [day, month, year] = dateString.split('-');
+      return `${year}-${month}-${day}`;
+    }
+
+    function showLoader(show) {
+      document.getElementById('loader').style.display = show ? 'flex' : 'none';
+    }
+
+    function showStatus(msg, isError) {
+      const status = document.getElementById('status');
+      status.textContent = msg;
+      status.className = isError ? 'error' : 'success';
+    }
+
+    async function loadSettings() {
+      showLoader(true);
+      showStatus('Loading settings...', false);
+      try {
+        const res = await fetch(SETTINGS_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'getSchoolSettings' })
+        });
+        const data = await res.json();
+        if (data?.status === 'success') {
+          const s = data.settings;
+          document.getElementById('schoolName').value = s.schoolName || '';
+          document.getElementById('typeOfSchool').value = s.typeOfSchool || '';
+          document.getElementById('affiliation').value = s.affiliation || '';
+          document.getElementById('schoolAddress').value = s.schoolAddress || '';
+          document.getElementById('phone').value = s.phone || '';
+          document.getElementById('academicSession').value = s.academicSession || '';
+          document.getElementById('preMidTest').value = s.preMidTest || 'No';
+          document.getElementById('preMidTestDate').value = formatDateToYMD(s.preMidTestDate || '');
+          document.getElementById('halfYearlyExam').value = s.halfYearlyExam || 'No';
+          document.getElementById('halfYearlyExamDate').value = formatDateToYMD(s.halfYearlyExamDate || '');
+          document.getElementById('postMidTest').value = s.postMidTest || 'No';
+          document.getElementById('postMidTestDate').value = formatDateToYMD(s.postMidTestDate || '');
+          document.getElementById('annualExam').value = s.annualExam || 'No';
+          document.getElementById('annualExamDate').value = formatDateToYMD(s.annualExamDate || '');
+          document.getElementById('bannerNotice').value = s.bannerNotice || '';
+          showStatus('Settings loaded successfully', false);
+        } else {
+          showStatus('Failed to load settings', true);
+        }
+      } catch (e) {
+        showStatus('Error: ' + e.message, true);
+      }
+      showLoader(false);
+    }
+
+    async function saveSettings() {
+      showLoader(true);
+      showStatus('Saving settings...', false);
+      const settings = {
+        schoolName: document.getElementById('schoolName').value,
+        typeOfSchool: document.getElementById('typeOfSchool').value,
+        affiliation: document.getElementById('affiliation').value,
+        schoolAddress: document.getElementById('schoolAddress').value,
+        phone: document.getElementById('phone').value,
+        academicSession: document.getElementById('academicSession').value,
+        preMidTest: document.getElementById('preMidTest').value,
+        preMidTestDate: formatDateToDMY(document.getElementById('preMidTestDate').value),
+        halfYearlyExam: document.getElementById('halfYearlyExam').value,
+        halfYearlyExamDate: formatDateToDMY(document.getElementById('halfYearlyExamDate').value),
+        postMidTest: document.getElementById('postMidTest').value,
+        postMidTestDate: formatDateToDMY(document.getElementById('postMidTestDate').value),
+        annualExam: document.getElementById('annualExam').value,
+        annualExamDate: formatDateToDMY(document.getElementById('annualExamDate').value),
+        bannerNotice: document.getElementById('bannerNotice').value
+      };
+      try {
+        const res = await fetch(SETTINGS_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'saveSchoolSettings', settings })
+        });
+        const data = await res.json();
+        if (data?.status === 'success') {
+          showStatus('Settings saved successfully', false);
+        } else {
+          showStatus('Failed to save settings', true);
+        }
+      } catch (e) {
+        showStatus('Error: ' + e.message, true);
+      }
+      showLoader(false);
+    }
+
+    function checkPassword() {
+      const pass = document.getElementById('passwordInput').value;
+      if (pass === 'ats2025') {
+        sessionStorage.setItem('ats_settings_access', 'yes');
+        document.getElementById('passwordOverlay').style.display = 'none';
+        document.getElementById('mainContainer').style.display = '';
+        loadSettings();
+      } else {
+        document.getElementById('passwordError').textContent = 'Incorrect password';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
+      }
+    }
+
+    (function init() {
+      const userString = localStorage.getItem('ATS_user');
+      if (userString) {
+        const user = JSON.parse(userString);
+        document.getElementById('username').textContent = user.username;
+        document.getElementById('tClass').textContent = user.tClass;
+        document.getElementById('userType').textContent = user.userType;
+      } else {
+        window.location.href = 'LoginATS.html';
+      }
+    })();
+
+    function handleLogout() {
+      window.location.href = 'dashboardATS.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('ats_settings_access') === 'yes') {
+        document.getElementById('passwordOverlay').style.display = 'none';
+        document.getElementById('mainContainer').style.display = '';
+        loadSettings();
+      } else {
+        document.getElementById('passwordOverlay').style.display = 'flex';
+      }
+      
+      document.getElementById('passwordInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') checkPassword();
+      });
+    });
+  </script>
+</body>
+</html>
