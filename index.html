@@ -1,394 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKD Computer Education</title>
-    <link rel="icon" href="https://drive.google.com/thumbnail?id=1AfmX3kHR6q3UkbAqyKY8HSDiyBVn1VzW&sz=64x64" type="image/png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
-    <style>
-        /* General Styles */
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-
-        /* Navigation Bar */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #2c3e50;
-            padding: 1rem 2rem;
-            color: white;
-        }
-
-        nav .heading {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        nav .navbar ul {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        nav .navbar ul li {
-            margin-left: 1.5rem;
-        }
-
-        nav .navbar ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        nav .navbar ul li a:hover {
-            color: #1abc9c;
-        }
-
-        .sideMenuButton {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Side Navigation Bar (Responsive) */
-        .sideNavigationBar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #2c3e50;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-
-        .sideNavigationBar a {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 1.2rem;
-            color: white;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .sideNavigationBar a:hover {
-            color: #1abc9c;
-        }
-
-        .sideNavigationBar .closeButton {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 2rem;
-            margin-left: 50px;
-        }
-
-        /* Hero Section */
-        .hero {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4rem 2rem;
-            background-color: #1abc9c;
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin: 0;
-        }
-
-        .hero button {
-            background-color: #2c3e50;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .hero button:hover {
-            background-color: #34495e;
-        }
-
-        .hero img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
-
-        /* Courses Section */
-        .courses {
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-
-        .courses .title {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .courses .boxes {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        .courses .box {
-            background-color: white;
-            padding: 1.5rem;
-            margin: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 30%;
-            transition: transform 0.3s ease;
-        }
-
-        .courses .box:hover {
-            transform: translateY(-10px);
-        }
-
-        .courses .box .topic {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .courses .box p {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 4rem 2rem;
-            background-color: #2c3e50;
-            color: white;
-        }
-
-        .contact .title {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .contactMenu {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .contactMenu .input1,
-        .contactMenu .input3 {
-            width: 45%;
-        }
-
-        .contactMenu .input1 input {
-            width: 100%;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .contactMenu .input1 button {
-            background-color: #1abc9c;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .contactMenu .input1 button:hover {
-            background-color: #16a085;
-        }
-
-        .contactMenu .input3 .content1 {
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #34495e;
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
-        }
-
-        footer a {
-            color: #1abc9c;
-            text-decoration: none;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            nav .navbar {
-                display: none;
-            }
-
-            .sideMenuButton {
-                display: block;
-            }
-
-            .hero {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .courses .box {
-                width: 100%;
-            }
-
-            .contactMenu .input1,
-            .contactMenu .input3 {
-                width: 100%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RKD Computer Education</title>
+  <link rel="icon" href="https://drive.google.com/thumbnail?id=1AfmX3kHR6q3UkbAqyKY8HSDiyBVn1VzW&sz=64x64" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #f4f4f9, #e6f9f8);
+      color: #222;
+      line-height: 1.6;
+    }
+    nav {
+      background: #1e293b;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    nav ul {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    nav a:hover {
+      color: #00c291;
+    }
+    .sideMenuButton {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .sideNavigationBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      overflow-x: hidden;
+      background: #1e293b;
+      transition: 0.5s;
+      padding-top: 60px;
+      z-index: 1000;
+    }
+    .sideNavigationBar a {
+      padding: 12px 24px;
+      display: block;
+      color: white;
+      text-decoration: none;
+    }
+    .sideNavigationBar a:hover {
+      background-color: #00c291;
+    }
+    .closeButton {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 2rem;
+    }
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4rem 2rem;
+      background: linear-gradient(90deg, #00c291 0%, #007f73 100%);
+      color: white;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .hero button {
+      padding: 0.8rem 1.6rem;
+      border: none;
+      border-radius: 6px;
+      background: white;
+      color: #007f73;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .hero button:hover {
+      background: #e6f9f8;
+    }
+    .hero img {
+      max-width: 280px;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    .title {
+      text-align: center;
+      font-size: 2rem;
+      margin: 3rem 0 1.5rem;
+    }
+    .boxes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .box {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+      width: 280px;
+      text-align: center;
+      transition: 0.3s;
+    }
+    .box:hover {
+      transform: translateY(-6px);
+    }
+    .box a {
+      color: #00c291;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+    .youtube-section {
+      background: #fff;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .youtube-section iframe {
+      width: 100%;
+      max-width: 600px;
+      height: 340px;
+      border: none;
+      border-radius: 10px;
+    }
+    .contact {
+      background: #1e293b;
+      color: white;
+      padding: 3rem 2rem;
+    }
+    .contactMenu {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .input1 input,
+    .input1 button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 5px;
+    }
+    .input1 button {
+      background: #00c291;
+      color: white;
+      cursor: pointer;
+    }
+    footer {
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+      }
+      .sideMenuButton {
+        display: block;
+      }
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <!-- Navigation Bar -->
-    <nav>
-        <div class="heading">RKD Computer Education</div>
-        <span class="sideMenuButton" onclick="openNavbar()">&#9776;</span>
-        <div class="navbar">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#courses">Courses</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="/aboutme.html">About Us</a></li>
-                <li><a href="#school">School</a></li>
-                <li><a href="https://rkdce.github.io/Student/Login.html" target="_blank">Student Login</a></li>
-            </ul>
-        </div>
-    </nav>
+  <nav>
+    <div class="heading">RKD Computer Education</div>
+    <span class="sideMenuButton" onclick="openNavbar()">&#9776;</span>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#youtube">YouTube</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="/aboutme.html">About Us</a></li>
+      <li><a href="#school">School</a></li>
+      <li><a href="https://rkdce.github.io/Student/Login.html" target="_blank">Student Login</a></li>
+    </ul>
+  </nav>
 
-    <!-- Side Navigation Bar (Responsive) -->
-    <div class="sideNavigationBar" id="sideNavigationBar">
-        <a href="#" class="closeButton" onclick="closeNavbar()">&#x274C;</a>
-        <a href="#home">Home</a>
-        <a href="#courses">Courses</a>
-        <a href="#contact">Contact</a>
-        <a href="/aboutme.html">About Us</a>
-        <a href="#school">School</a>
-        <a href="https://rkdce.github.io/Student/Login.html" target="_blank">Student Login</a>
+  <div class="sideNavigationBar" id="sideNavigationBar">
+    <a href="#" class="closeButton" onclick="closeNavbar()">&#x274C;</a>
+    <a href="#home">Home</a>
+    <a href="#courses">Courses</a>
+    <a href="#youtube">YouTube</a>
+    <a href="#contact">Contact</a>
+    <a href="/aboutme.html">About Us</a>
+    <a href="#school">School</a>
+    <a href="https://rkdce.github.io/Student/Login.html" target="_blank">Student Login</a>
+  </div>
+
+  <section class="hero" id="home">
+    <div>
+      <h1>Welcome to RKD Computer Education</h1>
+      <p>Empowering students with the latest technology and skills.</p>
+      <button>Explore Courses</button>
     </div>
+    <img src="https://lh3.googleusercontent.com/d/1AfmX3kHR6q3UkbAqyKY8HSDiyBVn1VzW=w200?authuser=0" alt="Logo">
+  </section>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="side1">
-            <h1>Welcome to RKD Computer Education</h1>
-            <p>Empowering students with the latest technology and skills.</p>
-            <button>Explore Courses</button>
-        </div>
-        <div class="side2">
-            <img src="https://lh3.googleusercontent.com/d/1AfmX3kHR6q3UkbAqyKY8HSDiyBVn1VzW=w200?authuser=0" alt="RKD Computer Education Logo">
-        </div>
-    </section>
+  <section id="courses">
+    <div class="title">Our Courses</div>
+    <div class="boxes">
+      <div class="box">
+        <h3>Image Background Remover</h3>
+        <p>Remove Image Background and add Custom Background</p>
+        <a href="/bg.html">Click here</a>
+      </div>
+      <div class="box">
+        <h3>Programming</h3>
+        <p>Learn Python, Java, C++, and more to build your coding skills.</p>
+      </div>
+      <div class="box">
+        <h3>Web Development</h3>
+        <p>Master HTML, CSS, JavaScript, and frameworks like React and Node.js.</p>
+      </div>
+      <div class="box">
+        <h3>Data Science</h3>
+        <p>Explore data analysis, machine learning, and AI with hands-on projects.</p>
+      </div>
+    </div>
+  </section>
 
-   
+  <section class="youtube-section" id="youtube">
+    <div class="title">Follow Us on YouTube</div>
+    <p>Subscribe to our channel <strong>@Rkdcs</strong> for tutorials, tips, and live sessions.</p>
+    <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=Rkdcs" allowfullscreen></iframe>
+  </section>
+
+  <section id="school">
+    <div class="title">School List</div>
+    <div class="boxes">
+      <div class="box">
+        <h3>HOLY CROWN SCHOOL, MASIMPUR</h3>
+        <p>Teacher Portal</p>
+        <a href="https://rkdce.github.io/LoginHCS1.html" target="_blank">HCS Login</a>
+      </div>
+      <div class="box">
+        <h3>ABHYASH TECHNO SCHOOL, PADMAPUR</h3>
+        <p>Teacher Portal</p>
+        <a href="https://rkdce.github.io/ats/LoginATS.html" target="_blank">ATS Login</a>
+      </div>
+      <div class="box">
+        <h3>RKD Developer Page</h3>
+        <p>Know more about us</p>
+        <a href="https://rkdce.github.io/ats/aboutdeveloper.html" target="_blank">Click here</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="title">Contact Us</div>
+    <div class="contactMenu">
+      <div class="input1">
+        <input type="text" placeholder="Your Name">
+        <input type="email" placeholder="Your Email">
+        <input type="text" placeholder="Your Message">
+        <button>Send Message</button>
+      </div>
+      <div class="input3">
+        <p><strong>Address:</strong> Silchar, Assam, India</p>
+        <p><strong>Email:</strong> emailrajeshkumardas@gmail.com</p>
+        <p><strong>Phone:</strong> +91 7002323169</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2025 RKD Computer Education. All rights reserved.</span>
+  </footer>
+
+  <script>
+    function openNavbar() {
+      document.getElementById("sideNavigationBar").style.width = "250px";
+      // Add event listener when navbar opens
+      document.addEventListener('click', closeOnClickOutside);
+    }
     
-    <!-- Courses Section -->
-    <section class="courses" id="courses">
-        <div class="title">Our Courses</div>
-        <div class="boxes">
-            <div class="box">
-                <div class="topic">Image Background Remover</div>
-                <p>Remove Image Background and also can add <b>Custom Background Color</b></p>
-                <a href="/bg.html">Click here</a>
-            </div>
-            <div class="box">
-                <div class="topic">Programming</div>
-                <p>Learn Python, Java, C++, and more to build your coding skills.</p>
-            </div>
-            <div class="box">
-                <div class="topic">Web Development</div>
-                <p>Master HTML, CSS, JavaScript, and frameworks like React and Node.js.</p>
-            </div>
-            <div class="box">
-                <div class="topic">Data Science</div>
-                <p>Explore data analysis, machine learning, and AI with hands-on projects.</p>
-            </div>
-        </div>
-    </section>
-
-     <section class="courses" id="school">
-        <div class="title">School list</div>
-        <div class="boxes">
-            <div class="box">
-                <div class="topic">HOLY CROWN SCHOOL, MASIMPUR</div>
-                <p><b>HOLY CROWN SCHOOL<br>Login</b></p>
-                <a href="https://rkdce.github.io/LoginHCS1.html" target="_blank">HCS Teacher Login</a>
-            </div>
-            <div class="box">
-                 <div class="topic">ABHYASH TECHNO SCHOOL, PADMAPUR</div>
-                <p><b>ABHYASH TECHNO SCHOOL <br>Login</b></p>
-                <a href="https://rkdce.github.io/ats/LoginATS.html" target="_blank">ATS Teacher Login</a>
-            </div>
-            <div class="box">
-                <div class="topic">RKD Computer Education</div>
-                <p><b>RKD Computer Education <br> Developer Page</b></p>
-                <a href="https://rkdce.github.io/ats/aboutdeveloper.html" target="_blank">Click here</a>
-            </div>
-           
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="title">Contact Us</div>
-        <div class="contactMenu">
-            <div class="input1">
-                <input type="text" placeholder="Your Name">
-                <input type="email" placeholder="Your Email">
-                <input type="text" placeholder="Your Message">
-                <button>Send Message</button>
-            </div>
-            <div class="input3">
-                <div class="content1">
-                    <p><strong>Address:</strong> Silchar, Assam, India</p>
-                    <p><strong>Email:</strong> emailrajeshkumardas@gmail.com</p>
-                    <p><strong>Phone:</strong> +91 7002323169</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer">
-            <span>© 2023 RKD Computer Education. All rights reserved.</span>
-        </div>
-    </footer>
-
-    <script>
-        function openNavbar() {
-            document.getElementById("sideNavigationBar").style.width = "250px";
-        }
-
-        function closeNavbar() {
-            document.getElementById("sideNavigationBar").style.width = "0";
-        }
-    </script>
+    function closeNavbar() {
+      document.getElementById("sideNavigationBar").style.width = "0";
+      // Remove event listener when navbar closes
+      document.removeEventListener('click', closeOnClickOutside);
+    }
+    
+    function closeOnClickOutside(event) {
+      const sideNav = document.getElementById('sideNavigationBar');
+      const menuButton = document.querySelector('.sideMenuButton');
+      
+      // Check if click is outside the navbar and not on the menu button
+      if (!sideNav.contains(event.target) && event.target !== menuButton && !menuButton.contains(event.target)) {
+        closeNavbar();
+      }
+    }
+  </script>
 </body>
-
 </html>
