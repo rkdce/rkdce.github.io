@@ -142,12 +142,18 @@
       padding: 3rem 2rem;
       text-align: center;
     }
-    .youtube-section iframe {
-      width: 100%;
-      max-width: 600px;
-      height: 340px;
-      border: none;
-      border-radius: 10px;
+    .youtube-photo {
+      max-width: 300px;
+      border-radius: 50%;
+      margin: 20px auto;
+      display: block;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 3px solid #00c291;
+    }
+    .youtube-photo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
     .contact {
       background: #1e293b;
@@ -254,7 +260,10 @@
   <section class="youtube-section" id="youtube">
     <div class="title">Follow Us on YouTube</div>
     <p>Subscribe to our channel <strong>@Rkdcs</strong> for tutorials, tips, and live sessions.</p>
-    <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=Rkdcs" allowfullscreen></iframe>
+    <img src="https://lh3.googleusercontent.com/d/1fW3VpfEPRFe_d3FzRh7T_hKGzrXsgu8L=s220?authuser=0" 
+         alt="YouTube Channel" 
+         class="youtube-photo"
+         onclick="window.open('https://www.youtube.com/@Rkdcs', '_blank')">
   </section>
 
   <section id="school">
