@@ -564,7 +564,8 @@
   </div>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwfO6oRttZlHCf0Vz4y_yPGr4KslsiU3Yxg449brqdAoduqsWtK06-W6KGpEaGTohhq/exec";
+    //const GAS_URL = "https://script.google.com/macros/s/AKfycbwfO6oRttZlHCf0Vz4y_yPGr4KslsiU3Yxg449brqdAoduqsWtK06-W6KGpEaGTohhq/exec";
+    const GAS_URL = localStorage.getItem('RKD_URL');		  
     const form = document.getElementById("uploadForm");
     const result = document.getElementById("result");
     const preview = document.getElementById("photoPreview");
@@ -776,22 +777,6 @@
       }
     }
 
-     // User info bar logic
-     (function() {
-            const userString = localStorage.getItem('ATS_user');
-            if (userString) {
-                const user = JSON.parse(userString);
-                document.getElementById('username').textContent = user.username;
-                document.getElementById('tClass').textContent = user.tClass;
-                document.getElementById('userType').textContent = user.userType;
-            } else {
-                window.location.href = 'LoginATS.html';
-            }
-        })();
-        function handleLogout() {
-            
-            window.location.href = 'dashboardATS.html';
-        }
 
     // Show alert
     function showAlert(message, type) {
@@ -807,5 +792,50 @@
       }, 3000);
     }
   </script>
+	<script>
+       (async function() {
+            const userString = localStorage.getItem('ATS_user');
+            if (userString) {
+                const user = JSON.parse(userString);
+				document.getElementById('username').textContent = user.username;
+                    document.getElementById('tClass').textContent = user.tClass;
+                    document.getElementById('userType').textContent = user.userType;
+                try {
+                    const response = await fetch(GAS_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: "validateUser",
+                            username: user.username,
+                            userType: user.userType
+                        })
+                    });
+                    const result = await response.json();
+                    if (result.status !== "success") {
+                        localStorage.removeItem('ATS_user');
+                        window.location.href = 'LoginATS.html';
+                        return;
+                    }
+                    
+                } catch (err) {
+                    localStorage.removeItem('ATS_user');
+                    window.location.href = 'LoginATS.html';
+                }
+            } else {
+                window.location.href = 'LoginATS.html';
+            }
+        })();
+        function handleLogout() {
+            //localStorage.removeItem('user');
+            window.location.href = 'dashboardATS.html';
+        }
+
+	  
+      function handleLogout() {
+            // Clear the user's information from localStorage
+            //localStorage.removeItem('user');
+            // Redirect to the login page
+            window.location.href = 'dashboardATS.html';
+        }
+    </script>
 </body>
 </html>
