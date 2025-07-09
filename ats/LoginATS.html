@@ -271,7 +271,7 @@
             if (data.status === 'success') {
                 console.log('User data:', data.user); // Debugging: Log the user object
                 localStorage.setItem('ATS_user', JSON.stringify(data.user));
-		   
+		localStorage.setItem('RKD_URL', RKD_URL);   
                 window.location.href = 'dashboardATS.html';
             }
         } catch (error) {
