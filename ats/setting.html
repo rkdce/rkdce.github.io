@@ -349,8 +349,8 @@
   </div>
 
   <script>
-    const SETTINGS_URL = 'https://script.google.com/macros/s/AKfycby796xqdpZ2fm6xJD0A7Jn-ERlmLj5lLRWueVOKFDFq5AGRW0igSN074nJUT65hfvwi/exec';
-
+    //const SETTINGS_URL = 'https://script.google.com/macros/s/AKfycby796xqdpZ2fm6xJD0A7Jn-ERlmLj5lLRWueVOKFDFq5AGRW0igSN074nJUT65hfvwi/exec';
+    const SETTINGS_URL = localStorage.getItem('RKD_URL');
     // Helper function to convert date format from yyyy-mm-dd to dd-mm-yyyy
     function formatDateToDMY(dateString) {
       if (!dateString) return '';
@@ -462,21 +462,6 @@
       }
     }
 
-    (function init() {
-      const userString = localStorage.getItem('ATS_user');
-      if (userString) {
-        const user = JSON.parse(userString);
-        document.getElementById('username').textContent = user.username;
-        document.getElementById('tClass').textContent = user.tClass;
-        document.getElementById('userType').textContent = user.userType;
-      } else {
-        window.location.href = 'LoginATS.html';
-      }
-    })();
-
-    function handleLogout() {
-      window.location.href = 'dashboardATS.html';
-    }
 
     document.addEventListener('DOMContentLoaded', () => {
       if (sessionStorage.getItem('ats_settings_access') === 'yes') {
@@ -492,5 +477,51 @@
       });
     });
   </script>
+
+  </script>
+       (async function() {
+            const userString = localStorage.getItem('ATS_user');
+            if (userString) {
+                const user = JSON.parse(userString);
+				document.getElementById('username').textContent = user.username;
+                    document.getElementById('tClass').textContent = user.tClass;
+                    document.getElementById('userType').textContent = user.userType;
+                try {
+                    const response = await fetch(SETTINGS_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: "validateUser",
+                            username: user.username,
+                            userType: user.userType
+                        })
+                    });
+                    const result = await response.json();
+                    if (result.status !== "success") {
+                        localStorage.removeItem('ATS_user');
+                        window.location.href = 'LoginATS.html';
+                        return;
+                    }
+                    
+                } catch (err) {
+                    localStorage.removeItem('ATS_user');
+                    window.location.href = 'LoginATS.html';
+                }
+            } else {
+                window.location.href = 'LoginATS.html';
+            }
+        })();
+        function handleLogout() {
+            //localStorage.removeItem('user');
+            window.location.href = 'dashboardATS.html';
+        }
+
+	  
+      function handleLogout() {
+            // Clear the user's information from localStorage
+            //localStorage.removeItem('user');
+            // Redirect to the login page
+            window.location.href = 'dashboardATS.html';
+        }
+    </script>
 </body>
 </html>
