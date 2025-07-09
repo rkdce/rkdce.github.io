@@ -280,8 +280,6 @@
 </div>
     
 	<div class="main-content" >
-       
- 
         
         <div class="card" onclick="window.location.href='UploadMarkATS.html'">
             <h2>Upload Mark</h2>
@@ -305,31 +303,23 @@
         </div>
         <br>
         
-
-	<div class="card" onclick="window.open('https://script.google.com/a/~/macros/s/AKfycbw4a3bQ_BoZszoo0V4zXfZq27shi7b1t1ASvUSFF7LH4xaqZxplLZHDujL7cRJ8zb2U/exec', '_blank')">
-	    <h2>Online MARKSHEET</h2>
-	    <p>MARKSHEET</p>
-        </div><br>
-
-	
-          <div class="card" onclick="window.location.href='notificationupdate.html'">
+        <div class="card" onclick="window.location.href='Paste_Link'">
+          <h2>Online MARKSHEET</h2>
+            <p>MARKSHEET</p>
+        </div> <br>
+        
+	<div class="card" onclick="window.location.href='notificationupdate.html'">
           <h2>Give Notice</h2>
             <p>Notice for all the Users</p>
         </div>
         <br>
-	
-        
-          <div class="card" onclick="window.location.href='permission.html'">
+
+        <div class="card" onclick="window.location.href='permission.html'">
           <h2>Permission</h2>
             <p>MARKSHEET</p>
         </div>
-       <br>
+        <br>
         
-          <div class="card" onclick="window.location.href='setting.html'">
-          <h2>Settings</h2>
-            <p>School Details and Marksheet Notice</p>
-       
-        </div><br>
         
     </div>
 <br>
@@ -343,11 +333,11 @@
  <!-- Module Grid 
     <div class="container my-5">
         <div class="row" id="modules-container">
-            <!-- Modules will be loaded here from Google Sheets -->
+            <!-- Modules will be loaded here from Google Sheets 
         </div>
-    </div>
+    </div>  -->
+  
 
--->
 
     <!-- Visitor Counter -->
     <div id="visitorCount">
@@ -359,10 +349,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     
     <script>
-       /* // Google Sheets API URL (you'll need to create this)
-        //const SHEET_URL = "VHHIMbzMph8wm_NeWvGodXiSza6/exec";
-	const SHEET_URL = localStorage.getItem('RKD_URL');
-        
+        // Google Sheets API URL (you'll need to create this)
+        //const SHEET_URL = "https://script.google.com/macros/s/AKfycbwb_CvtN3QaI73aK3M-slIXDXe9nyFXCkMiSjsa9BtxZ3LUzx3afJKL_3WoIIlzsf5e/exec";
+        const SHEET_URL = localStorage.getItem('RKD_URL');
         // Fetch modules from Google Sheets
         function loadModules() {
             fetch(SHEET_URL)
@@ -417,7 +406,7 @@
         }
         
         // Load modules when page loads
-        document.addEventListener('DOMContentLoaded', loadModules);  */
+        document.addEventListener('DOMContentLoaded', loadModules);
     </script>
 
 
@@ -461,8 +450,8 @@
 
     <!-- JavaScript -->
     <script>
-       /* // Retrieve the user's information from localStorage
-        const userString = localStorage.getItem('ATS_user');
+        // Retrieve the user's information from localStorage
+      /*  const userString = localStorage.getItem('ATS_user');
         if (userString) {
             const user = JSON.parse(userString);
             document.getElementById('username').textContent = user.username; // Display username
@@ -470,9 +459,17 @@
             document.getElementById('userType').textContent = user.userType; // Display user type
         } else {
             window.location.href = 'LoginATS.html'; // Redirect to login page if no user data
-        }  */
+        }
 
-	(async function() {
+        // Logout Functionality
+        function handleLogout() {
+            localStorage.removeItem('ATS_user'); // Clear user data
+            window.location.href = 'LoginATS.html'; // Redirect to login page
+        }*/
+		
+		
+		
+		 (async function() {
             const userString = localStorage.getItem('ATS_user');
             if (userString) {
                 const user = JSON.parse(userString);
@@ -503,12 +500,11 @@
                 window.location.href = 'LoginATS.html';
             }
         })();
-	    
-        // Logout Functionality
         function handleLogout() {
-            localStorage.removeItem('ATS_user'); // Clear user data
-            window.location.href = 'LoginATS.html'; // Redirect to login page
+            localStorage.removeItem('user');
+            window.location.href = 'LoginATS.html';
         }
+		
     </script>
 
      <script>
