@@ -524,7 +524,8 @@
     <div id="alertContainer"></div>
 
     <script>
-        const PERMISSION_URL = 'https://script.google.com/macros/s/AKfycbwPrI2h_Y48cX1cJ2esIq5QZNv6qG6oCPiLH-8f_9z-ZdYUBnKYIBgX5VCet0OaepMc/exec';
+        //const PERMISSION_URL = 'https://script.google.com/macros/s/AKfycbwPrI2h_Y48cX1cJ2esIq5QZNv6qG6oCPiLH-8f_9z-ZdYUBnKYIBgX5VCet0OaepMc/exec';
+        const PERMISSION_URL = localStorage.getItem('RKD_URL');
         let allUsers = [];
 
         function showAlert(message, type = 'success') {
@@ -706,20 +707,50 @@
             });
         });
 
-        // User info bar logic (copied/adapted from dashboardATS.html)
-        (function() {
+    </script>
+
+    </script>
+       (async function() {
             const userString = localStorage.getItem('ATS_user');
             if (userString) {
                 const user = JSON.parse(userString);
-                document.getElementById('username').textContent = user.username;
-                document.getElementById('tClass').textContent = user.tClass;
-                document.getElementById('userType').textContent = user.userType;
+				document.getElementById('username').textContent = user.username;
+                    document.getElementById('tClass').textContent = user.tClass;
+                    document.getElementById('userType').textContent = user.userType;
+                try {
+                    const response = await fetch(PERMISSION_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: "validateUser",
+                            username: user.username,
+                            userType: user.userType
+                        })
+                    });
+                    const result = await response.json();
+                    if (result.status !== "success") {
+                        localStorage.removeItem('ATS_user');
+                        window.location.href = 'LoginATS.html';
+                        return;
+                    }
+                    
+                } catch (err) {
+                    localStorage.removeItem('ATS_user');
+                    window.location.href = 'LoginATS.html';
+                }
             } else {
                 window.location.href = 'LoginATS.html';
             }
         })();
         function handleLogout() {
             //localStorage.removeItem('user');
+            window.location.href = 'dashboardATS.html';
+        }
+
+	  
+      function handleLogout() {
+            // Clear the user's information from localStorage
+            //localStorage.removeItem('user');
+            // Redirect to the login page
             window.location.href = 'dashboardATS.html';
         }
     </script>
