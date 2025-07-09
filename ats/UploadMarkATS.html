@@ -1429,13 +1429,13 @@ function calculateTotalAssessment() {
 
 // Recalculate whenever any input changes
 document.addEventListener('input', calculateTotalAssessment);
-
+</script>
 <script>
        (async function() {
             const userString = localStorage.getItem('ATS_user');
             if (userString) {
                 const user = JSON.parse(userString);
-				document.getElementById('username').textContent = user.username;
+		   document.getElementById('username').textContent = user.username;
                     document.getElementById('tClass').textContent = user.tClass;
                     document.getElementById('userType').textContent = user.userType;
                 try {
