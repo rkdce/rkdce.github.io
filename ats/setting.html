@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>School Settings</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
       --primary: #1976d2;
@@ -17,178 +17,176 @@
       --card-bg: #ffffff;
       --user-bar: #e3f2fd;
     }
-    
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-    
+
     body {
       font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.5;
+      line-height: 1.6;
     }
-    
+
     h1, h2, h3 {
       font-weight: 600;
     }
-    
+
     h1 {
       text-align: center;
       margin: 1.5rem 0;
       font-size: 2rem;
     }
-    
-     /* Header */
-     .header {
-      width: 80%;
-    max-width: 100%;
-    background-color: ivory;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    margin: 0 auto 20px auto; /* Center horizontally */
+
+    /* Header */
+    .header {
+      width: 90%;
+      max-width: 1000px;
+      background-color: ivory;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      margin: 0 auto 20px auto;
     }
 
     .header h1 {
-        font-size: 2rem;
-        font-weight: 600;
-        color: #2d3748; /* Dark gray */
-        margin-bottom: 10px;
+      font-size: 2rem;
+      color: #2d3748;
+      margin-bottom: 10px;
     }
 
     .header p {
-        font-size: 1.1rem;
-        color: #4a5568; /* Medium gray */
+      font-size: 1.1rem;
+      color: #4a5568;
     }
 
-    .header .logout-button {
-        background-color: #e53e3e; /* Red */
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        font-weight: 500;
-        cursor: pointer;
-        margin-top: 10px;
-        transition: background-color 0.3s ease;
-    }
-
-    .header .logout-button:hover {
-        background-color: #c53030; /* Darker red */
-    }
-    
-    .btn {
-      padding: 0.5rem 1rem;
-      border-radius: 0.25rem;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.2s;
+    .logout-button {
+      background-color: #e53e3e;
+      color: white;
       border: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-size: 1rem;
+      margin-top: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
-    
-    .btn-primary {
-      background: var(--primary);
-      color: white;
+
+    .logout-button:hover {
+      background-color: #c53030;
     }
-    
-    .btn-primary:hover {
-      background: var(--primary-dark);
-    }
-    
-    .btn-danger {
-      background: var(--error);
-      color: white;
-    }
-    
-    .btn-danger:hover {
-      opacity: 0.9;
-    }
-    
+
     .container {
-      max-width: 800px;
-      margin: 0 auto 2rem;
-      background: var(--card-bg);
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-      padding: 2rem;
+      max-width: 850px;
+      margin: 2rem auto;
+      background: linear-gradient(to top right, #ffffff, #f9fbfd);
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+      padding: 2.5rem 2rem;
+      transition: all 0.3s ease;
     }
-    
+
     h2 {
+      font-size: 1.6rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
       text-align: center;
+    }
+
+    .form-group {
       margin-bottom: 1.5rem;
     }
-    
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-    
+
     label {
       display: block;
       font-weight: 600;
       margin-bottom: 0.5rem;
       color: var(--text-light);
     }
-    
+
     input, select, textarea {
       width: 100%;
-      padding: 0.5rem 0.75rem;
-      border: 1px solid #ddd;
-      border-radius: 0.25rem;
+      padding: 0.6rem 0.85rem;
+      border: 1px solid #cfd8dc;
+      border-radius: 0.375rem;
       font-size: 1rem;
-      background: #fafbfc;
-      transition: border 0.2s;
+      background: #fefefe;
+      transition: all 0.3s ease;
     }
-    
+
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
     }
-    
+
+    input:hover, select:hover, textarea:hover {
+      border-color: var(--primary);
+    }
+
     textarea {
       min-height: 5rem;
       resize: vertical;
     }
-    
+
     .row {
       display: flex;
       gap: 1rem;
+      flex-wrap: wrap;
     }
-    
+
     .row .form-group {
       flex: 1;
     }
-    
+
     .actions {
-      text-align: center;
-      margin-top: 1.5rem;
       display: flex;
       justify-content: center;
       gap: 1rem;
+      margin-top: 2rem;
     }
-    
-    #status {
-      margin-top: 1rem;
-      text-align: center;
-      font-weight: 600;
+
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+
     .success {
       color: var(--success);
+      text-align: center;
+      font-weight: bold;
+      margin-top: 1rem;
     }
-    
+
     .error {
       color: var(--error);
+      text-align: center;
+      font-weight: bold;
+      margin-top: 1rem;
     }
-    
+
     #loader {
       display: none;
       position: fixed;
@@ -198,7 +196,7 @@
       align-items: center;
       justify-content: center;
     }
-    
+
     .spinner {
       border: 4px solid rgba(0, 0, 0, 0.1);
       border-top: 4px solid var(--primary);
@@ -207,11 +205,11 @@
       height: 3rem;
       animation: spin 1s linear infinite;
     }
-    
+
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-    
+
     .overlay {
       position: fixed;
       inset: 0;
@@ -222,7 +220,7 @@
       justify-content: center;
       padding: 1rem;
     }
-    
+
     .modal {
       background: white;
       border-radius: 0.5rem;
@@ -232,63 +230,51 @@
       max-width: 24rem;
       text-align: center;
     }
-    
+
     .modal h3 {
       margin-bottom: 1rem;
     }
-    
+
     .modal input {
       margin: 1rem 0;
     }
-    
+
     .modal .btn {
       width: 100%;
       justify-content: center;
     }
-    
+
+    #status {
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
     @media (max-width: 768px) {
       .container {
         padding: 1.5rem;
-        margin: 0 1rem 2rem;
+        margin: 1rem;
+        border-radius: 12px;
       }
-      
+
       .row {
         flex-direction: column;
-        gap: 0;
+        gap: 1rem;
       }
-      
+
       .actions {
         flex-direction: column;
         gap: 0.75rem;
       }
-      
+
       .btn {
         width: 100%;
+        justify-content: center;
       }
-    }
-    
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 1.75rem;
-        margin: 1rem 0;
-      }
-      
-      .user-info-bar {
-                margin: 12px auto 0 auto;
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px 12px;
-                font-size: 0.95rem;
-            }
-      
-      .container {
-        padding: 1rem;
-        border-radius: 0;
-        margin: 0 0 1.5rem;
-      }
-      
-      h2 {
-        font-size: 1.25rem;
+
+      .header {
+        padding: 16px;
+        margin: 1rem;
       }
     }
   </style>
@@ -307,20 +293,20 @@
 
   <h1>School Settings</h1>
   <div class="header">
-        <h1>Welcome, <span id="username"></span>!</h1>
-        <p>Class: <span id="tClass"></span> | Role: <span id="userType"></span></p>
-        <button class="logout-button" onclick="handleLogout()">Home</button>
-    </div>
+    <h1>Welcome, <span id="username"></span>!</h1>
+    <p>Class: <span id="tClass"></span> | Role: <span id="userType"></span></p>
+    <button class="logout-button" onclick="handleLogout()">Home</button>
+  </div>
 
   <div class="container" id="mainContainer" style="display:none;">
     <h2>School Configuration</h2>
     <form id="settingsForm" autocomplete="off">
-      <div class="form-group"><label>School Name</label><input type="text" id="schoolName" readonly></div>
+      <div class="form-group"><label>School Name</label><input type="text" id="schoolName"></div>
       <div class="form-group"><label>Type of School</label><input type="text" id="typeOfSchool"></div>
-      <div class="form-group"><label>Affiliation</label><input type="text" id="affiliation" readonly></div>
+      <div class="form-group"><label>Affiliation</label><input type="text" id="affiliation"></div>
       <div class="form-group"><label>Address</label><textarea id="schoolAddress"></textarea></div>
       <div class="form-group"><label>Phone</label><input type="text" id="phone"></div>
-      <div class="form-group"><label>Academic Session</label><input type="text" id="academicSession" readonly></div>
+      <div class="form-group"><label>Academic Session</label><input type="text" id="academicSession"></div>
 
       <div class="row">
         <div class="form-group"><label>Pre Mid TEST</label><select id="preMidTest"><option>Yes</option><option>No</option></select></div>
@@ -348,9 +334,11 @@
     </form>
   </div>
 
+
+
   <script>
     //const SETTINGS_URL = 'https://script.google.com/macros/s/AKfycby796xqdpZ2fm6xJD0A7Jn-ERlmLj5lLRWueVOKFDFq5AGRW0igSN074nJUT65hfvwi/exec';
-    const SETTINGS_URL = localStorage.getItem('RKD_URL');
+  const SETTINGS_URL = localStorage.getItem('RKD_URL');
     // Helper function to convert date format from yyyy-mm-dd to dd-mm-yyyy
     function formatDateToDMY(dateString) {
       if (!dateString) return '';
@@ -448,20 +436,22 @@
       showLoader(false);
     }
 
-    function checkPassword() {
-      const pass = document.getElementById('passwordInput').value;
-      if (pass === 'atsats2025') {
-        sessionStorage.setItem('ats_settings_access', 'yes');
-        document.getElementById('passwordOverlay').style.display = 'none';
-        document.getElementById('mainContainer').style.display = '';
-        loadSettings();
-      } else {
-        document.getElementById('passwordError').textContent = 'Incorrect password';
-        document.getElementById('passwordInput').value = '';
-        document.getElementById('passwordInput').focus();
-      }
-    }
 
+    (function init() {
+      const userString = localStorage.getItem('ATS_user');
+      if (userString) {
+        const user = JSON.parse(userString);
+        document.getElementById('username').textContent = user.username;
+        document.getElementById('tClass').textContent = user.tClass;
+        document.getElementById('userType').textContent = user.userType;
+      } else {
+        window.location.href = 'LoginATS.html';
+      }
+    })();
+
+    function handleLogout() {
+      window.location.href = 'dashboardATS.html';
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       if (sessionStorage.getItem('ats_settings_access') === 'yes') {
@@ -477,51 +467,54 @@
       });
     });
   </script>
-
   <script>
-       (async function() {
-            const userString = localStorage.getItem('ATS_user');
-            if (userString) {
-                const user = JSON.parse(userString);
-				document.getElementById('username').textContent = user.username;
-                    document.getElementById('tClass').textContent = user.tClass;
-                    document.getElementById('userType').textContent = user.userType;
-                try {
-                    const response = await fetch(SETTINGS_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            action: "validateUser",
-                            username: user.username,
-                            userType: user.userType
-                        })
-                    });
-                    const result = await response.json();
-                    if (result.status !== "success") {
-                        localStorage.removeItem('ATS_user');
-                        window.location.href = 'LoginATS.html';
-                        return;
-                    }
-                    
-                } catch (err) {
-                    localStorage.removeItem('ATS_user');
-                    window.location.href = 'LoginATS.html';
-                }
-            } else {
-                window.location.href = 'LoginATS.html';
-            }
-        })();
-        function handleLogout() {
-            //localStorage.removeItem('user');
-            window.location.href = 'dashboardATS.html';
-        }
+  function checkPassword() {
+    const pass = document.getElementById('passwordInput').value;
+    const mainContainer = document.getElementById('mainContainer');
+    const passwordOverlay = document.getElementById('passwordOverlay');
 
-	  
-      function handleLogout() {
-            // Clear the user's information from localStorage
-            //localStorage.removeItem('user');
-            // Redirect to the login page
-            window.location.href = 'dashboardATS.html';
-        }
-    </script>
+    if (pass === 'atsats2025' || pass === 'rkd#7002323169') {
+      sessionStorage.setItem('ats_settings_access', 'yes');
+      passwordOverlay.style.display = 'none';
+      mainContainer.style.display = '';
+
+      if (pass === 'atsats2025') {
+        // Make all inputs readonly except notice and Yes/No dropdowns
+        const editableIDs = [
+          'preMidTest', 'preMidTestDate',
+          'halfYearlyExam', 'halfYearlyExamDate',
+          'postMidTest', 'postMidTestDate',
+          'annualExam', 'annualExamDate',
+          'bannerNotice'
+        ];
+
+        document.querySelectorAll('#settingsForm input, #settingsForm select, #settingsForm textarea')
+          .forEach(el => {
+            if (editableIDs.includes(el.id)) {
+              el.removeAttribute('readonly');
+              el.removeAttribute('disabled');
+            } else {
+              el.setAttribute('readonly', true);
+              if (el.tagName === 'SELECT') el.setAttribute('disabled', true);
+            }
+          });
+      } else if (pass === 'rkd#7002323169') {
+        // Make all inputs editable
+        document.querySelectorAll('#settingsForm input, #settingsForm select, #settingsForm textarea')
+          .forEach(el => {
+            el.removeAttribute('readonly');
+            el.removeAttribute('disabled');
+          });
+      }
+
+      loadSettings();
+    } else {
+      document.getElementById('passwordError').textContent = 'Incorrect password';
+      document.getElementById('passwordInput').value = '';
+      document.getElementById('passwordInput').focus();
+    }
+  }
+</script>
+
 </body>
 </html>
