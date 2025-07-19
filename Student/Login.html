@@ -95,6 +95,32 @@
             cursor: default;
             text-decoration: none;
         }
+        #fullscreenLoader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0.8);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+        }
+        
+        .spinner {
+          border: 6px solid #f3f3f3;
+          border-top: 6px solid #4285f4;
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -136,6 +162,9 @@
         </div>
         
         <div id="message" class="message"></div>
+        <div id="fullscreenLoader" style="display: none;">
+              <div class="spinner"></div>
+        </div>
     </div>
 
     <script>
@@ -209,36 +238,36 @@
         function verifyOTP() {
             const email = currentEmail;
             let otp = document.getElementById('otp').value.trim();
-            
             otp = otp.replace(/\s+/g, '').replace(/-+/g, '');
-            
+        
             if (!otp || otp.length !== 6 || isNaN(otp)) {
                 showMessage('Please enter a valid 6-digit number', 'error');
                 return;
             }
-            
+        
             showMessage('Verifying OTP...');
-            
-            // Add timestamp to prevent caching
+            document.getElementById('fullscreenLoader').style.display = 'flex'; // Show full-page loader
+        
             const timestamp = new Date().getTime();
             fetch(`${SCRIPT_URL}?action=verifyOTP&email=${encodeURIComponent(email)}&otp=${otp}&ipAddress=${encodeURIComponent(window.clientIp || 'Not tracked')}&_=${timestamp}`)
                 .then(response => response.json())
                 .then(data => {
+                    document.getElementById('fullscreenLoader').style.display = 'none'; // Hide loader
+        
                     if (data.status === 'success') {
-                        // Store user data in session storage
                         sessionStorage.setItem('loggedIn', 'true');
                         sessionStorage.setItem('userEmail', email);
                         sessionStorage.setItem('userName', data.userData.name);
                         sessionStorage.setItem('userClass', data.userData.className);
                         sessionStorage.setItem('loginTime', Date.now());
-                        
-                        // Redirect to dashboard
+        
                         window.location.href = 'OnlineExam.html';
                     } else {
                         showMessage(data.message, 'error');
                     }
                 })
                 .catch(error => {
+                    document.getElementById('fullscreenLoader').style.display = 'none'; // Hide loader
                     showMessage('Error verifying OTP', 'error');
                     console.error(error);
                 });
