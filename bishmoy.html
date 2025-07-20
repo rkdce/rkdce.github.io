@@ -1,1 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Speed Typing Game</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #333;
+      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background-color: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .heading {
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      color: #2c3e50;
+      font-weight: 700;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .timer, .errors, .accuracy, .cpm, .wpm {
+      background-color: #3498db;
+      color: white;
+      height: 80px;
+      width: 100px;
+      margin: 0;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+
+    .timer:hover, .errors:hover, .accuracy:hover, .cpm:hover, .wpm:hover {
+      transform: translateY(-3px);
+    }
+
+    .errors {
+      background-color: #e74c3c;
+    }
+
+    .accuracy {
+      background-color: #2ecc71;
+    }
+
+    .cpm, .wpm {
+      background-color: #9b59b6;
+      display: none;
+    }
+
+    .header_text {
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .curr_time, .curr_errors, .curr_accuracy, .curr_cpm, .curr_wpm {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+
+    .quote {
+      background-color: #f1f8fe;
+      font-size: 1.4rem;
+      margin: 20px 0;
+      padding: 25px;
+      border-radius: 10px;
+      min-height: 120px;
+      line-height: 1.6;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+      border-left: 5px solid #3498db;
+    }
+
+    .input_area {
+      background-color: #f8f9fa;
+      height: 100px;
+      width: 80%;
+      max-width: 700px;
+      font-size: 1.3rem;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      resize: none;
+      outline: none;
+      transition: border 0.3s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .input_area:focus {
+      border-color: #3498db;
+    }
+
+    .restart_btn {
+      display: none;
+      background-color: #3498db;
+      color: white;
+      font-size: 1.2rem;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      margin: 20px auto 0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+    }
+
+    .restart_btn:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .incorrect_char {
+      color: #e74c3c;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    .correct_char {
+      color: #2ecc71;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+      
+      .heading {
+        font-size: 2rem;
+      }
+      
+      .quote, .input_area {
+        width: 90%;
+      }
+      
+      .timer, .errors, .accuracy, .cpm, .wpm {
+        width: 80px;
+        height: 70px;
+      }
+      
+      .curr_time, .curr_errors, .curr_accuracy, .curr_cpm, .curr_wpm {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- The rest of your HTML and JavaScript remains exactly the same -->
+  <div class="container">
+    <div class="heading">Bishmoy Deb Speed Typing Game</div>
+    <div class="header">
+      <div class="wpm">
+        <div class="header_text">WPM</div>
+        <div class="curr_wpm">0</div>
+      </div>
+      <div class="cpm">
+        <div class="header_text">CPM</div>
+        <div class="curr_cpm">0</div>
+      </div>
+      <div class="errors">
+        <div class="header_text">Errors</div>
+        <div class="curr_errors">0</div>
+      </div>
+      <div class="timer">
+        <div class="header_text">Time</div>
+        <div class="curr_time">60s</div>
+      </div>
+      <div class="accuracy">
+        <div class="header_text">% Accuracy</div>
+        <div class="curr_accuracy">100</div>
+      </div>
+    </div>
+
+    <div class="quote">
+      Click on the area below to start the game.
+    </div>
+
+    <textarea
+      class="input_area"
+      placeholder="Start typing here..."
+      oninput="processCurrentText()"
+      onfocus="startGame()"
+    ></textarea>
+
+    <button class="restart_btn" onclick="resetValues()">Restart</button>
+  </div>
+
+  <script>
+    // Your JavaScript remains exactly the same
+    let TIME_LIMIT = 60;
+
+    let quotes_array = [
+      "Push yourself, because no one else is going to do it for you.",
+      "Failure is the condiment that gives success its flavor.",
+      "Wake up with determination. Go to bed with satisfaction.",
+      "It's going to be hard, but hard does not mean impossible.",
+      "Learning never exhausts the mind.",
+      "The only way to do great work is to love what you do."
+    ];
+
+    let timer_text = document.querySelector(".curr_time");
+    let accuracy_text = document.querySelector(".curr_accuracy");
+    let error_text = document.querySelector(".curr_errors");
+    let cpm_text = document.querySelector(".curr_cpm");
+    let wpm_text = document.querySelector(".curr_wpm");
+    let quote_text = document.querySelector(".quote");
+    let input_area = document.querySelector(".input_area");
+    let restart_btn = document.querySelector(".restart_btn");
+    let cpm_group = document.querySelector(".cpm");
+    let wpm_group = document.querySelector(".wpm");
+
+    let timeLeft = TIME_LIMIT;
+    let timeElapsed = 0;
+    let total_errors = 0;
+    let errors = 0;
+    let accuracy = 0;
+    let characterTyped = 0;
+    let current_quote = "";
+    let quoteNo = 0;
+    let timer = null;
+
+    function updateQuote() {
+      quote_text.textContent = null;
+      current_quote = quotes_array[quoteNo];
+
+      current_quote.split('').forEach(char => {
+        const charSpan = document.createElement('span');
+        charSpan.innerText = char;
+        quote_text.appendChild(charSpan);
+      });
+
+      quoteNo = (quoteNo + 1) % quotes_array.length;
+    }
+
+    function processCurrentText() {
+      let curr_input = input_area.value;
+      let curr_input_array = curr_input.split('');
+
+      characterTyped++;
+      errors = 0;
+
+      let quoteSpanArray = quote_text.querySelectorAll('span');
+      quoteSpanArray.forEach((char, index) => {
+        let typedChar = curr_input_array[index];
+
+        if (typedChar == null) {
+          char.classList.remove('correct_char');
+          char.classList.remove('incorrect_char');
+        } else if (typedChar === char.innerText) {
+          char.classList.add('correct_char');
+          char.classList.remove('incorrect_char');
+        } else {
+          char.classList.add('incorrect_char');
+          char.classList.remove('correct_char');
+          errors++;
+        }
+      });
+
+      error_text.textContent = total_errors + errors;
+
+      let correctCharacters = characterTyped - (total_errors + errors);
+      let accuracyVal = (correctCharacters / characterTyped) * 100;
+      accuracy_text.textContent = Math.round(accuracyVal);
+
+      if (curr_input.length == current_quote.length) {
+        updateQuote();
+        total_errors += errors;
+        input_area.value = "";
+      }
+    }
+
+    function startGame() {
+      resetValues();
+      updateQuote();
+      clearInterval(timer);
+      timer = setInterval(updateTimer, 1000);
+    }
+
+    function resetValues() {
+      timeLeft = TIME_LIMIT;
+      timeElapsed = 0;
+      errors = 0;
+      total_errors = 0;
+      accuracy = 0;
+      characterTyped = 0;
+      quoteNo = 0;
+      input_area.disabled = false;
+
+      input_area.value = "";
+      quote_text.textContent = "Click on the area below to start the game.";
+      accuracy_text.textContent = 100;
+      timer_text.textContent = timeLeft + "s";
+      error_text.textContent = 0;
+      restart_btn.style.display = "none";
+      cpm_group.style.display = "none";
+      wpm_group.style.display = "none";
+    }
+
+    function updateTimer() {
+      if (timeLeft > 0) {
+        timeLeft--;
+        timeElapsed++;
+        timer_text.textContent = timeLeft + "s";
+      } else {
+        finishGame();
+      }
+    }
+
+    function finishGame() {
+      clearInterval(timer);
+      input_area.disabled = true;
+      quote_text.textContent = "Click on restart to start a new game.";
+      restart_btn.style.display = "block";
+
+      let cpm = Math.round((characterTyped / timeElapsed) * 60);
+      let wpm = Math.round(((characterTyped / 5) / timeElapsed) * 60);
+
+      cpm_text.textContent = cpm;
+      wpm_text.textContent = wpm;
+
+      cpm_group.style.display = "block";
+      wpm_group.style.display = "block";
+    }
+  </script>
+</body>
+</html>
