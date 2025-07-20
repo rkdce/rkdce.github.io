@@ -173,9 +173,8 @@
   </style>
 </head>
 <body>
-  <!-- The rest of your HTML and JavaScript remains exactly the same -->
   <div class="container">
-    <div class="heading">Bishmoy Deb Speed Typing Game</div>
+    <div class="heading">Simple Speed Typing</div>
     <div class="header">
       <div class="wpm">
         <div class="header_text">WPM</div>
@@ -214,7 +213,6 @@
   </div>
 
   <script>
-    // Your JavaScript remains exactly the same
     let TIME_LIMIT = 60;
 
     let quotes_array = [
@@ -339,6 +337,9 @@
       input_area.disabled = true;
       quote_text.textContent = "Click on restart to start a new game.";
       restart_btn.style.display = "block";
+
+      // Reset timer display to show 60s when game finishes
+      timer_text.textContent = "60s";
 
       let cpm = Math.round((characterTyped / timeElapsed) * 60);
       let wpm = Math.round(((characterTyped / 5) / timeElapsed) * 60);
