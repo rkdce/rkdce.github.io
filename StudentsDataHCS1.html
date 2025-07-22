@@ -283,8 +283,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-
-
     <div class="developer-credit">
         <div class="developer-name">Rajesh Kumar Das</div>
         
@@ -297,12 +295,7 @@
         <div class="copyright">© 2023 All Rights Reserved</div>
     </div>
     
-    <h1>Student Data 2025-26</h1>
-   <h1> <select id="schoolFilter" onchange="filterAccordions()" style="padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 2px solid #d1d5db; font-size: clamp(14px, 4vw, 16px);">
-  <option value="">All Schools</option>
-  <option value="Silchar">Silchar</option>
-  <option value="Masimpur">Masimpur</option>
-</select></h1>
+    <h1>Student Data 2024-25</h1>
     
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Search students by name, class, or other details..." onkeyup="filterAccordions()">
@@ -410,8 +403,7 @@
                         const columns = rows[i];
                         const accordion = document.createElement('button');
                         accordion.className = 'accordion';
-                        accordion.textContent = ${columns[3] || ''} ${columns[5] || ''} Class: ${columns[4] || ''} || Item ${i};
-                        accordion.dataset.school = (columns[1] || '').toLowerCase();
+                        accordion.textContent = `${columns[3] || ''} ${columns[5] || ''} Class: ${columns[4] || ''}` || `Item ${i}`;
                         accordion.dataset.searchContent = columns.join(' ').toLowerCase();
                         
                         const panel = document.createElement('div');
@@ -428,7 +420,7 @@
                             
                             const label = document.createElement('div');
                             label.className = 'data-label';
-                            label.textContent = headers[j] || Column ${j+1};
+                            label.textContent = headers[j] || `Column ${j+1}`;
                             
                             const value = document.createElement('div');
                             
@@ -437,7 +429,7 @@
                                 const fileId = extractFileId(columns[j]);
                                 if (fileId) {
                                     const img = document.createElement('img');
-                                    img.src = https://drive.google.com/thumbnail?id=${fileId};
+                                    img.src = `https://drive.google.com/thumbnail?id=${fileId}`;
                                     img.className = 'data-photo';
                                     img.alt = headers[j] || 'Photo';
                                     value.appendChild(img);
@@ -483,52 +475,47 @@
                     }
                 })
                 .catch(error => {
-                    container.innerHTML = <div class="error">Failed to load data: ${error.message}</div>;
+                    container.innerHTML = `<div class="error">Failed to load data: ${error.message}</div>`;
                     console.error('Error loading CSV:', error);
                 });
         });
         
         function filterAccordions() {
-    const selectedSchool = document.getElementById('schoolFilter').value.toLowerCase();
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    let hasResults = false;
-
-    allAccordions.forEach(item => {
-        const accordion = item.button;
-        const panel = item.panel;
-        const schoolValue = accordion.dataset.school;
-        const searchContent = accordion.dataset.searchContent;
-
-        const matchesSchool = !selectedSchool || schoolValue === selectedSchool;
-        const matchesSearch = !searchInput || searchContent.includes(searchInput);
-
-        if (matchesSchool && matchesSearch) {
-            accordion.style.display = '';
-            panel.style.display = '';
-            hasResults = true;
-        } else {
-            accordion.style.display = 'none';
-            panel.style.display = 'none';
-            accordion.classList.remove('active');
-            panel.classList.remove('show');
-            panel.style.maxHeight = null;
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const container = document.getElementById('accordionContainer');
+            let hasResults = false;
+            
+            if (allAccordions.length === 0) return;
+            
+            allAccordions.forEach(item => {
+                const textContent = item.button.dataset.searchContent;
+                if (textContent.includes(filter)) {
+                    item.button.style.display = '';
+                    item.panel.style.display = '';
+                    hasResults = true;
+                } else {
+                    item.button.style.display = 'none';
+                    item.panel.style.display = 'none';
+                    item.button.classList.remove('active');
+                    item.panel.classList.remove('show');
+                    item.panel.style.maxHeight = null;
+                }
+            });
+            
+            const existingNoResults = document.getElementById('noResults');
+            if (existingNoResults) {
+                existingNoResults.remove();
+            }
+            
+            if (!hasResults) {
+                const noResults = document.createElement('div');
+                noResults.id = 'noResults';
+                noResults.className = 'no-results';
+                noResults.textContent = 'No matching results found';
+                container.appendChild(noResults);
+            }
         }
-    });
-
-    // Show/hide "no results"
-    const container = document.getElementById('accordionContainer');
-    const existingNoResults = document.getElementById('noResults');
-    if (existingNoResults) existingNoResults.remove();
-
-    if (!hasResults) {
-        const noResults = document.createElement('div');
-        noResults.id = 'noResults';
-        noResults.className = 'no-results';
-        noResults.textContent = 'No matching results found';
-        container.appendChild(noResults);
-    }
-}
-
     </script>
 </body>
 </html>
