@@ -301,6 +301,9 @@
   <option value="">All Schools</option>
   <option value="Silchar">Silchar</option>
   <option value="Masimpur">Masimpur</option>
+</select> 
+<select id="classFilter" onchange="filterAccordions()" style="padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 2px solid #d1d5db; font-size: clamp(14px, 4vw, 16px);">
+  <option value="">All Classes</option>
 </select>
 
     </h1>
@@ -401,6 +404,25 @@
                    rows.splice(1, rows.length - 1, ...rows.slice(1).sort((a, b) => (a[4] || '').localeCompare(b[4] || '')));
 
 
+                const classFilter = document.getElementById('classFilter');
+const uniqueClasses = new Set();
+
+for (let i = 1; i < rows.length; i++) {
+    const classVal = (rows[i][4] || '').trim();
+    if (classVal) {
+        uniqueClasses.add(classVal);
+    }
+}
+
+// Populate class filter dropdown
+[...uniqueClasses].sort().forEach(cls => {
+    const option = document.createElement('option');
+    option.value = cls;
+    option.textContent = cls;
+    classFilter.appendChild(option);
+});
+
+
                     if (rows.length === 0) {
                         container.innerHTML = '<div class="error">No data found in CSV</div>';
                         return;
@@ -416,6 +438,8 @@
                         accordion.className = 'accordion';
                         accordion.textContent = `${columns[3] || ''} ${columns[5] || ''} Class: ${columns[4] || ''}` || `Item ${i}`;
                         accordion.dataset.school = (columns[1] || '').toLowerCase();  // Store column 2
+                        accordion.dataset.class = (columns[4] || '').toLowerCase();
+
 
                         accordion.dataset.searchContent = columns.join(' ').toLowerCase();
                         
@@ -490,11 +514,18 @@
                 .catch(error => {
                     container.innerHTML = `<div class="error">Failed to load data: ${error.message}</div>`;
                     console.error('Error loading CSV:', error);
-                });
+                });       
+
         });
+        
+        
+        
+     
+
         
     function filterAccordions() {
     const selectedSchool = document.getElementById('schoolFilter').value.toLowerCase();
+    const selectedClass = document.getElementById('classFilter').value.toLowerCase();
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
     let hasResults = false;
 
@@ -502,12 +533,14 @@
         const accordion = item.button;
         const panel = item.panel;
         const schoolValue = accordion.dataset.school;
+        const classValue = accordion.dataset.class;
         const searchContent = accordion.dataset.searchContent;
 
         const matchesSchool = !selectedSchool || schoolValue === selectedSchool;
+        const matchesClass = !selectedClass || classValue === selectedClass;
         const matchesSearch = !searchInput || searchContent.includes(searchInput);
 
-        if (matchesSchool && matchesSearch) {
+        if (matchesSchool && matchesClass && matchesSearch) {
             accordion.style.display = '';
             panel.style.display = '';
             hasResults = true;
@@ -520,7 +553,6 @@
         }
     });
 
-    // Show/hide "no results"
     const container = document.getElementById('accordionContainer');
     const existingNoResults = document.getElementById('noResults');
     if (existingNoResults) existingNoResults.remove();
