@@ -398,6 +398,9 @@
                     container.innerHTML = '';
                     
                     const rows = parseCSV(csvData);
+                   rows.splice(1, rows.length - 1, ...rows.slice(1).sort((a, b) => (a[4] || '').localeCompare(b[4] || '')));
+
+
                     if (rows.length === 0) {
                         container.innerHTML = '<div class="error">No data found in CSV</div>';
                         return;
