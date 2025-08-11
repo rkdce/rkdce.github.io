@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>U²-Net Offline Background Remover (HTML + ONNX Runtime)</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;display:flex;flex-direction:column;align-items:center;padding:18px}
+    .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+    canvas{border:1px solid #ddd;max-width:100%;height:auto}
+    label{font-size:14px}
+    input[type=file]{display:block}
+    .big{font-size:16px;padding:8px 12px}
+  </style>
+</head>
+<body>
+  <h2>U²‑Net Offline Image Background Remover</h2>
+  <div class="controls">
+    <div>
+      <label>Choose image (jpg/png):</label><br>
+      <input id="inputImage" type="file" accept="image/*">
+    </div>
+
+    <div>
+      <label>Background color:</label>
+      <input id="bgColor" type="color" value="#ffffff">
+    </div>
+
+    <div>
+      <label>Name:</label>
+      <input id="nameText" type="text" placeholder="John Doe" value="John Doe">
+    </div>
+
+    <div>
+      <label>Date:</label>
+      <input id="dateText" type="date">
+    </div>
+
+    <div>
+      <label>Font size (px):</label>
+      <input id="fontSize" type="number" value="36" min="8" max="200">
+    </div>
+
+    <div>
+      <button id="runBtn" class="big">Remove Background</button>
+      <button id="downloadBtn" class="big">Download Result</button>
+    </div>
+  </div>
+
+  <canvas id="outCanvas" width="800" height="600"></canvas>
+  <p style="max-width:700px;text-align:center;color:#444">Notes: This page uses <code>onnxruntime-web</code> to run a local U²‑Net ONNX model. You must download a U²‑Net ONNX model (e.g. <code>u2net.onnx</code>) and place it in the same folder as this HTML file. Run a local HTTP server to open this page (e.g. <code>python -m http.server</code>), because browsers block WebAssembly/wasm fetches from file://</p>
+
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+<script>
+// IMPORTANT: Put u2net.onnx in same folder as this HTML file.
+// Model input size for many public U2Net ONNX variants is 320x320.
+const MODEL_PATH = 'u2net.onnx'; // <-- download and place locally
+const MODEL_SIZE = 320;
+
+const inputImage = document.getElementById('inputImage');
+const runBtn = document.getElementById('runBtn');
+const outCanvas = document.getElementById('outCanvas');
+const ctx = outCanvas.getContext('2d');
+const bgColorPicker = document.getElementById('bgColor');
+const nameText = document.getElementById('nameText');
+const dateText = document.getElementById('dateText');
+const fontSizeInput = document.getElementById('fontSize');
+const downloadBtn = document.getElementById('downloadBtn');
+
+let imageBitmap = null;
+let session = null;
+
+async function initSession(){
+  if(session) return session;
+  // create session with WebGL & WASM fallback
+  session = await ort.InferenceSession.create(MODEL_PATH, {executionProviders: ['wasm','webgl']});
+  return session;
+}
+
+function imageToCanvas(img){
+  // draw image to an offscreen canvas preserving aspect
+  const oc = document.createElement('canvas');
+  oc.width = img.width;
+  oc.height = img.height;
+  const octx = oc.getContext('2d');
+  octx.drawImage(img,0,0);
+  return oc;
+}
+
+function resizeImageData(srcCanvas, size){
+  const c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  const cctx = c.getContext('2d');
+  // fill transparent background
+  cctx.clearRect(0,0,size,size);
+  // compute fitting rectangle to preserve aspect ratio
+  const ar = srcCanvas.width / srcCanvas.height;
+  let dw, dh, dx, dy;
+  if(ar > 1){ dw = size; dh = Math.round(size / ar); dx = 0; dy = Math.round((size - dh)/2); }
+  else { dh = size; dw = Math.round(size * ar); dy = 0; dx = Math.round((size - dw)/2); }
+  cctx.drawImage(srcCanvas, 0, 0, srcCanvas.width, srcCanvas.height, dx, dy, dw, dh);
+  return {canvas: c, dx, dy, dw, dh};
+}
+
+function preprocessImage(canvas){
+  // returns Float32Array in shape [1,3,H,W]
+  const H = canvas.height, W = canvas.width;
+  const ctx2 = canvas.getContext('2d');
+  const imgd = ctx2.getImageData(0,0,W,H).data;
+  const floatData = new Float32Array(1*3*H*W);
+  // U2Net commonly expects RGB normalized to [0,1]
+  // order: [1,3,H,W]
+  let ptr = 0;
+  for(let h=0; h<H; h++){
+    for(let w=0; w<W; w++){
+      const i = (h*W + w)*4;
+      const r = imgd[i]/255.0;
+      const g = imgd[i+1]/255.0;
+      const b = imgd[i+2]/255.0;
+      // store channel-first
+      floatData[0*3*H*W + 0*H*W + h*W + w] = r;
+      floatData[0*3*H*W + 1*H*W + h*W + w] = g;
+      floatData[0*3*H*W + 2*H*W + h*W + w] = b;
+    }
+  }
+  return floatData;
+}
+
+function sigmoid(x){ return 1/(1+Math.exp(-x)); }
+
+async function runModel(floatInput){
+  // Create tensor
+  const tensor = new ort.Tensor('float32', floatInput, [1,3,MODEL_SIZE,MODEL_SIZE]);
+  const feeds = {};
+  // U2Net ONNX input name may vary; try common names
+  // We'll search the session input names at runtime
+  const inputName = session.inputNames ? session.inputNames[0] : session.inputNames[0];
+  feeds[inputName] = tensor;
+  const results = await session.run(feeds);
+  // Try to find most likely output
+  const outputName = session.outputNames[0];
+  const out = results[outputName]; // typically shape [1,1,320,320]
+  return out;
+}
+
+function matteToImageData(outTensor, modelSize, targetW, targetH, layout){
+  // outTensor.data is Float32Array length = modelSize*modelSize
+  const data = outTensor.data;
+  // create ImageData of target size and fill with alpha
+  const canvas = document.createElement('canvas');
+  canvas.width = targetW; canvas.height = targetH;
+  const ctx2 = canvas.getContext('2d');
+  const id = ctx2.createImageData(targetW, targetH);
+  // interpolate by simple nearest-neighbor or bilinear - we'll do simple bilinear sampling
+  for(let y=0;y<targetH;y++){
+    for(let x=0;x<targetW;x++){
+      const u = x/(targetW-1);
+      const v = y/(targetH-1);
+      const sx = Math.round(u*(modelSize-1));
+      const sy = Math.round(v*(modelSize-1));
+      const si = sy*modelSize + sx;
+      const alpha = Math.min(Math.max(data[si], 0), 1);
+      const idx = (y*targetW + x)*4;
+      id.data[idx] = 255; // white fill for person color will be applied later
+      id.data[idx+1] = 255;
+      id.data[idx+2] = 255;
+      id.data[idx+3] = Math.round(alpha*255);
+    }
+  }
+  ctx2.putImageData(id, 0, 0);
+  return canvas;
+}
+
+async function processImage(){
+  if(!imageBitmap){ alert('Please choose an image first'); return; }
+  runBtn.disabled = true; runBtn.textContent = 'Processing...';
+  try{
+    await initSession();
+
+    // draw original to offscreen canvas
+    const srcCanvas = imageToCanvas(imageBitmap);
+    // resize to model size and get positioning info
+    const resized = resizeImageData(srcCanvas, MODEL_SIZE);
+    const inputFloat = preprocessImage(resized.canvas);
+    // run model
+    const outTensor = await runModel(inputFloat);
+    // outTensor likely shape [1,1,320,320] or [1,320,320]
+    // if output has extra dims, flatten to 1D float array of length MODEL_SIZE*MODEL_SIZE
+    let out;
+    if(outTensor.data.length === MODEL_SIZE*MODEL_SIZE) {
+      out = {data: outTensor.data};
+    } else if(outTensor.data.length === MODEL_SIZE*MODEL_SIZE*1) {
+      out = {data: outTensor.data};
+    } else {
+      // try to find a tensor inside results that matches size
+      out = outTensor;
+    }
+    // create alpha matte scaled to original image size
+    const matteCanvas = matteToImageData(out, MODEL_SIZE, srcCanvas.width, srcCanvas.height);
+
+    // Compose: draw background color, then draw original image using matte as alpha mask
+    outCanvas.width = srcCanvas.width; outCanvas.height = srcCanvas.height;
+    // background
+    ctx.fillStyle = bgColorPicker.value;
+    ctx.fillRect(0,0,outCanvas.width,outCanvas.height);
+
+    // draw original image
+    ctx.drawImage(srcCanvas,0,0);
+    // apply matte as globalComposite to keep only foreground
+    // create temporary canvas where we combine image and matte
+    const tmp = document.createElement('canvas'); tmp.width = srcCanvas.width; tmp.height = srcCanvas.height;
+    const tctx = tmp.getContext('2d');
+    // draw image
+    tctx.drawImage(srcCanvas,0,0);
+    // set globalAlpha mask using matte: use 'destination-in' compositing
+    tctx.globalCompositeOperation = 'destination-in';
+    tctx.drawImage(matteCanvas,0,0);
+
+    // now draw resulting foreground onto outCanvas on top of background
+    ctx.drawImage(tmp,0,0);
+
+    // add name and date
+    const fsize = parseInt(fontSizeInput.value) || 36;
+    ctx.font = `${fsize}px sans-serif`;
+    ctx.fillStyle = '#000';
+    ctx.textAlign = 'center';
+    const textY = outCanvas.height - fsize - 10;
+    const dateValue = dateText.value ? new Date(dateText.value).toLocaleDateString() : '';
+    ctx.fillText(nameText.value || '', outCanvas.width/2, textY);
+    ctx.fillText(dateValue, outCanvas.width/2, textY + fsize + 6);
+
+  }catch(e){
+    console.error(e); alert('Error: ' + (e.message || e));
+  } finally{
+    runBtn.disabled = false; runBtn.textContent = 'Remove Background';
+  }
+}
+
+inputImage.addEventListener('change', async (ev)=>{
+  const file = ev.target.files[0];
+  if(!file) return;
+  const img = new Image();
+  img.onload = ()=>{ imageBitmap = img; outCanvas.width = img.width; outCanvas.height = img.height; ctx.drawImage(img,0,0); };
+  img.src = URL.createObjectURL(file);
+});
+
+runBtn.addEventListener('click', processImage);
+
+downloadBtn.addEventListener('click', ()=>{
+  const link = document.createElement('a');
+  link.download = 'result.png';
+  link.href = outCanvas.toDataURL('image/png');
+  link.click();
+});
+
+</script>
+</body>
+</html>
