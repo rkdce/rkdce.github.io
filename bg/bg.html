@@ -1,114 +1,446 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>U²-Net Background Remover</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Background Remover — U²-Net (u2netp)</title>
+
+<!-- ONNX runtime -->
 <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; }
-  canvas { border: 1px solid #ccc; margin-top: 10px; max-width: 100%; }
+  :root{
+    --bg:#f6f8fb; --card:#fff; --accent:#2563eb; --muted:#6b7280;
+    --radius:12px; --shadow:0 6px 18px rgba(16,24,40,0.08);
+  }
+  *{box-sizing:border-box}
+  body{font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Arial; background:var(--bg); margin:0; padding:24px; color:#0f172a}
+  .wrap{max-width:980px;margin:0 auto}
+  header{display:flex;align-items:center;gap:16px; margin-bottom:18px}
+  h1{font-size:20px;margin:0}
+  p.lead{margin:0;color:var(--muted);font-size:13px}
+  .grid{display:grid;grid-template-columns:360px 1fr;gap:18px}
+  .card{background:var(--card);padding:16px;border-radius:var(--radius);box-shadow:var(--shadow)}
+  .controls label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+  .controls input[type="file"]{width:100%}
+  .row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+  input[type=text], input[type=number], input[type=url], input[type=color], select{width:100%;padding:8px;border:1px solid #e6edf3;border-radius:8px;font-size:14px}
+  button{background:var(--accent);color:#fff;border:0;padding:10px 12px;border-radius:10px;cursor:pointer}
+  button.secondary{background:#e6eefc;color:var(--accent)}
+  canvas{display:block;border-radius:8px;max-width:100%;width:100%}
+  .small{font-size:12px;color:var(--muted)}
+  .status{font-size:13px;color:var(--muted);margin-top:6px}
+  .tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .flex{display:flex;gap:8px}
+  footer{margin-top:14px;font-size:12px;color:var(--muted)}
+  .loader{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.25);border-top-color:rgba(255,255,255,0.9);animation:spin .9s linear infinite;display:inline-block;margin-right:8px;vertical-align:middle}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media (max-width:900px){ .grid{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Background Remover — U²-Net (u2netp)</h1>
+        <p class="lead">Remove photo background in-browser, replace with color, add name/date and download. No server inference.</p>
+      </div>
+    </header>
 
-<h1>U²-Net Background Remover</h1>
+    <div class="grid">
+      <!-- controls -->
+      <div class="card controls">
+        <label>Model URL (paste your ONNX direct link or use default)</label>
+        <input id="modelUrl" type="url" value="https://huggingface.co/jilijeanlouis/test-u2net/resolve/main/u2netp.onnx" />
 
-<input type="file" id="imageUpload" accept="image/*"><br><br>
-<label>Background color: <input type="color" id="bgColor" value="#ffffff"></label><br><br>
-<label>Name: <input type="text" id="nameText"></label><br><br>
-<label>Date: <input type="text" id="dateText" placeholder="YYYY-MM-DD"></label><br><br>
-<label>Font size: <input type="number" id="fontSize" value="20" min="10" max="100"> px</label><br><br>
+        <div style="height:8px"></div>
 
-<button id="processBtn">Remove Background</button><br><br>
-<canvas id="resultCanvas"></canvas><br><br>
-<a id="downloadLink" href="#" download="output.png">Download Result</a>
+        <label>Upload image (JPEG / PNG)</label>
+        <input id="imageFile" type="file" accept="image/*" />
+
+        <div class="row">
+          <div style="width:50%;">
+            <label>Background color</label>
+            <input id="bgColor" type="color" value="#ffffff" />
+          </div>
+          <div style="width:50%;">
+            <label>Canvas width (px)</label>
+            <input id="canvasWidth" type="number" value="1200" min="200" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div style="width:60%;">
+            <label>Name text</label>
+            <input id="nameText" type="text" placeholder="Your name" />
+          </div>
+          <div style="width:40%;">
+            <label>Font size (px)</label>
+            <input id="fontSize" type="number" value="48" min="8" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div style="width:60%;">
+            <label>Date text</label>
+            <input id="dateText" type="text" placeholder="2025-08-11 or leave blank" />
+          </div>
+          <div style="width:40%;">
+            <label>Text color</label>
+            <input id="textColor" type="color" value="#000000" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:8px;">
+          <button id="loadModelBtn">Load Model & Test</button>
+          <button id="processBtn" class="secondary">Remove Background</button>
+        </div>
+
+        <div class="status" id="status">Model not loaded.</div>
+
+        <div style="height:10px"></div>
+
+        <div class="small">Tips:</div>
+        <ul class="small" style="margin:8px 0 0 18px;padding:0;color:var(--muted)">
+          <li>Default uses <strong>u2netp</strong> (small, fast). Replace model URL if you host one.</li>
+          <li>If using Google Drive, convert share link to direct download:
+            <code class="small">https://drive.google.com/uc?export=download&id=FILE_ID</code></li>
+          <li>Large ONNX files may trigger Drive's scan page and won’t load.</li>
+        </ul>
+      </div>
+
+      <!-- preview & canvas -->
+      <div class="card">
+        <div style="display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div>
+            <strong>Preview</strong>
+            <div class="small">Result will appear below — you can reposition text by clicking canvas later.</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button id="downloadBtn">Download PNG</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+          </div>
+        </div>
+
+        <canvas id="resultCanvas" width="800" height="600"></canvas>
+        <div class="status" id="moreStatus"></div>
+      </div>
+    </div>
+
+    <footer>Built with onnxruntime-web • Model: U²-Net (u2netp suggested)</footer>
+  </div>
 
 <script>
-const MODEL_URL = "https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx";
+(async ()=>{
 
-async function loadImage(file) {
-  return new Promise((resolve, reject) => {
+// Elements
+const modelUrlInput = document.getElementById('modelUrl');
+const loadModelBtn = document.getElementById('loadModelBtn');
+const processBtn = document.getElementById('processBtn');
+const imageFileInput = document.getElementById('imageFile');
+const bgColorInput = document.getElementById('bgColor');
+const nameInput = document.getElementById('nameText');
+const dateInput = document.getElementById('dateText');
+const fontSizeInput = document.getElementById('fontSize');
+const textColorInput = document.getElementById('textColor');
+const canvasWidthInput = document.getElementById('canvasWidth');
+const statusDom = document.getElementById('status');
+const moreStatus = document.getElementById('moreStatus');
+const resultCanvas = document.getElementById('resultCanvas');
+const ctx = resultCanvas.getContext('2d');
+const downloadBtn = document.getElementById('downloadBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+let session = null;
+let loadedModelUrl = null;
+let originalImage = null;
+const MODEL_SIZE = 320; // u2netp expected
+
+function setStatus(msg, busy=false){
+  statusDom.innerHTML = busy ? `<span class="loader"></span> ${msg}` : msg;
+}
+
+function setMore(msg){
+  moreStatus.textContent = msg;
+}
+
+// utility: load user image into Image object
+function loadImageFile(file){
+  return new Promise((resolve,reject)=>{
     const img = new Image();
-    img.onload = () => resolve(img);
+    img.onload = ()=>resolve(img);
     img.onerror = reject;
     img.src = URL.createObjectURL(file);
   });
 }
 
-async function imageToTensor(img) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = 320;
-  canvas.height = 320;
-  ctx.drawImage(img, 0, 0, 320, 320);
-  const imgData = ctx.getImageData(0, 0, 320, 320);
-  const data = Float32Array.from(imgData.data).filter((_, i) => i % 4 !== 3);
-  const transposed = new Float32Array(3 * 320 * 320);
-  for (let i = 0; i < 320 * 320; i++) {
-    transposed[i] = data[i * 3] / 255;
-    transposed[i + 320 * 320] = data[i * 3 + 1] / 255;
-    transposed[i + 2 * 320 * 320] = data[i * 3 + 2] / 255;
+// draw a centered preview
+function drawPreview(img){
+  const targetW = parseInt(canvasWidthInput.value) || img.width;
+  const scale = targetW / img.width;
+  const targetH = Math.round(img.height * scale);
+  resultCanvas.width = targetW;
+  resultCanvas.height = targetH;
+  // background
+  ctx.fillStyle = bgColorInput.value;
+  ctx.fillRect(0,0,resultCanvas.width,resultCanvas.height);
+  ctx.drawImage(img, 0, 0, resultCanvas.width, resultCanvas.height);
+}
+
+// preprocess to model input: returns Float32Array [1,3,MODEL_SIZE,MODEL_SIZE]
+function preprocessToTensor(image){
+  // draw image into square MODEL_SIZE canvas with preserved aspect (letterbox)
+  const c = document.createElement('canvas');
+  c.width = MODEL_SIZE; c.height = MODEL_SIZE;
+  const cctx = c.getContext('2d');
+  // fill with black
+  cctx.fillStyle = 'black';
+  cctx.fillRect(0,0,MODEL_SIZE,MODEL_SIZE);
+  // compute fit rect
+  const ar = image.width / image.height;
+  let dw, dh, dx, dy;
+  if(ar >= 1){ dw = MODEL_SIZE; dh = Math.round(MODEL_SIZE / ar); dx = 0; dy = Math.round((MODEL_SIZE - dh)/2); }
+  else { dh = MODEL_SIZE; dw = Math.round(MODEL_SIZE * ar); dy = 0; dx = Math.round((MODEL_SIZE - dw)/2); }
+  cctx.drawImage(image, 0, 0, image.width, image.height, dx, dy, dw, dh);
+
+  const id = cctx.getImageData(0,0,MODEL_SIZE,MODEL_SIZE).data;
+  const floats = new Float32Array(1 * 3 * MODEL_SIZE * MODEL_SIZE);
+  // channel-first
+  for(let y=0;y<MODEL_SIZE;y++){
+    for(let x=0;x<MODEL_SIZE;x++){
+      const i = (y*MODEL_SIZE + x)*4;
+      const r = id[i] / 255.0;
+      const g = id[i+1] / 255.0;
+      const b = id[i+2] / 255.0;
+      const base = y*MODEL_SIZE + x;
+      floats[0*3*MODEL_SIZE*MODEL_SIZE + 0*MODEL_SIZE*MODEL_SIZE + base] = r;
+      floats[0*3*MODEL_SIZE*MODEL_SIZE + 1*MODEL_SIZE*MODEL_SIZE + base] = g;
+      floats[0*3*MODEL_SIZE*MODEL_SIZE + 2*MODEL_SIZE*MODEL_SIZE + base] = b;
+    }
   }
-  return new ort.Tensor('float32', transposed, [1, 3, 320, 320]);
+  return floats;
 }
 
-async function runModel(img) {
-  const session = await ort.InferenceSession.create(MODEL_URL, { executionProviders: ['wasm'] });
-  const tensor = await imageToTensor(img);
-  const results = await session.run({ 'input': tensor });
-  const mask = results['output'];
-  return mask.data;
+// load model (tries fetch then session.create with arrayBuffer to handle Google Drive)
+async function loadModel(modelUrl){
+  setStatus('Loading model…', true);
+  setMore('');
+  try{
+    // Try fetch first to catch errors early, and to allow arrayBuffer pass
+    const resp = await fetch(modelUrl);
+    if(!resp.ok) throw new Error('Network error: ' + resp.status);
+    const contentType = resp.headers.get('Content-Type') || '';
+    // if response looks like HTML, warn
+    if(contentType.includes('text/html')){
+      const txt = await resp.text();
+      throw new Error('The URL returned HTML (Drive preview or error). Model URL must point directly to the .onnx binary.');
+    }
+    const arr = await resp.arrayBuffer();
+    // create session from arrayBuffer (onnxruntime supports passing arrayBuffer)
+    session = await ort.InferenceSession.create(arr, { executionProviders: ['wasm','webgl'] });
+    loadedModelUrl = modelUrl;
+    setStatus('Model loaded ✓');
+  }catch(err){
+    session = null;
+    setStatus('Failed to load model: ' + (err.message||err), false);
+    throw err;
+  } finally{ if(!session) setMore('Try hosting model on Hugging Face or Netlify for CORS-friendly access.'); }
 }
 
-function applyMask(originalImg, mask, bgColor, name, date, fontSize) {
-  const canvas = document.getElementById('resultCanvas');
-  canvas.width = originalImg.width;
-  canvas.height = originalImg.height;
-  const ctx = canvas.getContext('2d');
-
-  ctx.fillStyle = bgColor;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  const imgCanvas = document.createElement('canvas');
-  const imgCtx = imgCanvas.getContext('2d');
-  imgCanvas.width = canvas.width;
-  imgCanvas.height = canvas.height;
-  imgCtx.drawImage(originalImg, 0, 0);
-  const imgData = imgCtx.getImageData(0, 0, canvas.width, canvas.height);
-
-  for (let i = 0; i < mask.length; i++) {
-    const y = Math.floor(i / 320);
-    const x = i % 320;
-    const alpha = mask[i] * 255;
-    const scaleX = Math.floor((x / 320) * canvas.width);
-    const scaleY = Math.floor((y / 320) * canvas.height);
-    const idx = (scaleY * canvas.width + scaleX) * 4 + 3;
-    imgData.data[idx] = alpha;
+// run model: returns Float32Array of length MODEL_SIZE*MODEL_SIZE
+async function runU2Net(img){
+  if(!session) throw new Error('Model not loaded');
+  setStatus('Running model…', true);
+  // preprocess
+  const floats = preprocessToTensor(img);
+  const tensor = new ort.Tensor('float32', floats, [1,3,MODEL_SIZE,MODEL_SIZE]);
+  // determine input name(s)
+  const inputName = session.inputNames && session.inputNames.length ? session.inputNames[0] : Object.keys(session.inputMetadata)[0];
+  const feeds = {}; feeds[inputName] = tensor;
+  const results = await session.run(feeds);
+  // pick best output tensor
+  const outName = session.outputNames && session.outputNames.length ? session.outputNames[0] : Object.keys(results)[0];
+  const out = results[outName];
+  // out.data could be shape [1,1,320,320] or [1,320,320]
+  // normalize to Float32Array length MODEL_SIZE*MODEL_SIZE
+  let data = out.data;
+  if(out.dims && out.dims.length === 4){
+    // if [1,1,H,W], take index stride
+    if(out.dims[0]===1 && out.dims[1]===1){
+      // flatten
+      const arr = new Float32Array(MODEL_SIZE*MODEL_SIZE);
+      for(let i=0;i<arr.length;i++) arr[i] = data[i];
+      data = arr;
+    } else {
+      // fallback
+      data = Float32Array.from(data);
+    }
+  } else {
+    data = Float32Array.from(data);
   }
-
-  imgCtx.putImageData(imgData, 0, 0);
-  ctx.drawImage(imgCanvas, 0, 0);
-
-  ctx.font = `${fontSize}px Arial`;
-  ctx.fillStyle = "black";
-  ctx.fillText(name, 10, canvas.height - 40);
-  ctx.fillText(date, 10, canvas.height - 10);
+  setStatus('Model inference complete ✓');
+  return data;
 }
 
-document.getElementById('processBtn').addEventListener('click', async () => {
-  const file = document.getElementById('imageUpload').files[0];
-  if (!file) return alert("Please upload an image first!");
-  const name = document.getElementById('nameText').value;
-  const date = document.getElementById('dateText').value;
-  const fontSize = document.getElementById('fontSize').value;
-  const bgColor = document.getElementById('bgColor').value;
+// create a matte canvas from mask data and resize to original image size
+function maskToMatteCanvas(maskData, targetW, targetH){
+  const m = document.createElement('canvas');
+  m.width = MODEL_SIZE; m.height = MODEL_SIZE;
+  const mctx = m.getContext('2d');
+  const imageData = mctx.createImageData(MODEL_SIZE, MODEL_SIZE);
+  for(let i=0;i<MODEL_SIZE*MODEL_SIZE;i++){
+    const v = Math.max(0, Math.min(1, maskData[i])); // clamp
+    const idx = i*4;
+    const alpha = Math.round(v * 255);
+    // white foreground color (alpha controls)
+    imageData.data[idx] = 255;
+    imageData.data[idx+1] = 255;
+    imageData.data[idx+2] = 255;
+    imageData.data[idx+3] = alpha;
+  }
+  mctx.putImageData(imageData, 0, 0);
+  // resize matte to target
+  const out = document.createElement('canvas');
+  out.width = targetW; out.height = targetH;
+  const outCtx = out.getContext('2d');
+  outCtx.imageSmoothingEnabled = true;
+  outCtx.drawImage(m, 0, 0, out.width, out.height);
+  return out;
+}
 
-  const img = await loadImage(file);
-  const mask = await runModel(img);
-  applyMask(img, mask, bgColor, name, date, fontSize);
+// compose final canvas: background color, masked foreground, add text
+async function composeResult(img, maskData){
+  // set canvas size
+  const desiredW = parseInt(canvasWidthInput.value) || img.width;
+  const scale = desiredW / img.width;
+  const desiredH = Math.round(img.height * scale);
+  resultCanvas.width = desiredW; resultCanvas.height = desiredH;
 
-  document.getElementById('downloadLink').href = document.getElementById('resultCanvas').toDataURL();
+  // background
+  ctx.fillStyle = bgColorInput.value;
+  ctx.fillRect(0,0,desiredW,desiredH);
+
+  // draw original image scaled
+  const tmpImgCanvas = document.createElement('canvas');
+  tmpImgCanvas.width = desiredW; tmpImgCanvas.height = desiredH;
+  tmpImgCanvas.getContext('2d').drawImage(img,0,0,desiredW,desiredH);
+
+  // get matte for size
+  const matte = maskToMatteCanvas(maskData, desiredW, desiredH);
+
+  // apply matte: draw image into temp and mask with destination-in
+  const tmp = document.createElement('canvas');
+  tmp.width = desiredW; tmp.height = desiredH;
+  const tctx = tmp.getContext('2d');
+  tctx.drawImage(tmpImgCanvas,0,0);
+  tctx.globalCompositeOperation = 'destination-in';
+  tctx.drawImage(matte,0,0);
+  tctx.globalCompositeOperation = 'source-over';
+
+  // draw result on main canvas
+  ctx.drawImage(tmp,0,0);
+
+  // add text
+  const fontSize = parseInt(fontSizeInput.value) || 36;
+  ctx.font = `${fontSize}px Inter, Arial, sans-serif`;
+  ctx.fillStyle = textColorInput.value;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  const name = nameInput.value || '';
+  const date = dateInput.value || '';
+  // draw shadow for better contrast
+  ctx.save();
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  ctx.fillText(name, desiredW/2 + 2, desiredH - 10 + 2);
+  ctx.fillText(date, desiredW/2 + 2, desiredH + fontSize + 2);
+  ctx.restore();
+
+  ctx.fillStyle = textColorInput.value;
+  ctx.fillText(name, desiredW/2, desiredH - 10);
+  ctx.fillText(date, desiredW/2, desiredH + fontSize - 8);
+}
+
+// event: load model button
+loadModelBtn.addEventListener('click', async ()=>{
+  const url = modelUrlInput.value.trim();
+  if(!url) return alert('Paste a direct .onnx URL first.');
+  try{
+    await loadModel(url);
+    setMore('Model ready. Now upload an image and click "Remove Background".');
+  }catch(err){
+    setMore('Model load failed. See console for details.');
+    console.error(err);
+  }
 });
+
+// event: auto-load model on startup (attempt), but user can override
+(async()=>{
+  try{
+    setStatus('Auto-loading default model…', true);
+    await loadModel(modelUrlInput.value);
+    setMore('Default model loaded. You can replace the URL if needed.');
+  }catch(e){
+    setStatus('Default model not loaded. Click "Load Model & Test" to try again.');
+  }
+})();
+
+// when user picks image
+imageFileInput.addEventListener('change', async (ev)=>{
+  const f = ev.target.files[0];
+  if(!f) return;
+  try{
+    originalImage = await loadImageFile(f);
+    drawPreview(originalImage);
+    setMore('Image loaded. Click "Remove Background" to run segmentation.');
+  }catch(err){
+    alert('Failed to load image: ' + err.message);
+  }
+});
+
+// process button
+processBtn.addEventListener('click', async ()=>{
+  if(!originalImage) return alert('Please upload an image first.');
+  if(!session) {
+    const url = modelUrlInput.value.trim();
+    if(!url) return alert('No model loaded. Paste a model URL or click "Load Model & Test".');
+    try{
+      await loadModel(url);
+    }catch(err){
+      return; // error already shown
+    }
+  }
+  try{
+    setStatus('Running segmentation…', true);
+    const mask = await runU2Net(originalImage);
+    setStatus('Composing final image…', true);
+    await composeResult(originalImage, mask);
+    setStatus('Done — preview ready.');
+    setMore('You can click Download to save the PNG.');
+  }catch(err){
+    console.error(err);
+    setStatus('Error: ' + (err.message || err));
+    setMore('Check console for details.');
+  }
+});
+
+// download
+downloadBtn.addEventListener('click', ()=>{
+  const url = resultCanvas.toDataURL('image/png');
+  const a = document.createElement('a');
+  a.href = url; a.download = 'result.png'; document.body.appendChild(a); a.click(); a.remove();
+});
+
+// reset
+resetBtn.addEventListener('click', ()=>{
+  imageFileInput.value = '';
+  nameInput.value = '';
+  dateInput.value = '';
+  ctx.clearRect(0,0,resultCanvas.width,resultCanvas.height);
+  setStatus('Model ' + (session? 'loaded ✓' : 'not loaded.'));
+  setMore('');
+});
+
+})();
 </script>
 </body>
 </html>
