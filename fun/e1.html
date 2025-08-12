@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Emoji — Moving Eyes</title>
+<style>
+  :root{
+    --face-size: 220px;   /* change to scale emoji */
+  }
+  body{
+    height:100vh;
+    margin:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(135deg,#f0f7ff,#fff7e6);
+    font-family: sans-serif;
+  }
+
+  /* Emoji container */
+  .emoji {
+    width: var(--face-size);
+    height: var(--face-size);
+    background:#ffeb3b;
+    border-radius:50%;
+    position:relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* Eyes row */
+  .eyes {
+    width: 78%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    pointer-events:none; /* allow pointer events pass through to page */
+  }
+
+  .eye {
+    width: 45%;
+    aspect-ratio: 1 / 1;
+    background: #fff;
+    border-radius:50%;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: inset 0 -6px 12px rgba(0,0,0,0.06);
+    overflow: hidden; /* ensures pupil can't render outside visually */
+  }
+
+  /* Pupil is absolutely positioned and moved via transform */
+  .pupil {
+    width: 35%;
+    aspect-ratio: 1 / 1;
+    background: #111;
+    border-radius:50%;
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    transition: transform 0.06s linear;
+    will-change: transform;
+  }
+
+  /* Simple smiling mouth */
+  .mouth {
+    position:absolute;
+    bottom:15%;
+    left:50%;
+    transform: translateX(-50%);
+    width: 20%;
+    height: 22%;
+    border-bottom: 8px solid rgba(0,0,0,0.9);
+    border-radius: 0 0 200px 200px;
+    background: transparent;
+  }
+
+  /* small responsive scaling */
+  @media (max-width:420px){
+    :root{ --face-size: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="emoji" id="emoji">
+  <div class="eyes">
+    <div class="eye" id="eyeL">
+      <div class="pupil" id="pupilL"></div>
+    </div>
+    <div class="eye" id="eyeR">
+      <div class="pupil" id="pupilR"></div>
+    </div>
+  </div>
+
+  <div class="mouth"></div>
+</div>
+
+<script>
+/*
+  Pupil movement constrained so it cannot escape the white of the eye.
+  The script computes the allowed maximum translation based on eye size.
+*/
+
+function bindEye(eyeEl, pupilEl) {
+  const eyeRect = () => eyeEl.getBoundingClientRect();
+
+  // compute maximum radius pupil can move from center (in pixels)
+  function maxOffset() {
+    const rEye = Math.min(eyeEl.clientWidth, eyeEl.clientHeight) / 2;
+    const rPupil = Math.min(pupilEl.clientWidth, pupilEl.clientHeight) / 2;
+    // padding to avoid touching edge
+    return Math.max(0, rEye - rPupil - 4);
+  }
+
+  function moveTo(clientX, clientY) {
+    const rect = eyeRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    let dx = clientX - cx;
+    let dy = clientY - cy;
+    // compute distance and clamp
+    const dist = Math.hypot(dx, dy);
+    const max = maxOffset();
+    if (dist > max) {
+      const ratio = max / dist;
+      dx *= ratio;
+      dy *= ratio;
+    }
+    // set transform (center is -50%,-50%, so we add dx,dy)
+    pupilEl.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+  }
+
+  // return public methods
+  return { moveTo, eyeRect };
+}
+
+const eyeL = bindEye(document.getElementById('eyeL'), document.getElementById('pupilL'));
+const eyeR = bindEye(document.getElementById('eyeR'), document.getElementById('pupilR'));
+
+// handle pointer move (mouse, touch, pen)
+function handlePointer(e) {
+  // support touch events
+  const x = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+  const y = (e.touches && e.touches[0]) ? e.touches[0].clientY : e.clientY;
+  eyeL.moveTo(x, y);
+  eyeR.moveTo(x, y);
+}
+
+// backup: if no pointer movement, look at center (neutral)
+function resetEyes() {
+  document.getElementById('pupilL').style.transform = 'translate(-50%,-50%)';
+  document.getElementById('pupilR').style.transform = 'translate(-50%,-50%)';
+}
+
+// pointer listeners
+window.addEventListener('pointermove', handlePointer, {passive:true});
+window.addEventListener('touchmove', handlePointer, {passive:true});
+window.addEventListener('pointerleave', resetEyes);
+window.addEventListener('blur', resetEyes);
+
+// small initial nudge to avoid locked repaint issues
+setTimeout(() => {
+  resetEyes();
+}, 50);
+</script>
+
+</body>
+</html>
