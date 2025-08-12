@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Emoji — Touch/Click Eyes & Brain</title>
+<style>
+  :root{ --face-size: 220px; }
+  body{
+    height:100vh;
+    margin:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(135deg,#f0f7ff,#fff7e6);
+  }
+  .emoji {
+    width: var(--face-size);
+    height: var(--face-size);
+    background:#ffeb3b;
+    border-radius:50%;
+    position:relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    user-select: none;
+  }
+  .eyes {
+    width: 78%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    pointer-events:none;
+  }
+  .eye {
+    width: 45%;
+    aspect-ratio: 1 / 1;
+    background: #fff;
+    border-radius:50%;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: inset 0 -6px 12px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  .pupil {
+    width: 35%;
+    aspect-ratio: 1 / 1;
+    background: #111;
+    border-radius:50%;
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    transition: transform 0.06s linear;
+  }
+  .mouth {
+    position:absolute;
+    bottom:1%;
+    left:50%;
+    transform: translateX(-50%) scale(0.4);
+    width: 28%;
+    height: 20%;
+    background: #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    padding-top: 8%;
+    transition: transform 0.25s ease;
+    overflow: hidden;
+  }
+  .open { transform: translateX(-50%) scale(1); }
+  .teeth {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 80%;
+  }
+  .tooth {
+    width: 20%;
+    height: 70%;
+    background: white;
+    margin: 1px;
+    border-radius: 2px;
+  }
+  /* Brain */
+  .brain {
+    position: absolute;
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    width: 130px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #222;
+    transition: transform 0.4s ease;
+  }
+  .brain.show { transform: translateX(-50%) scale(1); }
+  .brain-lobes { position: absolute; width: 100%; height: 100%; }
+  .lobe {
+    position: absolute;
+    background: radial-gradient(circle at 30% 30%, #ffb6c1, #e88ca3);
+    border-radius: 50%;
+    box-shadow: inset -3px -3px 5px rgba(0,0,0,0.15);
+  }
+  .l1 { width: 50px; height: 50px; top: 0; left: 20px; }
+  .l2 { width: 50px; height: 50px; top: 0; right: 20px; }
+  .l3 { width: 60px; height: 55px; bottom: 0; left: 10px; }
+  .l4 { width: 60px; height: 55px; bottom: 0; right: 10px; }
+  .brain-name {
+    position: relative;
+    z-index: 2;
+    font-size: 14px;
+    color: #222;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+  }
+  @media (max-width:420px){
+    :root{ --face-size: 160px; }
+    .brain { width: 100px; height: 60px; font-size: 12px; }
+    .l1, .l2 { width: 38px; height: 38px; }
+    .l3, .l4 { width: 45px; height: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="emoji" id="emoji">
+  <div class="eyes">
+    <div class="eye" id="eyeL"><div class="pupil" id="pupilL"></div></div>
+    <div class="eye" id="eyeR"><div class="pupil" id="pupilR"></div></div>
+  </div>
+  <div class="mouth" id="mouth"></div>
+  <div class="brain" id="brain">
+    <div class="brain-lobes">
+      <div class="lobe l1"></div>
+      <div class="lobe l2"></div>
+      <div class="lobe l3"></div>
+      <div class="lobe l4"></div>
+    </div>
+    <div class="brain-name"><b>POOJA</b></div>
+  </div>
+</div>
+
+<script>
+function bindEye(eyeEl, pupilEl) {
+  function maxOffset() {
+    const rEye = Math.min(eyeEl.clientWidth, eyeEl.clientHeight) / 2;
+    const rPupil = Math.min(pupilEl.clientWidth, pupilEl.clientHeight) / 2;
+    return Math.max(0, rEye - rPupil - 4);
+  }
+  function moveTo(clientX, clientY) {
+    const rect = eyeEl.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    let dx = clientX - cx;
+    let dy = clientY - cy;
+    const dist = Math.hypot(dx, dy);
+    const max = maxOffset();
+    if (dist > max) {
+      const ratio = max / dist;
+      dx *= ratio;
+      dy *= ratio;
+    }
+    pupilEl.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+  }
+  return { moveTo };
+}
+
+const eyeL = bindEye(document.getElementById('eyeL'), document.getElementById('pupilL'));
+const eyeR = bindEye(document.getElementById('eyeR'), document.getElementById('pupilR'));
+
+function resetEyes() {
+  document.getElementById('pupilL').style.transform = 'translate(-50%,-50%)';
+  document.getElementById('pupilR').style.transform = 'translate(-50%,-50%)';
+}
+
+const mouth = document.getElementById('mouth');
+const brain = document.getElementById('brain');
+
+function openMouth() {
+  mouth.classList.add('open');
+  mouth.innerHTML = `<div class="teeth">
+    <div class="tooth"></div><div class="tooth"></div>
+    <div class="tooth"></div><div class="tooth"></div>
+  </div>`;
+}
+function closeMouth() {
+  mouth.classList.remove('open');
+  mouth.innerHTML = "";
+}
+function showBrain() { brain.classList.add('show'); }
+function hideBrain() { brain.classList.remove('show'); }
+
+// Touch support
+window.addEventListener('touchstart', (e) => {
+  openMouth();
+  showBrain();
+  if (e.touches.length > 0) {
+    const { clientX, clientY } = e.touches[0];
+    eyeL.moveTo(clientX, clientY);
+    eyeR.moveTo(clientX, clientY);
+  }
+}, {passive:true});
+
+window.addEventListener('touchmove', (e) => {
+  if (e.touches.length > 0) {
+    const { clientX, clientY } = e.touches[0];
+    eyeL.moveTo(clientX, clientY);
+    eyeR.moveTo(clientX, clientY);
+  }
+}, {passive:true});
+
+window.addEventListener('touchend', () => {
+  closeMouth();
+  hideBrain();
+  resetEyes();
+}, {passive:true});
+
+// Mouse support
+window.addEventListener('mousedown', (e) => {
+  openMouth();
+  showBrain();
+  eyeL.moveTo(e.clientX, e.clientY);
+  eyeR.moveTo(e.clientX, e.clientY);
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (e.buttons > 0) { // only while mouse button is pressed
+    eyeL.moveTo(e.clientX, e.clientY);
+    eyeR.moveTo(e.clientX, e.clientY);
+  }
+});
+
+window.addEventListener('mouseup', () => {
+  closeMouth();
+  hideBrain();
+  resetEyes();
+});
+</script>
+
+</body>
+</html>
