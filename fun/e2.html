@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Emoji — Moving Eyes & Round Mouth</title>
+<style>
+  :root{
+    --face-size: 220px;
+  }
+  body{
+    height:100vh;
+    margin:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(135deg,#f0f7ff,#fff7e6);
+  }
+  .emoji {
+    width: var(--face-size);
+    height: var(--face-size);
+    background:#ffeb3b;
+    border-radius:50%;
+    position:relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    user-select: none;
+  }
+  .eyes {
+    width: 90%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    pointer-events:none;
+  }
+  .eye {
+    width: 45%;
+    aspect-ratio: 1 / 1;
+    background: #fff;
+    border-radius:50%;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: inset 0 -6px 12px rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  .pupil {
+    width: 35%;
+    aspect-ratio: 1 / 1;
+    background: #111;
+    border-radius:50%;
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    transition: transform 0.06s linear;
+  }
+
+  /* Always round mouth — small when closed, big when open */
+  .mouth {
+    position:absolute;
+    bottom:2%;
+    left:50%;
+    transform: translateX(-50%) scale(0.4);
+    width: 28%;
+    height: 28%;
+    background: #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    padding-top: 8%;
+    transition: transform 0.25s ease;
+    overflow: hidden;
+  }
+  .open {
+    transform: translateX(-50%) scale(1);
+  }
+  .teeth {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 80%;
+  }
+  .tooth {
+    width: 20%;
+    height: 70%;
+    background: white;
+    margin: 1px;
+    border-radius: 2px;
+  }
+  @media (max-width:420px){
+    :root{ --face-size: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="emoji" id="emoji">
+  <div class="eyes">
+    <div class="eye" id="eyeL">
+      <div class="pupil" id="pupilL"></div>
+    </div>
+    <div class="eye" id="eyeR">
+      <div class="pupil" id="pupilR"></div>
+    </div>
+  </div>
+  <div class="mouth" id="mouth"></div>
+</div>
+
+<script>
+function bindEye(eyeEl, pupilEl) {
+  function maxOffset() {
+    const rEye = Math.min(eyeEl.clientWidth, eyeEl.clientHeight) / 2;
+    const rPupil = Math.min(pupilEl.clientWidth, pupilEl.clientHeight) / 2;
+    return Math.max(0, rEye - rPupil - 4);
+  }
+  function moveTo(clientX, clientY) {
+    const rect = eyeEl.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    let dx = clientX - cx;
+    let dy = clientY - cy;
+    const dist = Math.hypot(dx, dy);
+    const max = maxOffset();
+    if (dist > max) {
+      const ratio = max / dist;
+      dx *= ratio;
+      dy *= ratio;
+    }
+    pupilEl.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+  }
+  return { moveTo };
+}
+
+const eyeL = bindEye(document.getElementById('eyeL'), document.getElementById('pupilL'));
+const eyeR = bindEye(document.getElementById('eyeR'), document.getElementById('pupilR'));
+
+function handlePointer(e) {
+  const x = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+  const y = (e.touches && e.touches[0]) ? e.touches[0].clientY : e.clientY;
+  eyeL.moveTo(x, y);
+  eyeR.moveTo(x, y);
+}
+function resetEyes() {
+  document.getElementById('pupilL').style.transform = 'translate(-50%,-50%)';
+  document.getElementById('pupilR').style.transform = 'translate(-50%,-50%)';
+}
+
+window.addEventListener('pointermove', handlePointer, {passive:true});
+window.addEventListener('touchmove', handlePointer, {passive:true});
+window.addEventListener('pointerleave', resetEyes);
+window.addEventListener('blur', resetEyes);
+setTimeout(resetEyes, 50);
+
+// Mouth interaction
+const mouth = document.getElementById('mouth');
+
+function openMouth() {
+  mouth.classList.add('open');
+  mouth.innerHTML = `<div class="teeth">
+    <div class="tooth"></div><div class="tooth"></div><div class="tooth"></div>
+    <div class="tooth"></div>
+  </div>`;
+}
+function closeMouth() {
+  mouth.classList.remove('open');
+  mouth.innerHTML = "";
+}
+
+window.addEventListener('mousedown', openMouth);
+window.addEventListener('mouseup', closeMouth);
+window.addEventListener('touchstart', openMouth, {passive:true});
+window.addEventListener('touchend', closeMouth, {passive:true});
+</script>
+
+</body>
+</html>
