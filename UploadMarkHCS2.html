@@ -640,7 +640,7 @@ background-color: lightseagreen;
     <td><label for="dobDisplay">D.O.B:</label></td>
     <td><input type="text" id="dobDisplay" name="dobDisplay" readonly></td>
     <td><label for="rollNumberDisplay">Roll Number:</label></td>
-    <td><input type="text" id="rollNumberDisplay" name="rollNumberDisplay" ><br></td>
+    <td><input type="text" id="rollNumberDisplay" name="rollNumberDisplay" style="background:yellow;"><br></td>
   </tr>
 </table>
     
@@ -1412,9 +1412,10 @@ function saveMarks() {
     var examType = document.getElementById('examType').value;
     var statusDisplay = document.getElementById('statusDisplay').value;
   
-    var rollNumberDisplay = document.getElementById('rollNumberDisplay').value;
+    
     var teacherNameDisplay = document.getElementById('teacherNameDisplay').value;
-  
+  var rollNumberDisplay = document.getElementById('rollNumberDisplay').value;
+
 
    // Subject 1
 var subject1Name = document.getElementById('subject1Name').value;
@@ -1608,9 +1609,10 @@ var subject7FinalGrade = document.getElementById('subject7FinalGrade').value;
         action: 'save1',
         examType: examType,
         admissionNumber: admissionNumber,
-        rollNumberDisplay:rollNumberDisplay,
+       
         teacherNameDisplay: teacherNameDisplay,
         statusDisplay: statusDisplay,
+      rollNumberDisplay: rollNumberDisplay,
 
 subject1Name: subject1Name,
 subject1FullMarks: subject1FullMarks,
