@@ -1411,7 +1411,10 @@ function saveMarks() {
     var admissionNumber = document.getElementById('admissionNumber').value;
     var examType = document.getElementById('examType').value;
     var statusDisplay = document.getElementById('statusDisplay').value;
+  
+    var rollNumberDisplay = document.getElementById('rollNumberDisplay').value;
     var teacherNameDisplay = document.getElementById('teacherNameDisplay').value;
+  
 
    // Subject 1
 var subject1Name = document.getElementById('subject1Name').value;
@@ -1605,6 +1608,7 @@ var subject7FinalGrade = document.getElementById('subject7FinalGrade').value;
         action: 'save1',
         examType: examType,
         admissionNumber: admissionNumber,
+        rollNumberDisplay:rollNumberDisplay,
         teacherNameDisplay: teacherNameDisplay,
         statusDisplay: statusDisplay,
 
