@@ -218,46 +218,49 @@
       color: #2d3748;
     }
 
-    .scroll-box {
-      height: 200px;
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-      background-color: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 10px;
-      margin-top: 20px;
-      margin: 20px;
-    }
+ 	.scroll-box {
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 10px;
+  margin: 20px auto;
+}
 
-    .scroll-content {
-      position: absolute;
-      width: 100%;
-      animation: scrollUp linear infinite;
-    }
+.scroll-content {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  animation: scrollUp linear infinite;
+}
 
-    .notification {
-      padding: 10px 15px;
-      border-bottom: 1px solid #e2e8f0;
-      color: #1a202c;
-      font-size: 16px;
-    }
+@keyframes scrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
 
-    .notification-title {
-      font-weight: bold;
-      color: #4f46e5;
-    }
+.notification {
+  padding: 10px 15px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1a202c;
+  font-size: 16px;
+}
 
-    @keyframes scrollUp {
-      0% {
-        top: 100%;
-      }
-      100% {
-        top: -100%;
-      }
-    }
+.notification-title {
+  font-weight: bold;
+  color: #4f46e5;
+}
+
   </style>
     
 </head>
