@@ -702,13 +702,13 @@
             <th>Total Grade</th>
             <td><input type="text" id="englishTotalGrade" readonly></td>
           </tr>
-		  <tr>
+		  <tr style="display: none;">
             <th>Project Value</th>
             <td><input type="number" id="englishProjectValue"></td>
             <th>Project Grade</th>
             <td><input type="text" id="englishProjectGrade"></td>
           </tr>
-          <tr>
+          <tr  style="display: none;">
             <th>Assignment Value</th>
             <td><input type="number" id="englishAssignmentValue"></td>
             <th>Assignment Grade</th>
@@ -768,13 +768,13 @@
             <th>Total Grade</th>
             <td><input type="text" id="hindiTotalGrade" readonly></td>
           </tr>
-		   <tr>
+		   <tr style="display: none;">
             <th>Project Value</th>
             <td><input type="number" id="hindiProjectValue"></td>
             <th>Project Grade</th>
             <td><input type="text" id="hindiProjectGrade"></td>
           </tr>
-          <tr>
+          <tr style="display: none;">
             <th>Assignment Value</th>
             <td><input type="number" id="hindiAssignmentValue"></td>
             <th>Assignment Grade</th>
@@ -834,13 +834,13 @@
             <th>Total Grade</th>
             <td><input type="text" id="bengaliTotalGrade" readonly></td>
           </tr>
-		   <tr>
+		   <tr style="display: none;">
             <th>Project Value</th>
             <td><input type="number" id="bengaliProjectValue"></td>
             <th>Project Grade</th>
             <td><input type="text" id="bengaliProjectGrade"></td>
           </tr>
-          <tr>
+          <tr style="display: none;">
             <th>Assignment Value</th>
             <td><input type="number" id="bengaliAssignmentValue"></td>
             <th>Assignment Grade</th>
@@ -894,13 +894,13 @@
             <th>Total Grade</th>
             <td><input type="text" id="mathsTotalGrade" readonly></td>
           </tr>
-		   <tr>
+		   <tr style="display: none;">
             <th>Project Value</th>
             <td><input type="number" id="mathsProjectValue"></td>
             <th>Project Grade</th>
             <td><input type="text" id="mathsProjectGrade"></td>
           </tr>
-          <tr>
+          <tr style="display: none;">
             <th>Assignment Value</th>
             <td><input type="number" id="mathsAssignmentValue"></td>
             <th>Assignment Grade</th>
@@ -954,13 +954,13 @@
             <th>Total Grade</th>
             <td><input type="text" id="evsTotalGrade" readonly></td>
           </tr>
-		  <tr>
+		  <tr style="display: none;">
             <th>Project Value</th>
             <td><input type="number" id="evsProjectValue"></td>
             <th>Project Grade</th>
             <td><input type="text" id="evsProjectGrade"></td>
           </tr>
-          <tr>
+          <tr style="display: none;">
             <th>Assignment Value</th>
             <td><input type="number" id="evsAssignmentValue"></td>
             <th>Assignment Grade</th>
@@ -1015,13 +1015,13 @@
 				<th>Total Grade</th>
 				<td><input type="text" id="socialScienceTotalGrade" readonly></td>
 			  </tr>
-			    <tr>
+			  <tr style="display: none;">
 				<th>Project Value</th>
 				<td><input type="number" id="socialScienceProjectValue"></td>
 				<th>Project Grade</th>
 				<td><input type="text" id="socialScienceProjectGrade"></td>
 			  </tr>
-			  <tr>
+			  <tr style="display: none;">
 				<th>Assignment Value</th>
 				<td><input type="number" id="socialScienceAssignmentValue"></td>
 				<th>Assignment Grade</th>
@@ -1057,18 +1057,18 @@
             <th>Total Grade</th>
             <td><input type="text" id="computerTotalGrade" readonly></td>
           </tr>
-		  <tr>
+		  <tr style="display: none;">
             <th>Project Value</th>
             <td><input type="number" id="computerProjectValue"></td>
             <th>Project Grade</th>
             <td><input type="text" id="computerProjectGrade"></td>
           </tr>
-          <tr>
+          <!--tr>
             <th>Assignment Value</th>
             <td><input type="number" id="computerAssignmentValue"></td>
             <th>Assignment Grade</th>
             <td><input type="text" id="computerAssignmentGrade"></td>
-          </tr>
+          </tr-->
         </table>
       </div>
     </div>
@@ -1521,9 +1521,32 @@
 	  </div>
 	</div>	
 	
+ <br><hr><h2 style="text-align: center;">Co-Scholastic Area</h2><hr><br>
+ 
+ 	<div class="accordion">
+	  <div class="accordion-item">
+		<div class="accordion-header">
+		  <span>Co-Scholastic Area Grades</span>
+		  <button class="accordion-toggle">+</button>
+		</div>
+		<div class="accordion-content">
+		  <table class="accordion-table">
+			<tr>
+			  <th>Co-Curricular Activities</th>
+			  <td><input type="text" id="computerAssignmentValue"></td><!-- used varible from computer Assignment -->
+			</tr>
+			<tr>
+			  <th>Cognitive Development</th>
+			  <td><input type="text" id="computerAssignmentGrade"></td>
+			</tr>
+			
+		  </table>
+		</div>
+	  </div>
+	</div>	
+ 
 
-
-   <br><hr><h2>Overall Results</h2><hr><br>
+   <br><hr><h2 style="text-align: center;">Overall Results</h2><hr><br>
 	<div class="accordion">
 		  <div class="accordion-item">
 			<div class="accordion-header">
@@ -2994,7 +3017,6 @@ document.querySelectorAll('#computerTheoryValue, #computerPracticalValue, #examT
   </script>
   
   
-  
 <script>
   
   function calculateEnglishMarks() {
@@ -3257,7 +3279,9 @@ document.querySelectorAll('#computerTheoryValue, #computerPracticalValue, #examT
     document.getElementById(`${subject}HY`).addEventListener('input', eval(`calculate${subject.charAt(0).toUpperCase() + subject.slice(1)}Marks`));
     document.getElementById(`${subject}Annual`).addEventListener('input', eval(`calculate${subject.charAt(0).toUpperCase() + subject.slice(1)}Marks`));
   });
-</script>
+</script>  
+
+
   
 <script>
     // Function to calculate overall marks, percentage, and grade
@@ -3365,7 +3389,7 @@ document.querySelectorAll('#computerTheoryValue, #computerPracticalValue, #examT
             // Redirect to the login page
             window.location.href = 'dashboardHCS1.html';
         }
-    </script>
+    </script> 
 	
 	<div id="alertOverlay" class="alert-overlay">
         <div id="alertBox" class="alert-box"></div>
