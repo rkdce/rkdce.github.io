@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>System Maintenance</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #141E30, #243B55);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      background: rgba(0,0,0,0.5);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.4);
+      width: 380px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 1.8em;
+    }
+
+    p {
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    #timer {
+      font-size: 2.8em;
+      margin: 20px 0;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 0.95em;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🚧 System Maintenance</h1>
+
+  <p>
+    Dear Teachers,<br><br>
+    We are currently upgrading the system to include <b>co-scholastic grades</b> in the marksheet.
+    During this time, marks uploading will not be available.
+  </p>
+
+  <div id="timer">--:--:--</div>
+
+  <p class="message">
+    We appreciate your patience and understanding.<br>
+    The system will be available again shortly.
+  </p>
+</div>
+
+<script>
+  const TIMER_KEY = "maintenance_end_time";
+  const DURATION = 30 * 60 * 1000; // 30 minutes
+
+  function initTimer() {
+    let endTime = localStorage.getItem(TIMER_KEY);
+
+    // Set timer only once
+    if (!endTime) {
+      endTime = Date.now() + DURATION;
+      localStorage.setItem(TIMER_KEY, endTime);
+    }
+
+    return parseInt(endTime);
+  }
+
+  const endTime = initTimer();
+
+  function updateTimer() {
+    const now = Date.now();
+    const distance = endTime - now;
+
+    if (distance <= 0) {
+      document.getElementById("timer").innerHTML = "00:00:00";
+      return;
+    }
+
+    const hours = Math.floor(distance / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("timer").innerHTML =
+      String(hours).padStart(2, '0') + ":" +
+      String(minutes).padStart(2, '0') + ":" +
+      String(seconds).padStart(2, '0');
+  }
+
+  setInterval(updateTimer, 1000);
+  updateTimer();
+</script>
+
+</body>
+</html>
