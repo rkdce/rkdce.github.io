@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>System Maintenance</title>
+
   <style>
     body {
       margin: 0;
@@ -48,6 +49,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -68,29 +70,27 @@
 </div>
 
 <script>
-  const TIMER_KEY = "maintenance_end_time";
-  const DURATION = 30 * 60 * 1000; // 30 minutes
-
-  function initTimer() {
-    let endTime = localStorage.getItem(TIMER_KEY);
-
-    // Set timer only once
-    if (!endTime) {
-      endTime = Date.now() + DURATION;
-      localStorage.setItem(TIMER_KEY, endTime);
-    }
-
-    return parseInt(endTime);
-  }
-
-  const endTime = initTimer();
+  // ✅ SET DATE + TIME (IST)
+  const startTime = new Date("2026-03-19T17:00:00+05:30").getTime(); // 5:00 PM
+  const duration = 30 * 60 * 1000; // 30 minutes
+  const endTime = startTime + duration; // 5:30 PM
 
   function updateTimer() {
-    const now = Date.now();
+    const now = new Date().getTime();
+
+    // Before maintenance starts
+    if (now < startTime) {
+      document.getElementById("timer").innerHTML = "00:30:00";
+      return;
+    }
+
     const distance = endTime - now;
 
+    // After maintenance ends
     if (distance <= 0) {
       document.getElementById("timer").innerHTML = "00:00:00";
+      document.querySelector(".message").innerHTML = 
+        "✅ System is now available. Please refresh the page.";
       return;
     }
 
