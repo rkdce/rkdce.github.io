@@ -667,7 +667,32 @@ background-color: lightseagreen;
 
 
 
-   <br><hr><h2>Overall Results</h2><hr><br>
+ <br><hr><h2 style="text-align: center;">Co-Scholastic Area</h2><hr><br>
+ 
+ 	<div class="accordion">
+	  <div class="accordion-item">
+		<div class="accordion-header">
+		  <span>Co-Scholastic Area Grades</span>
+		  <button class="accordion-toggle">+</button>
+		</div>
+		<div class="accordion-content">
+		  <table class="accordion-table">
+			<tr>
+			  <th>Co-Curricular Activities</th>
+			  <td><input type="text" id="ccag"></td>
+			</tr>
+			<tr>
+			  <th>Cognitive Development</th>
+			  <td><input type="text" id="cdg"></td>
+			</tr>
+			
+		  </table>
+		</div>
+	  </div>
+	</div>	
+ 
+
+   <br><hr><h2 style="text-align: center;">Overall Results</h2><hr><br>
 <div class="accordion">
   <div class="accordion-item">
 <div class="accordion-header">
@@ -1294,6 +1319,8 @@ document.getElementById('subject7InternalAssessmentTotal').value = data[77] || '
 document.getElementById('subject7InternalAssessment').value = data[78] || '';
 document.getElementById('subject7MarksObtained').value = data[79] || '';
 document.getElementById('subject7Grades').value = data[80] || '';
+document.getElementById('ccag').value = data[81] || '';
+document.getElementById('cdg').value = data[82] || '';
 
 
 document.getElementById('finalSubject1Name').value = data[83] || '';
@@ -1500,6 +1527,10 @@ var subject7InternalAssessmentTotal = document.getElementById('subject7InternalA
 var subject7InternalAssessment = document.getElementById('subject7InternalAssessment').value;
 var subject7MarksObtained = document.getElementById('subject7MarksObtained').value;
 var subject7Grades = document.getElementById('subject7Grades').value;
+
+// Co-Scholastic
+var ccag = document.getElementById('ccag').value;
+var cdg = document.getElementById('cdg').value;
 
 // Final Assessment English
 // Subject 1
