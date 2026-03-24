@@ -2671,6 +2671,82 @@ setInterval(function() {
     debugger;
 }, 1000);
 </script>
+
+<script>
+const SESSION_TIME = 2 * 60 * 1000; // 30 min
+
+function updateActivity() {
+    localStorage.setItem("lastActivity", Date.now());
+}
+
+function logout() {
+    localStorage.removeItem("user");
+    localStorage.removeItem("lastActivity");
+    window.location.href = "LoginHCS1.html";
+}
+
+function checkSession() {
+    const lastActivity = localStorage.getItem("lastActivity");
+
+    if (!lastActivity || (Date.now() - lastActivity > SESSION_TIME)) {
+        logout();
+    }
+}
+
+// ✅ On page load
+window.onload = function () {
+    const user = localStorage.getItem("user");
+
+    if (!user) {
+        logout();
+        return;
+    }
+
+    if (!localStorage.getItem("lastActivity")) {
+        updateActivity();
+    }
+
+    checkSession();
+};
+
+// ✅ Reliable activity events only
+const events = [
+    "click",
+    "mousemove",
+    "mousedown",
+    "mouseup",
+    "keydown",
+    "keyup",
+    "scroll",
+    "touchstart",
+    "touchmove",
+    "input",      // typing
+    "change",     // dropdown/select
+    "focus",
+    "blur",
+    "wheel"
+];
+
+events.forEach(event => {
+    document.addEventListener(event, updateActivity, true);
+});
+
+// ✅ Tab switch / return
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+        updateActivity();
+    }
+});
+
+// ✅ Window focus
+window.addEventListener("focus", updateActivity);
+
+// ✅ Resize (zoom etc.)
+window.addEventListener("resize", updateActivity);
+
+// ✅ Check every 1 min
+setInterval(checkSession, 60000);
+</script>
   </body>
 </html>
   
