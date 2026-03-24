@@ -2673,18 +2673,21 @@ setInterval(function() {
 </script>
 
 <script>
-const SESSION_TIME = 2 * 60 * 1000; // 30 min
+const SESSION_TIME = 30 * 60 * 1000; // 30 minutes
 
+// ✅ Update last activity time
 function updateActivity() {
     localStorage.setItem("lastActivity", Date.now());
 }
 
+// ✅ Logout function
 function logout() {
     localStorage.removeItem("user");
     localStorage.removeItem("lastActivity");
     window.location.href = "LoginHCS1.html";
 }
 
+// ✅ Check session validity
 function checkSession() {
     const lastActivity = localStorage.getItem("lastActivity");
 
@@ -2702,6 +2705,7 @@ window.onload = function () {
         return;
     }
 
+    // Start session if not already started
     if (!localStorage.getItem("lastActivity")) {
         updateActivity();
     }
@@ -2709,7 +2713,7 @@ window.onload = function () {
     checkSession();
 };
 
-// ✅ Reliable activity events only
+// ✅ Track ALL reliable user activities
 const events = [
     "click",
     "mousemove",
@@ -2720,8 +2724,8 @@ const events = [
     "scroll",
     "touchstart",
     "touchmove",
-    "input",      // typing
-    "change",     // dropdown/select
+    "input",
+    "change",
     "focus",
     "blur",
     "wheel"
@@ -2731,7 +2735,7 @@ events.forEach(event => {
     document.addEventListener(event, updateActivity, true);
 });
 
-// ✅ Tab switch / return
+// ✅ Tab visibility change (user returns to tab)
 document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
         updateActivity();
@@ -2744,9 +2748,24 @@ window.addEventListener("focus", updateActivity);
 // ✅ Resize (zoom etc.)
 window.addEventListener("resize", updateActivity);
 
-// ✅ Check every 1 min
+// ✅ Multi-tab instant sync
+window.addEventListener("storage", function (event) {
+
+    // If user removed in another tab → logout instantly
+    if (event.key === "user" && event.newValue === null) {
+        window.location.href = "LoginHCS1.html";
+    }
+
+    // Optional: sync activity log (no action needed, just awareness)
+    if (event.key === "lastActivity") {
+        console.log("Activity synced from another tab");
+    }
+});
+
+// ✅ Periodic session check (every 1 min)
 setInterval(checkSession, 60000);
 </script>
+
   </body>
 </html>
   
