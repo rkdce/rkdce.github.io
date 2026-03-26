@@ -172,12 +172,12 @@
         <!-- Your existing form fields -->
         <div class="select-wrapper">
             <select id="regUserType" required>
-                <option value="">-- Select Class --</option>
+                <option value="">-- User Type --</option>
                 <option value="User">User</option>
                 <option value="Admin">Admin</option>
             </select>
         </div>
-        <input type="text" id="regUsername" placeholder="Username" required>
+        <input type="text" id="regUsername" placeholder="Username" pattern="^\S+$" title="Username cannot contain spaces" required>
         <div class="select-wrapper">
             <select id="regTeacherClass" required>
                 <option value="">-- Select Class --</option>
@@ -200,6 +200,7 @@
                 <option value="XII ARTS">XII ARTS</option>
             </select>
         </div>
+        <input type="text" id="regName" placeholder="Teacher Name" style="text-transform: uppercase;" required>
         <input type="text" id="regPhone" placeholder="Mobile No." required>
         <input type="email" id="regEmail" placeholder="Email" required>
         <input type="password" id="regPassword" placeholder="Password" required>
@@ -269,6 +270,7 @@ async function handleRegister(event) {
     const password = hashPassword(document.getElementById('regPassword').value);
     const userType = document.getElementById('regUserType').value;
     const tClass = document.getElementById('regTeacherClass').value;
+    const tName = document.getElementById('regName').value;
     const tPhone = document.getElementById('regPhone').value;
 
     try {
@@ -280,6 +282,7 @@ async function handleRegister(event) {
                 userType: userType,
                 username: username,
                 tClass: tClass,
+                tName : tName,
                 tPhone: tPhone,
                 email: email,
                 password: password,
