@@ -617,7 +617,7 @@
   </script>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxs6ku2XPmhKhWAcVsmDzkxBr6NAZaHVNPV5WJps7YkQi9Ak-nxY_EGT1JNvs6a28YH/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwA5YUJQM68KDuzx0dMeRjG-4pDZwaCwLCcn6Tq4gAktH-ywcx7GA_E23BXgymL5PXp/exec";
     //const GAS_URL = localStorage.getItem('RKD_URL');		  
     const form = document.getElementById("uploadForm");
     const result = document.getElementById("result");
@@ -886,7 +886,7 @@ function loadHouseList(selectedClass = "") {
     fetch(GAS_URL, {
         method: 'POST',
         body: JSON.stringify({
-            action: 'getClassList'
+            action: 'getHouseList'
         })
     })
    .then(res => res.json())
