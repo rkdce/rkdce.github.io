@@ -588,33 +588,34 @@
   </div><br>
   </div>
   
-    <script>
-    const aadharInput = document.getElementById("anumber");
-  
-    // ✅ Allow only digits (max  12) aadharInput.addEventListener("input", function () {
-      this.value = this.value.replace(/\D/g, '').slice(0, 12);
-    });
-  
-    // ✅ Before form submit
-    document.getElementById("uploadForm").addEventListener("submit", function () {
-  
-      let value = aadharInput.value.trim();
-  
-      // ✔ If empty → set default
-      if (!value) {
-        aadharInput.value = "not available";
-        return;
-      }
-  
-      // ✔ If not 16 digits → block submit
-      if (!/^\d{16}$/.test(value)) {
-        alert("Aadhaar must be exactly 12 digits");
-        aadharInput.focus();
-        event.preventDefault(); // stop form
-      }
-  
-    });
-  </script>
+<script>
+  const aadharInput = document.getElementById("anumber");
+
+  // ✅ Allow only digits (max 12)
+  aadharInput.addEventListener("input", function () {
+    this.value = this.value.replace(/\D/g, '').slice(0, 12);
+  });
+
+  // ✅ Before form submit
+  document.getElementById("uploadForm").addEventListener("submit", function (event) {
+
+    let value = aadharInput.value.trim();
+
+    // ✔ If empty → set default
+    if (!value) {
+      aadharInput.value = "not available";
+      return;
+    }
+
+    // ✔ If not exactly 12 digits → block submit
+    if (!/^\d{12}$/.test(value)) {
+      alert("Aadhaar must be exactly 12 digits");
+      aadharInput.focus();
+      event.preventDefault(); // ✅ now works
+    }
+
+  });
+</script>
 
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbwA5YUJQM68KDuzx0dMeRjG-4pDZwaCwLCcn6Tq4gAktH-ywcx7GA_E23BXgymL5PXp/exec";
