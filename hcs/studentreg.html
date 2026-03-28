@@ -617,7 +617,7 @@
   </script>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyOts1ShZAIZKPZmU_wyLdOP0KUNH3rnGowVcjd4IkpJDqefwa95oLuUntceIbfjp71/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxs6ku2XPmhKhWAcVsmDzkxBr6NAZaHVNPV5WJps7YkQi9Ak-nxY_EGT1JNvs6a28YH/exec";
     //const GAS_URL = localStorage.getItem('RKD_URL');		  
     const form = document.getElementById("uploadForm");
     const result = document.getElementById("result");
@@ -881,8 +881,33 @@ function loadClassList(selectedClass = "") {
         });
     });
 }
+
+function loadHouseList(selectedClass = "") {
+    fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+            action: 'getClassList'
+        })
+    })
+   .then(res => res.json())
+    .then(classes => {
+        const select = document.getElementById("hname");
+
+        select.innerHTML = '<option value="">-- Select House --</option>';
+
+        const uniqueClasses = [...new Set(classes)];
+
+        uniqueClasses.forEach(cls => {
+            let option = document.createElement("option");
+            option.value = cls;
+            option.textContent = cls;
+            select.appendChild(option);
+        });
+    });
+}
 		window.onload = function () {
 	    loadClassList();
+		loadHouseList();
 	};
 	</script>
 
