@@ -525,9 +525,34 @@
           </div>
 
           <div class="form-group">
+            <label for="roll">🔢 PEN Number *</label>
+            <input type="number" id="pnumber" name="pnumber" placeholder="Enter PEN number" >
+          </div>
+          
+          <div class="form-group">
+            <label for="anumber">🔢 Aadhaar Number *</label>
+            <input type="text"
+                   id="anumber"
+                   name="anumber"
+                   placeholder="Enter Aadhaar number (12 digits)"
+                   maxlength="12"
+                   pattern="\d{12}">
+          </div>
+                    
+          <div class="form-group">
             <label for="address">📍 Address *</label>
             <textarea id="address" name="address" placeholder="Enter complete address" ></textarea>
           </div>
+          
+          
+            <div class="form-group">
+            <label for="hname"> 👤 House Name *</label>
+            <select id="hname" name="hname" required>
+              <option value="">Select House</option>
+              
+            </select>
+          </div>
+         
         </div>
 
         <!-- Photo Upload -->
@@ -562,6 +587,34 @@
       &copy; 2025 Rajesh Kumar Das. All rights reserved.
   </div><br>
   </div>
+  
+    <script>
+    const aadharInput = document.getElementById("anumber");
+  
+    // ✅ Allow only digits (max  12) aadharInput.addEventListener("input", function () {
+      this.value = this.value.replace(/\D/g, '').slice(0, 12);
+    });
+  
+    // ✅ Before form submit
+    document.getElementById("uploadForm").addEventListener("submit", function () {
+  
+      let value = aadharInput.value.trim();
+  
+      // ✔ If empty → set default
+      if (!value) {
+        aadharInput.value = "not available";
+        return;
+      }
+  
+      // ✔ If not 16 digits → block submit
+      if (!/^\d{16}$/.test(value)) {
+        alert("Aadhaar must be exactly 12 digits");
+        aadharInput.focus();
+        event.preventDefault(); // stop form
+      }
+  
+    });
+  </script>
 
   <script>
     const GAS_URL = "https://script.google.com/macros/s/AKfycbydJShExYnvzPDCsPP9iM4EryJXfzczTKQzhRzC6enAJXYb234cVxeaGrJax7L49m8t/exec";
@@ -573,6 +626,10 @@
     const updateBtn = document.getElementById("updateBtn");
     const resetBtn = document.getElementById("resetBtn");
     const admInput = document.getElementById("adm");
+    const pnumber = document.getElementById("pnumber");
+    const anumber = document.getElementById("anumber");
+    const hname = document.getElementById("hname");
+    
 
     // File preview
     document.getElementById("studentPhoto").addEventListener("change", function(e) {
@@ -623,6 +680,10 @@
           form.gender.value = '';
           form.phone_number.value = '';
           form.address.value = '';
+          form.pnumber.value = '';
+          form.anumber.value = '';
+          form.hname.value = '';
+          
         }
       } catch (error) {
         showAlert("❌ Error fetching student data.", "error");
@@ -645,6 +706,9 @@
       form.gender.value = fields.gender || '';
       form.phone_number.value = fields.phone_number || '';
       form.address.value = fields.address || '';
+      form.pnumber.value = fields.pnumber || '';
+      form.anumber.value = fields.anumber || '';
+      form.hname.value = fields.hname || '';
 
       if (fields.photoUrl) {
         const match = fields.photoUrl.match(/[-\w]{25,}/);
