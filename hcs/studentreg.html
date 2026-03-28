@@ -801,25 +801,21 @@ function loadClassList(selectedClass = "") {
             action: 'getClassList'
         })
     })
-   .then(res => {
-    console.log(res); // debug
+   .then(res => res.json())
+    .then(classes => {
+        const select = document.getElementById("classno");
 
-    const classes = res.classes || [];
+        select.innerHTML = '<option value="">-- Select Class --</option>';
 
-    const select = document.getElementById("classno");
+        const uniqueClasses = [...new Set(classes)];
 
-    select.innerHTML = '<option value="">-- Select Class --</option>';
-
-    const uniqueClasses = [...new Set(classes)];
-
-    uniqueClasses.forEach(cls => {
-        let option = document.createElement("option");
-        option.value = cls;
-        option.textContent = cls;
-        select.appendChild(option);
+        uniqueClasses.forEach(cls => {
+            let option = document.createElement("option");
+            option.value = cls;
+            option.textContent = cls;
+            select.appendChild(option);
+        });
     });
-});
-
 }
 		window.onload = function () {
 	    loadClassList();
