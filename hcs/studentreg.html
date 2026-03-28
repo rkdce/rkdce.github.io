@@ -819,11 +819,7 @@ function loadClassList(selectedClass = "") {
         select.appendChild(option);
     });
 });
-        // ✅ SET VALUE AFTER OPTIONS CREATED
-        if (selectedClass) {
-            select.value = selectedClass;
-        }
-    });
+
 }
 		window.onload = function () {
 	    loadClassList();
