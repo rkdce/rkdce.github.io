@@ -794,29 +794,34 @@
   </script>
 	<script>
 	
-	function loadClassList() {
-	    fetch(GAS_URL, {
-	        method: 'POST',
-	        body: JSON.stringify({
-	            action: 'getClassList'
-	        })
-	    })
-	    .then(res => res.json())
-	    .then(classes => {
-	        const select = document.getElementById("classno");
-	
-	        select.innerHTML = '<option value="">-- Select Class --</option>';
-	
-	        const uniqueClasses = [...new Set(classes)];
-	
-	        uniqueClasses.forEach(cls => {
-	            let option = document.createElement("option");
-	            option.value = cls;
-	            option.textContent = cls;
-	            select.appendChild(option);
-	        });
-	    });
-	}
+function loadClassList(selectedClass = "") {
+    fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+            action: 'getClassList'
+        })
+    })
+    .then(res => res.json())
+    .then(classes => {
+        const select = document.getElementById("classno");
+
+        select.innerHTML = '<option value="">-- Select Class --</option>';
+
+        const uniqueClasses = [...new Set(classes)];
+
+        uniqueClasses.forEach(cls => {
+            let option = document.createElement("option");
+            option.value = cls;
+            option.textContent = cls;
+            select.appendChild(option);
+        });
+
+        // ✅ SET VALUE AFTER OPTIONS CREATED
+        if (selectedClass) {
+            select.value = selectedClass;
+        }
+    });
+}
 		window.onload = function () {
 	    loadClassList();
 	};
