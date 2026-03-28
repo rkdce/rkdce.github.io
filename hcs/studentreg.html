@@ -594,7 +594,7 @@
       }
 
       showLoader();
-      const url = `${GAS_URL}?action=getStudentRegistrationDetails&adm=${encodeURIComponent(adm)}`;
+      const url = `${GAS_URL}?action=getStudentDetails&adm=${encodeURIComponent(adm)}`;
       
       try {
         const response = await fetch(url);
