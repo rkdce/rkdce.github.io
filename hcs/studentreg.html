@@ -801,21 +801,24 @@ function loadClassList(selectedClass = "") {
             action: 'getClassList'
         })
     })
-    .then(res => res.json())
-    .then(classes => {
-        const select = document.getElementById("classno");
+   .then(res => {
+    console.log(res); // debug
 
-        select.innerHTML = '<option value="">-- Select Class --</option>';
+    const classes = res.classes || [];
 
-        const uniqueClasses = [...new Set(classes)];
+    const select = document.getElementById("classno");
 
-        uniqueClasses.forEach(cls => {
-            let option = document.createElement("option");
-            option.value = cls;
-            option.textContent = cls;
-            select.appendChild(option);
-        });
+    select.innerHTML = '<option value="">-- Select Class --</option>';
 
+    const uniqueClasses = [...new Set(classes)];
+
+    uniqueClasses.forEach(cls => {
+        let option = document.createElement("option");
+        option.value = cls;
+        option.textContent = cls;
+        select.appendChild(option);
+    });
+});
         // ✅ SET VALUE AFTER OPTIONS CREATED
         if (selectedClass) {
             select.value = selectedClass;
