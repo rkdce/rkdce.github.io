@@ -564,7 +564,7 @@
   </div>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbw47aUxV8tBDNIxR7mndc4TVpUZKUgWOHYofu8YeyNTwao7lOeh7tFDUd02nqlDG40/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbySOmk4_m837AUfonIcF4PLhstDKOMpNpb9SJIa-XD1GBSn9sru57Fa9NtE-yUXXTc/exec";
     //const GAS_URL = localStorage.getItem('RKD_URL');		  
     const form = document.getElementById("uploadForm");
     const result = document.getElementById("result");
@@ -594,7 +594,7 @@
       }
 
       showLoader();
-      const url = `${GAS_URL}?action=getStudentDetails&adm=${encodeURIComponent(adm)}`;
+      const url = `${GAS_URL}?action=getStudentRegistrationDetails&adm=${encodeURIComponent(adm)}`;
       
       try {
         const response = await fetch(url);
