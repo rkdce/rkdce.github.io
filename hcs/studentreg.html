@@ -1056,8 +1056,8 @@ function loadBloodList(selectedClass = "") {
         }
     </script>
 
-	<script>
-const SESSION_TIME = 30 * 60 * 1000; // 30 minutes
+<script>
+const SESSION_TIME = 1 * 60 * 1000; // 30 minutes
 
 // ✅ Update last activity time
 function updateActivity() {
@@ -1080,8 +1080,8 @@ function checkSession() {
     }
 }
 
-// ✅ On page load
-window.onload = function () {
+// ✅ FIXED: Use addEventListener instead of window.onload
+window.addEventListener("load", function () {
     const user = localStorage.getItem("user");
 
     if (!user) {
@@ -1095,7 +1095,7 @@ window.onload = function () {
     }
 
     checkSession();
-};
+});
 
 // ✅ Track ALL reliable user activities
 const events = [
@@ -1119,7 +1119,7 @@ events.forEach(event => {
     document.addEventListener(event, updateActivity, true);
 });
 
-// ✅ Tab visibility change (user returns to tab)
+// ✅ Tab visibility change
 document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
         updateActivity();
@@ -1129,25 +1129,18 @@ document.addEventListener("visibilitychange", () => {
 // ✅ Window focus
 window.addEventListener("focus", updateActivity);
 
-// ✅ Resize (zoom etc.)
+// ✅ Resize
 window.addEventListener("resize", updateActivity);
 
-// ✅ Multi-tab instant sync
+// ✅ Multi-tab sync
 window.addEventListener("storage", function (event) {
-
-    // If user removed in another tab → logout instantly
     if (event.key === "user" && event.newValue === null) {
         window.location.href = "https://rkdce.github.io/LoginHCS1.html";
     }
-
-    // Optional: sync activity log (no action needed, just awareness)
-    if (event.key === "lastActivity") {
-        console.log("Activity synced from another tab");
-    }
 });
 
-// ✅ Periodic session check (every 1 min)
-setInterval(checkSession, 60000);
+// ✅ Faster check (optional but better)
+setInterval(checkSession, 10000); // 10 seconds
 </script>
 </body>
 </html>
