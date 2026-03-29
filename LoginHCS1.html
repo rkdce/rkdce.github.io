@@ -182,7 +182,7 @@
         <select id="regTeacherClass" required>
             <option value="">-- Select Class --</option>
         
-            <option value="NURSERY-A">Nursery A</option>
+            <!--option value="NURSERY-A">Nursery A</option>
             <option value="NURSERY-B">Nursery B</option>
         
             <option value="KG1-A">KG1 A</option>
@@ -233,7 +233,7 @@
             <option value="XII-ARTS-A">XII Arts A</option>
             <option value="XII-ARTS-B">XII Arts B</option>
             <option value="XII-COM-A">XII Commerce A</option>
-            <option value="XII-COM-B">XII Commerce B</option>
+            <option value="XII-COM-B">XII Commerce B</option-->
         </select>
         </div>
         <input type="text" id="regName" placeholder="Teacher Name" style="text-transform: uppercase;" required>
@@ -254,7 +254,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXDxe3B7v9LXE2lYT5HLIcCAFhx4TWR9P4Oib0PKUYgkZGLLiEcRdVQLNbzYlpbRrx/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxw4w08JvQ5c4Cg6jwiH-QL0GgAxaYbE0-uu36xa8rYrWBtVZih4K8-NaTWfpbsgnd8/exec';
 
     function showForm(formType) {
         document.querySelectorAll('.form').forEach(f => f.classList.remove('show'));
@@ -349,5 +349,40 @@ async function handleRegister(event) {
 // Add event listener to the form
 document.getElementById('registrationForm').addEventListener('submit', handleRegister);
 </script>
+
+<script>
+function loadClassList(selectedClass = "") {
+    fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+            action: 'getClassList'
+        })
+    })
+   .then(res => res.json())
+    .then(classes => {
+        const select = document.getElementById("regTeacherClass");
+
+        select.innerHTML = '<option value="">-- Select Class --</option>';
+
+        const uniqueClasses = [...new Set(classes)];
+
+        uniqueClasses.forEach(cls => {
+            let option = document.createElement("option");
+            option.value = cls;
+            option.textContent = cls;
+            select.appendChild(option);
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    try {
+        loadClassList();
+    } catch (e) {
+        console.error("Error in loading:", e);
+    }
+});    
+    
+</script>   
 </body>
 </html>
