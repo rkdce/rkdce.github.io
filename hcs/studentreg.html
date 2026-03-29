@@ -636,7 +636,7 @@
 </script>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxbatXH1YFmBbzIaIHF_FYRDFYyTtBkQBRpct9o31OyZFYeS5t8iM3Aij92UTpW-UmA/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzsO9uwxqa-I0NpMxJE6_KzhLYNNEs39CA0MVdgSY1wmkfnO3Rq3Ye-v1Z2AdeurLts/exec";
     //const GAS_URL = localStorage.getItem('RKD_URL');		  
     const form = document.getElementById("uploadForm");
     const result = document.getElementById("result");
@@ -933,9 +933,58 @@ function loadHouseList(selectedClass = "") {
         });
     });
 }
+
+function loadTeacherList(selectedClass = "") {
+    fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+            action: 'getTeacherList'
+        })
+    })
+   .then(res => res.json())
+    .then(classes => {
+        const select = document.getElementById("tname");
+
+        select.innerHTML = '<option value="">-- Teacher Name --</option>';
+
+        const uniqueClasses = [...new Set(classes)];
+
+        uniqueClasses.forEach(cls => {
+            let option = document.createElement("option");
+            option.value = cls;
+            option.textContent = cls;
+            select.appendChild(option);
+        });
+    });
+}
+function loadBloodList(selectedClass = "") {
+    fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+            action: 'getBloodList'
+        })
+    })
+   .then(res => res.json())
+    .then(classes => {
+        const select = document.getElementById("bgroup");
+
+        select.innerHTML = '<option value="">-- Select Group --</option>';
+
+        const uniqueClasses = [...new Set(classes)];
+
+        uniqueClasses.forEach(cls => {
+            let option = document.createElement("option");
+            option.value = cls;
+            option.textContent = cls;
+            select.appendChild(option);
+        });
+    });
+}
 		window.onload = function () {
 	    loadClassList();
 		loadHouseList();
+		loadBloodList();
+		loadTeacherList();
 	};
 	</script>
 
