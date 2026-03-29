@@ -648,7 +648,7 @@
 </script>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyAn8ulI1ayUc3zT2DWfH2giSAYL6SvaoJ7F5oOO81uoYdvHmXM6ySvSh2oCbKETDaU/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbx_6eGZUnnMmPJVHvSN0iR7Ko77JH5Q0V4VLbLSwZI8AFfiOP6n9K_nt99ZMcgGSP6J/exec";
     //const GAS_URL = localStorage.getItem('RKD_URL');		  
     const form = document.getElementById("uploadForm");
     const result = document.getElementById("result");
@@ -826,7 +826,16 @@
 	    formData.append("mimetype", "image/jpeg"); // always compressed JPEG
 	    formData.append("filename", file.name);
 	  }
-	
+
+// ✅ ADD THIS BLOCK
+const user = JSON.parse(localStorage.getItem('user'));
+if (user) {
+  formData.append("username", user.username);
+  formData.append("userRole", user.userType);
+  formData.append("userClass", user.tClass);
+}
+		
+		
 	  formData.append("action", action);
 	
 	  showLoader();
