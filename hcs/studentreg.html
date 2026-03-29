@@ -785,56 +785,98 @@
     };
 
     // Submit form function
-    async function submitForm(action) {
-      const fileInput = document.getElementById("studentPhoto");
-      const file = fileInput.files[0];
-      const reader = new FileReader();
+	async function submitForm(action) {
+	  const fileInput = document.getElementById("studentPhoto");
+	  const file = fileInput.files[0];
+	
+	  let base64 = "";
+	
+	  // ✅ Compress image if file exists
+	  if (file) {
+	    base64 = await compressImage(file, 50); // 🔥 max 50KB
+	  }
+	
+	  const formData = new URLSearchParams();
+	
+	  // Append form fields
+	  for (let element of form.elements) {
+	    if (element.name && element.type !== "file") {
+	      formData.append(element.name, element.value);
+	    }
+	  }
+	
+	  // Append file data
+	  if (file) {
+	    formData.append("data", base64);
+	    formData.append("mimetype", "image/jpeg"); // always compressed JPEG
+	    formData.append("filename", file.name);
+	  }
+	
+	  formData.append("action", action);
+	
+	  showLoader();
+	  try {
+	    const response = await fetch(GAS_URL, {
+	      method: "POST",
+	      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+	      body: formData
+	    });
+	
+	    const text = await response.text();
+	    showResult(text, action === "registerStudent" ? "success" : "update");
+	  } catch (err) {
+	    showAlert("❌ Error uploading data.", "error");
+	    console.error(err);
+	  } finally {
+	    hideLoader();
+	  }
+	}
 
-      reader.onload = async () => {
-        const base64 = reader.result?.split(",")[1] || "";
-        const formData = new URLSearchParams();
 
-        // Append form fields
-        for (let element of form.elements) {
-          if (element.name && element.type !== "file") {
-            formData.append(element.name, element.value);
-          }
-        }
+	//for image resizing
+	  function compressImage(file, maxSizeKB = 50) {
+	  return new Promise((resolve) => {
+	    const img = new Image();
+	    const reader = new FileReader();
+	
+	    reader.onload = e => img.src = e.target.result;
+	
+	    img.onload = () => {
+	      const canvas = document.createElement("canvas");
+	      const ctx = canvas.getContext("2d");
+	
+	      let width = img.width;
+	      let height = img.height;
+	
+	      // ✅ Resize (important for compression)
+	      const maxWidth = 600;
+	      if (width > maxWidth) {
+	        height = height * (maxWidth / width);
+	        width = maxWidth;
+	      }
+	
+	      canvas.width = width;
+	      canvas.height = height;
+	
+	      ctx.drawImage(img, 0, 0, width, height);
+	
+	      let quality = 0.9;
+	      let base64;
+	
+	      // ✅ Reduce until under 50KB
+	      do {
+	        base64 = canvas.toDataURL("image/jpeg", quality);
+	        quality -= 0.05;
+	      } while ((base64.length / 1024) > maxSizeKB && quality > 0.1);
+	
+	      resolve(base64.split(",")[1]);
+	    };
+	
+	    reader.readAsDataURL(file);
+	  });
+	}
 
-        // Append file data if present
-        if (file) {
-          formData.append("data", base64);
-          formData.append("mimetype", file.type);
-          formData.append("filename", file.name);
-        }
-
-        formData.append("action", action);
-
-        showLoader();
-        try {
-          const response = await fetch(GAS_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: formData
-          });
-
-          const text = await response.text();
-          showResult(text, action === "registerStudent" ? "success" : "update");
-        } catch (err) {
-          showAlert("❌ Error uploading data.", "error");
-          console.error(err);
-        } finally {
-          hideLoader();
-        }
-      };
-
-      if (file) {
-        reader.readAsDataURL(file);
-      } else {
-        reader.onload();
-      }
-    }
-
+	  
     // Reset form
     resetBtn.onclick = () => {
       form.reset();
