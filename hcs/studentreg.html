@@ -1022,12 +1022,16 @@ function loadBloodList(selectedClass = "") {
         });
     });
 }
-		window.onload = function () {
-	    loadClassList();
-		loadHouseList();
-		loadBloodList();
-		loadTeacherList();
-	};
+		document.addEventListener("DOMContentLoaded", () => {
+    try {
+        loadClassList();
+        loadHouseList();
+        loadBloodList();
+        loadTeacherList();
+    } catch (e) {
+        console.error("Error in loading:", e);
+    }
+});
 	</script>
 
 	
