@@ -1041,14 +1041,14 @@ function loadBloodList(selectedClass = "") {
             document.getElementById('tClass').textContent = user.tClass; // Display class
             document.getElementById('userType').textContent = user.userType; // Display user type
         } else {
-            window.location.href = 'LoginHCS1.html'; // Redirect to login page if no user data
+            window.location.href = 'https://rkdce.github.io/dashboardHCS1.html/LoginHCS1.html'; // Redirect to login page if no user data
         }
 
       function handleLogout() {
             // Clear the user's information from localStorage
             //localStorage.removeItem('user');
             // Redirect to the login page
-            window.location.href = 'dashboardHCS1.html';
+            window.location.href = 'https://rkdce.github.io/dashboardHCS1.html';
         }
     </script>
 
@@ -1064,7 +1064,7 @@ function updateActivity() {
 function logout() {
     localStorage.removeItem("user");
     localStorage.removeItem("lastActivity");
-    window.location.href = "LoginHCS1.html";
+    window.location.href = "https://rkdce.github.io/dashboardHCS1.html/LoginHCS1.html";
 }
 
 // ✅ Check session validity
