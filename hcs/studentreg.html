@@ -552,6 +552,14 @@
               
             </select>
           </div>
+
+			<div class="form-group">
+            <label for="cgroup"> 👤 Category *</label>
+            <select id="cgroup" name="cgroup" required>
+              <option value="">Select Category</option>
+              
+            </select>
+          </div>
           
          <div class="form-group">
             <label for="hname"> 👤 House Name *</label>
@@ -640,7 +648,7 @@
 </script>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbzGDlstIXkqZbeVMGCozkQMHe_u1gOmq4ztPN0NRPM04wef21xsxEcPkI0o1riiTzju/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyAn8ulI1ayUc3zT2DWfH2giSAYL6SvaoJ7F5oOO81uoYdvHmXM6ySvSh2oCbKETDaU/exec";
     //const GAS_URL = localStorage.getItem('RKD_URL');		  
     const form = document.getElementById("uploadForm");
     const result = document.getElementById("result");
@@ -653,6 +661,7 @@
     const anumber = document.getElementById("anumber");
     const hname = document.getElementById("hname");
 	const bgroup = document.getElementById("bgroup");
+	const bgroup = document.getElementById("cgroup");
 	const tname = document.getElementById("tname");
     
 
@@ -708,6 +717,7 @@
           form.pnumber.value = '';
           form.anumber.value = '';
 		  form.bgroup.value = '';
+		  form.cgroup.value = '';
           form.hname.value = '';
 		  form.tname.value = '';
           
@@ -736,6 +746,7 @@
       form.pnumber.value = fields.pnumber || '';
       form.anumber.value = fields.anumber || '';
 	  form.bgroup.value = fields.bgroup || '';
+	  form.bgroup.value = fields.cgroup || '';
       form.hname.value = fields.hname || '';
 	  form.tname.value = fields.tname || '';
 
@@ -1026,12 +1037,36 @@ function loadBloodList(selectedClass = "") {
         });
     });
 }
-		document.addEventListener("DOMContentLoaded", () => {
+function loadCList(selectedClass = "") {
+    fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+            action: 'getCList'
+        })
+    })
+   .then(res => res.json())
+    .then(classes => {
+        const select = document.getElementById("cgroup");
+
+        select.innerHTML = '<option value="">-- Select Group --</option>';
+
+        const uniqueClasses = [...new Set(classes)];
+
+        uniqueClasses.forEach(cls => {
+            let option = document.createElement("option");
+            option.value = cls;
+            option.textContent = cls;
+            select.appendChild(option);
+        });
+    });
+}
+	document.addEventListener("DOMContentLoaded", () => {
     try {
         loadClassList();
         loadHouseList();
         loadBloodList();
         loadTeacherList();
+		loadCList();
     } catch (e) {
         console.error("Error in loading:", e);
     }
