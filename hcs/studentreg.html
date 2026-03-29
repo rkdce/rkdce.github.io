@@ -1068,7 +1068,7 @@ function updateActivity() {
 function logout() {
     localStorage.removeItem("user");
     localStorage.removeItem("lastActivity");
-    window.location.href = "https://rkdce.github.io/dashboardHCS1.html/LoginHCS1.html";
+    window.location.href = "https://rkdce.github.io/LoginHCS1.html";
 }
 
 // ✅ Check session validity
@@ -1137,7 +1137,7 @@ window.addEventListener("storage", function (event) {
 
     // If user removed in another tab → logout instantly
     if (event.key === "user" && event.newValue === null) {
-        window.location.href = "LoginHCS1.html";
+        window.location.href = "https://rkdce.github.io/LoginHCS1.html";
     }
 
     // Optional: sync activity log (no action needed, just awareness)
