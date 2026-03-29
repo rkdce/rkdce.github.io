@@ -552,6 +552,7 @@
               
             </select>
           </div>
+			<input type="hidden" id="photoUrl" name="photoUrl">
          
         </div>
 
@@ -711,13 +712,16 @@
       form.anumber.value = fields.anumber || '';
       form.hname.value = fields.hname || '';
 
-      if (fields.photoUrl) {
-        const match = fields.photoUrl.match(/[-\w]{25,}/);
-        if (match) {
-          preview.src = `https://drive.google.com/thumbnail?id=${match[0]}`;
-          preview.style.display = "block";
-        }
-      }
+	  // ✅ IMPORTANT FIX
+	  document.getElementById("photoUrl").value = fields.photoUrl || "";
+	
+	  if (fields.photoUrl) {
+		const match = fields.photoUrl.match(/[-\w]{25,}/);
+		if (match) {
+		  preview.src = `https://drive.google.com/thumbnail?id=${match[0]}`;
+		  preview.style.display = "block";
+		}
+	  }
     }
 
     // Format date for input
