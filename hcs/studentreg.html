@@ -465,7 +465,7 @@
 
           <div class="form-group">
             <label for="mname">👩 Mother's Name</label>
-            <input type="text" id="mname" name="mname" placeholder="Enter mother's name">
+            <input type="text" id="mname" name="mname" placeholder="Enter mother's name" required>
           </div>
 
           <div class="form-group">
@@ -496,7 +496,7 @@
 
           <div class="form-group">
             <label for="roll">🔢 Roll Number *</label>
-            <input type="number" id="roll" name="roll" placeholder="Enter roll number" >
+            <input type="number" id="roll" name="roll" placeholder="Enter roll number" required>
           </div>
 
           <div class="form-group">
@@ -521,7 +521,7 @@
 
           <div class="form-group">
             <label for="phone_number">📞 Phone Number *</label>
-            <input type="tel" id="phone_number" name="phone_number" placeholder="Enter phone number" >
+            <input type="tel" id="phone_number" name="phone_number" placeholder="Enter phone number" required >
           </div>
 
           <div class="form-group">
@@ -536,12 +536,12 @@
                    name="anumber"
                    placeholder="Enter Aadhaar number (12 digits)"
                    maxlength="12"
-                   pattern="\d{12}">
+                   pattern="\d{12}" >
           </div>
                     
           <div class="form-group">
             <label for="address">📍 Address *</label>
-            <textarea id="address" name="address" placeholder="Enter complete address" ></textarea>
+            <textarea id="address" name="address" placeholder="Enter complete address" required></textarea>
           </div>
 		
 			
@@ -1031,50 +1031,119 @@ function loadBloodList(selectedClass = "") {
 	</script>
 
 	
-	<!--script>
-       (async function() {
-            const userString = localStorage.getItem('ATS_user');
-            if (userString) {
-                const user = JSON.parse(userString);
-				document.getElementById('username').textContent = user.username;
-                    document.getElementById('tClass').textContent = user.tClass;
-                    document.getElementById('userType').textContent = user.userType;
-                try {
-                    const response = await fetch(GAS_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            action: "validateUser",
-                            username: user.username,
-                            userType: user.userType
-                        })
-                    });
-                    const result = await response.json();
-                    if (result.status !== "success") {
-                        localStorage.removeItem('ATS_user');
-                        window.location.href = 'LoginATS.html';
-                        return;
-                    }
-                    
-                } catch (err) {
-                    localStorage.removeItem('ATS_user');
-                    window.location.href = 'LoginATS.html';
-                }
-            } else {
-                window.location.href = 'LoginATS.html';
-            }
-        })();
-        function handleLogout() {
-            //localStorage.removeItem('user');
-            window.location.href = 'dashboardATS.html';
+  <!-- JavaScript -->
+    <script>
+        // Retrieve the user's information from localStorage
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            const user = JSON.parse(userString);
+            document.getElementById('username').textContent = user.username; // Display username
+            document.getElementById('tClass').textContent = user.tClass; // Display class
+            document.getElementById('userType').textContent = user.userType; // Display user type
+        } else {
+            window.location.href = 'LoginHCS1.html'; // Redirect to login page if no user data
         }
 
-	  
       function handleLogout() {
             // Clear the user's information from localStorage
             //localStorage.removeItem('user');
             // Redirect to the login page
-            window.location.href = 'dashboardATS.html';
+            window.location.href = 'dashboardHCS1.html';
         }
-    </script -->
+    </script>
+
+	<script>
+const SESSION_TIME = 30 * 60 * 1000; // 30 minutes
+
+// ✅ Update last activity time
+function updateActivity() {
+    localStorage.setItem("lastActivity", Date.now());
+}
+
+// ✅ Logout function
+function logout() {
+    localStorage.removeItem("user");
+    localStorage.removeItem("lastActivity");
+    window.location.href = "LoginHCS1.html";
+}
+
+// ✅ Check session validity
+function checkSession() {
+    const lastActivity = localStorage.getItem("lastActivity");
+
+    if (!lastActivity || (Date.now() - lastActivity > SESSION_TIME)) {
+        logout();
+    }
+}
+
+// ✅ On page load
+window.onload = function () {
+    const user = localStorage.getItem("user");
+
+    if (!user) {
+        logout();
+        return;
+    }
+
+    // Start session if not already started
+    if (!localStorage.getItem("lastActivity")) {
+        updateActivity();
+    }
+
+    checkSession();
+};
+
+// ✅ Track ALL reliable user activities
+const events = [
+    "click",
+    "mousemove",
+    "mousedown",
+    "mouseup",
+    "keydown",
+    "keyup",
+    "scroll",
+    "touchstart",
+    "touchmove",
+    "input",
+    "change",
+    "focus",
+    "blur",
+    "wheel"
+];
+
+events.forEach(event => {
+    document.addEventListener(event, updateActivity, true);
+});
+
+// ✅ Tab visibility change (user returns to tab)
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+        updateActivity();
+    }
+});
+
+// ✅ Window focus
+window.addEventListener("focus", updateActivity);
+
+// ✅ Resize (zoom etc.)
+window.addEventListener("resize", updateActivity);
+
+// ✅ Multi-tab instant sync
+window.addEventListener("storage", function (event) {
+
+    // If user removed in another tab → logout instantly
+    if (event.key === "user" && event.newValue === null) {
+        window.location.href = "LoginHCS1.html";
+    }
+
+    // Optional: sync activity log (no action needed, just awareness)
+    if (event.key === "lastActivity") {
+        console.log("Activity synced from another tab");
+    }
+});
+
+// ✅ Periodic session check (every 1 min)
+setInterval(checkSession, 60000);
+</script>
 </body>
 </html>
