@@ -543,15 +543,32 @@
             <label for="address">📍 Address *</label>
             <textarea id="address" name="address" placeholder="Enter complete address" ></textarea>
           </div>
+		
+			
+		 <div class="form-group">
+            <label for="bgroup"> 👤 Blood Group *</label>
+            <select id="bgroup" name="bgroup" required>
+              <option value="">Select Blood Group</option>
+              
+            </select>
+          </div>
           
-          
-            <div class="form-group">
+         <div class="form-group">
             <label for="hname"> 👤 House Name *</label>
             <select id="hname" name="hname" required>
               <option value="">Select House</option>
               
             </select>
           </div>
+         <div class="form-group">
+            <label for="tname"> 👤 Teacher Name *</label>
+            <select id="tname" name="tname" required>
+              <option value="">Teacher Name</option>
+              
+            </select>
+          </div>
+
+		
 			<input type="hidden" id="photoUrl" name="photoUrl">
          
         </div>
@@ -619,7 +636,7 @@
 </script>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyn4YQeUmPWhGvN4G-e40IUUvDG3BgfdGfvpyguAg5nKRw1eHEiuctXQSB_Og5upaCO/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxbatXH1YFmBbzIaIHF_FYRDFYyTtBkQBRpct9o31OyZFYeS5t8iM3Aij92UTpW-UmA/exec";
     //const GAS_URL = localStorage.getItem('RKD_URL');		  
     const form = document.getElementById("uploadForm");
     const result = document.getElementById("result");
@@ -631,6 +648,8 @@
     const pnumber = document.getElementById("pnumber");
     const anumber = document.getElementById("anumber");
     const hname = document.getElementById("hname");
+	const hname = document.getElementById("bgroup");
+	const hname = document.getElementById("tname");
     
 
     // File preview
@@ -684,7 +703,9 @@
           form.address.value = '';
           form.pnumber.value = '';
           form.anumber.value = '';
+		  form.bgroup.value = '';
           form.hname.value = '';
+		  form.tname.value = '';
           
         }
       } catch (error) {
@@ -710,7 +731,9 @@
       form.address.value = fields.address || '';
       form.pnumber.value = fields.pnumber || '';
       form.anumber.value = fields.anumber || '';
+	  form.anumber.value = fields.bgroup || '';
       form.hname.value = fields.hname || '';
+	  form.anumber.value = fields.tname || '';
 
 	  // ✅ IMPORTANT FIX
 	  document.getElementById("photoUrl").value = fields.photoUrl || "";
