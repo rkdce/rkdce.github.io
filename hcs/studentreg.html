@@ -492,6 +492,18 @@
 				<option value="XI SCIENCE">XII COMMERCE</option>
                 <option value="XII ARTS">XII ARTS</option-->
             </select>
+			  <input type="text" id="otherInput" placeholder="Enter custom" style="display:none;">
+
+<script>
+function checkOther(select) {
+  let input = document.getElementById("otherInput");
+  if (select.value === "other") {
+    input.style.display = "block";
+  } else {
+    input.style.display = "none";
+  }
+}
+</script>
           </div>
 
           <div class="form-group">
