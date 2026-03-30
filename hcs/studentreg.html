@@ -470,8 +470,11 @@
 
           <div class="form-group">
             <label for="classno">📚 Class *</label>
-            <select id="classno" name="classno" required onchange="checkOther(this)>
-                <option value="">-- Select Class --</option>
+<input list="classList" id="classno" name="classno" required placeholder="Select or type class">
+<datalist id="classList"></datalist>
+			  
+            <!--select id="classno" name="classno" required onchange="checkOther(this)>
+                <option value=""> -- Select Class --</option>
                 <!--option value="Nursery">NURSERY</option>
                 <option value="KG1">KG1</option>
                 <option value="KG2">KG2</option>
@@ -490,20 +493,11 @@
                 <option value="XI ARTS">XI ARTS</option>
                 <option value="XII SCIENCE">XII SCIENCE</option>
 				<option value="XI SCIENCE">XII COMMERCE</option>
-                <option value="XII ARTS">XII ARTS</option-->
-            </select>
-			  <input type="text" id="otherInput" placeholder="Enter custom" style="display:none;">
+                <option value="XII ARTS">XII ARTS</option>
+            </select> -->
+			
 
-<script>
-function checkOther(select) {
-  let input = document.getElementById("otherInput");
-  if (select.value === "other") {
-    input.style.display = "block";
-  } else {
-    input.style.display = "none";
-  }
-}
-</script>
+
           </div>
 
           <div class="form-group">
@@ -963,27 +957,42 @@ if (user) {
     }
   </script>
 	<script>
-	
-function loadClassList(selectedClass = "") {
+const user = JSON.parse(localStorage.getItem("user"));
+const classField = document.getElementById("classno");
+const datalist = document.getElementById("classList");
+
+fetch(GAS_URL, {
+    method: 'POST',
+    body: JSON.stringify({ action: 'getClassList' })
+})
+.then(res => res.json())
+.then(classes => {
+    const uniqueClasses = [...new Set(classes)];
+
+    uniqueClasses.forEach(cls => {
+        let option = document.createElement("option");
+        option.value = cls;
+        datalist.appendChild(option);
+    });
+});
+
+// ✅ Restrict typing for non-admin
+if (!user || user.userType !== "admin") {
+    classField.setAttribute("readonly", true);
+}
+function loadClassListForAdmin(datalist) {
     fetch(GAS_URL, {
         method: 'POST',
-        body: JSON.stringify({
-            action: 'getClassList'
-        })
+        body: JSON.stringify({ action: 'getClassList' })
     })
-   .then(res => res.json())
+    .then(res => res.json())
     .then(classes => {
-        const select = document.getElementById("classno");
-
-        select.innerHTML = '<option value="">-- Select Class --</option>';
-
         const uniqueClasses = [...new Set(classes)];
 
         uniqueClasses.forEach(cls => {
             let option = document.createElement("option");
             option.value = cls;
-            option.textContent = cls;
-            select.appendChild(option);
+            datalist.appendChild(option);
         });
     });
 }
