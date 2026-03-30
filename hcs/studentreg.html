@@ -473,7 +473,7 @@
 <input list="classList" id="classno" name="classno" required placeholder="Select or type class">
 <datalist id="classList"></datalist>
 			  
-            <!--select id="classno" name="classno" required onchange="checkOther(this)>
+            <select id="classno" name="classno" required onchange="checkOther(this)>
                 <option value=""> -- Select Class --</option>
                 <!--option value="Nursery">NURSERY</option>
                 <option value="KG1">KG1</option>
@@ -493,8 +493,8 @@
                 <option value="XI ARTS">XI ARTS</option>
                 <option value="XII SCIENCE">XII SCIENCE</option>
 				<option value="XI SCIENCE">XII COMMERCE</option>
-                <option value="XII ARTS">XII ARTS</option>
-            </select> -->
+                <option value="XII ARTS">XII ARTS</option>-->
+            </select> 
 			
 
 
@@ -958,33 +958,26 @@ if (user) {
   </script>
 	<script>
 const user = JSON.parse(localStorage.getItem("user"));
-const classField = document.getElementById("classno");
-const datalist = document.getElementById("classList");
+const select = document.getElementById("classno");
 
-fetch(GAS_URL, {
-    method: 'POST',
-    body: JSON.stringify({ action: 'getClassList' })
-})
-.then(res => res.json())
-.then(classes => {
-    const uniqueClasses = [...new Set(classes)];
+// ✅ If admin → allow custom entry
+if (user && user.userType === "admin") {
 
-    uniqueClasses.forEach(cls => {
-        let option = document.createElement("option");
-        option.value = cls;
-        datalist.appendChild(option);
-    });
-});
+    // Double click → enter custom class
+    select.addEventListener("dblclick", () => {
+        let newClass = prompt("Enter new class:");
 
-if (!user || user.userType !== "admin") {
-    classField.addEventListener("input", function () {
-        const list = Array.from(datalist.options).map(o => o.value);
+        if (newClass && newClass.trim() !== "") {
+            let option = document.createElement("option");
+            option.value = newClass;
+            option.textContent = newClass;
 
-        if (!list.includes(this.value)) {
-            this.value = "";
+            select.appendChild(option);
+            select.value = newClass;
         }
     });
 }
+
 function loadClassListForAdmin(datalist) {
     fetch(GAS_URL, {
         method: 'POST',
