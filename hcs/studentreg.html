@@ -472,26 +472,7 @@
             <label for="classno">📚 Class *</label>
 			  
             <select id="classno" name="classno" required onchange="checkOther(this)>
-                <option value=""> -- Select Class --</option>
-                <!--option value="Nursery">NURSERY</option>
-                <option value="KG1">KG1</option>
-                <option value="KG2">KG2</option>
-                <option value="I">I</option>
-                <option value="II">II</option>
-                <option value="III">III</option>
-                <option value="IV">IV</option>
-                <option value="V">V</option>
-                <option value="VI">VI</option>
-                <option value="VII">VII</option>
-                <option value="VIII">VIII</option>
-                <option value="IX">IX</option>
-                <option value="X">X</option>
-                <option value="XI SCIENCE">XI SCIENCE</option>
-				<option value="XI SCIENCE">XI COMMERCE</option>
-                <option value="XI ARTS">XI ARTS</option>
-                <option value="XII SCIENCE">XII SCIENCE</option>
-				<option value="XI SCIENCE">XII COMMERCE</option>
-                <option value="XII ARTS">XII ARTS</option>-->
+
             </select> 
 			
 
@@ -957,6 +938,21 @@ if (user) {
 	<script>
 const user = JSON.parse(localStorage.getItem("user"));
 const select = document.getElementById("classno");
+fetch(GAS_URL, {
+    method: 'POST',
+    body: JSON.stringify({ action: 'getClassList' })
+})
+.then(res => res.json())
+.then(classes => {
+    const uniqueClasses = [...new Set(classes)];
+
+    uniqueClasses.forEach(cls => {
+        let option = document.createElement("option");
+        option.value = cls;
+        datalist.appendChild(option);
+    });
+});
+
 
 // ✅ If admin → allow custom entry
 if (user && user.userType === "admin") {
