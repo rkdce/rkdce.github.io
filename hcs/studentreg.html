@@ -963,7 +963,7 @@ fetch(GAS_URL, {
     uniqueClasses.forEach(cls => {
         let option = document.createElement("option");
         option.value = cls;
-        datalist.appendChild(option);
+        select.appendChild(option);
     });
 });
 
@@ -985,23 +985,30 @@ if (user && user.userType === "admin") {
         }
     });
 }
-
-function loadClassListForAdmin(datalist) {
+/*
+function loadClassList(selectedClass = "") {
     fetch(GAS_URL, {
         method: 'POST',
-        body: JSON.stringify({ action: 'getClassList' })
+        body: JSON.stringify({
+            action: 'getClassList'
+        })
     })
-    .then(res => res.json())
+   .then(res => res.json())
     .then(classes => {
+        const select = document.getElementById("hname");
+
+        select.innerHTML = '<option value="">-- Select House --</option>';
+
         const uniqueClasses = [...new Set(classes)];
 
         uniqueClasses.forEach(cls => {
             let option = document.createElement("option");
             option.value = cls;
-            datalist.appendChild(option);
+            option.textContent = cls;
+            select.appendChild(option);
         });
     });
-}
+} */
 
 function loadHouseList(selectedClass = "") {
     fetch(GAS_URL, {
