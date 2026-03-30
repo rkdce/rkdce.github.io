@@ -982,7 +982,7 @@ function loadClassList(selectedClass = "") {
     })
    .then(res => res.json())
     .then(classes => {
-        const select = document.getElementById("hname");
+        const select = document.getElementById("classno");
 
         select.innerHTML = '<option value="">-- Select House --</option>';
 
