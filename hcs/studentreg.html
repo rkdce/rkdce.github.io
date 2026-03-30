@@ -973,7 +973,7 @@ if (user && user.userType === "admin") {
     });
 }
 
-/*function loadClassList(selectedClass = "") */
+function loadClassList(selectedClass = "") {
     fetch(GAS_URL, {
         method: 'POST',
         body: JSON.stringify({
@@ -995,7 +995,7 @@ if (user && user.userType === "admin") {
             select.appendChild(option);
         });
     });
-
+}
 
 function loadHouseList(selectedClass = "") {
     fetch(GAS_URL, {
@@ -1092,7 +1092,7 @@ function loadCList(selectedClass = "") {
 }
 	document.addEventListener("DOMContentLoaded", () => {
     try {
-       // loadClassList();
+        loadClassList();
         loadHouseList();
         loadBloodList();
         loadTeacherList();
