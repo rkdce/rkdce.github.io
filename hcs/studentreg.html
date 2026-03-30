@@ -471,12 +471,26 @@
           <div class="form-group">
             <label for="classno">📚 Class *</label>
 			  
-            <select id="classno" name="classno" required onchange="checkOther(this)>
-
+            <select id="classno" name="classno" required onchange="checkOther(this)">
             </select> 
-			
 
+			    <input type="text" id="otherInput" placeholder="Enter custom class"
+         style="display:none; margin-top:5px;">
 
+			  <script>
+function checkOther(select) {
+  let input = document.getElementById("otherInput");
+
+  if (select.value === "other") {
+    input.style.display = "block";
+    input.required = true;
+  } else {
+    input.style.display = "none";
+    input.required = false;
+    input.value = "";
+  }
+}
+</script>
           </div>
 
           <div class="form-group">
