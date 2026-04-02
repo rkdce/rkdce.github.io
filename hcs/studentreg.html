@@ -619,6 +619,10 @@ function checkOther(select) {
 		  <button type="button" class="btn btn-danger" id="tcBtn" style="display:none;">
 		    🚫 Transfer Certificate (TC)
 		  </button>
+
+			<button type="button" class="btn btn-success" id="restoreBtn">
+			  🔄 Restore Student
+			</button>
 		
 		</div>
 
@@ -666,7 +670,7 @@ function checkOther(select) {
 </script>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwC83_EiHWyUNZTxP7ySi9LeOsg4tf_MElo1bmB5fdjKZ1yjTQl8eRSqdl9ilW_w3Bm/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzJKrJttUthbfVZ8RzUTRRxHNr1QY4w3OzMhwWbApDN2jL8gJ7U6mEZhZA7KwXlIBI/exec";
     //const GAS_URL = localStorage.getItem('RKD_URL');		  
     const form = document.getElementById("uploadForm");
     const result = document.getElementById("result");
@@ -1224,6 +1228,39 @@ tcBtn.onclick = async () => {
 };
 	
 
+
+//Restore TC
+	document.getElementById("restoreBtn").onclick = async () => {
+  const adm = document.getElementById("adm").value.trim();
+
+  if (!adm) {
+    alert("Enter admission number");
+    return;
+  }
+
+  if (!confirm("Restore this student?")) return;
+
+  showLoader();
+
+  try {
+    const res = await fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        action: "RESTORE_TC",
+        adm: adm
+      })
+    });
+
+    const text = await res.text();
+    showAlert(text, "success");
+
+  } catch (err) {
+    showAlert("❌ Restore failed", "error");
+  } finally {
+    hideLoader();
+  }
+};
 
 	
 </script>
