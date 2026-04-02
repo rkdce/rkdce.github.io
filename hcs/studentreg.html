@@ -985,7 +985,7 @@ if (user && user.userType === "admin") {
 }
 
 function loadClassList(selectedClass = "") {
-    fetch(GAS_URL, {
+   return  fetch(GAS_URL, {
         method: 'POST',
         body: JSON.stringify({
             action: 'getClassList'
@@ -1009,7 +1009,7 @@ function loadClassList(selectedClass = "") {
 }
 
 function loadHouseList(selectedClass = "") {
-    fetch(GAS_URL, {
+   return  fetch(GAS_URL, {
         method: 'POST',
         body: JSON.stringify({
             action: 'getHouseList'
@@ -1033,7 +1033,7 @@ function loadHouseList(selectedClass = "") {
 }
 
 function loadTeacherList(selectedClass = "") {
-    fetch(GAS_URL, {
+  return   fetch(GAS_URL, {
         method: 'POST',
         body: JSON.stringify({
             action: 'getTeacherList'
@@ -1056,7 +1056,7 @@ function loadTeacherList(selectedClass = "") {
     });
 }
 function loadBloodList(selectedClass = "") {
-    fetch(GAS_URL, {
+  return  fetch(GAS_URL, {
         method: 'POST',
         body: JSON.stringify({
             action: 'getBloodList'
@@ -1079,7 +1079,7 @@ function loadBloodList(selectedClass = "") {
     });
 }
 function loadCList(selectedClass = "") {
-    fetch(GAS_URL, {
+   return fetch(GAS_URL, {
         method: 'POST',
         body: JSON.stringify({
             action: 'getCList'
@@ -1101,15 +1101,23 @@ function loadCList(selectedClass = "") {
         });
     });
 }
-	document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    showLoader(); // already in your code
+
     try {
-        loadClassList();
-        loadHouseList();
-        loadBloodList();
-        loadTeacherList();
-		loadCList();
+        await Promise.all([
+            loadClassList(),
+            loadHouseList(),
+            loadTeacherList(),
+            loadBloodList(),
+            loadCList()
+        ]);
+
+        console.log("✅ All dropdowns loaded");
     } catch (e) {
-        console.error("Error in loading:", e);
+        console.error("❌ Loading error:", e);
+    } finally {
+        hideLoader(); // hide only AFTER everything loads
     }
 });
 	</script>
