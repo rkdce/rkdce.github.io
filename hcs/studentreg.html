@@ -605,6 +605,25 @@ function checkOther(select) {
             🔄 Reset Form
           </button>
         </div>
+
+
+		<!-- ✅ TC Section (Admin Only) -->
+		<div id="tcSection" style="display:none; text-align:center; margin-top:10px;">
+		  
+		  <label style="font-weight:600;">
+		    <input type="checkbox" id="tcCheck"> Mark as TC
+		  </label>
+		
+		  <br><br>
+		
+		  <button type="button" class="btn btn-danger" id="tcBtn" style="display:none;">
+		    🚫 Transfer Certificate (TC)
+		  </button>
+		
+		</div>
+
+		  
+		  
       </form>
 
       <!-- Result Display -->
@@ -1143,6 +1162,71 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.href = 'https://rkdce.github.io/dashboardHCS1.html';
         }
     </script>
+
+
+
+
+<script>
+// ✅ Handle TC UI visibility
+const tcSection = document.getElementById("tcSection");
+const tcCheck = document.getElementById("tcCheck");
+const tcBtn = document.getElementById("tcBtn");
+
+// ✅ Get user
+const currentUser = JSON.parse(localStorage.getItem("user"));
+
+// 🔒 Show checkbox ONLY for ADMIN
+if (currentUser && currentUser.userType.toUpperCase() === "ADMIN") {
+  tcSection.style.display = "block";
+}
+
+// ✅ Show button only if checked
+tcCheck.addEventListener("change", () => {
+  tcBtn.style.display = tcCheck.checked ? "inline-block" : "none";
+});
+
+
+
+tcBtn.onclick = async () => {
+  const adm = document.getElementById("adm").value.trim();
+
+  if (!adm) {
+    alert("Enter admission number first");
+    return;
+  }
+
+  if (!confirm("Are you sure to transfer this student to TC?")) return;
+
+  showLoader();
+
+  try {
+    const res = await fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        action: "TC",
+        adm: adm
+      })
+    });
+
+    const text = await res.text();
+    showAlert(text, "success");
+
+    form.reset();
+    tcBtn.style.display = "none";
+    tcCheck.checked = false;
+
+  } catch (err) {
+    showAlert("❌ TC failed", "error");
+  } finally {
+    hideLoader();
+  }
+};
+	
+
+
+	
+</script>
 
 <script>
 const SESSION_TIME = 30 * 60 * 1000; // 30 minutes
