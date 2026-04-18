@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RKD Enquiry Form</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Arial;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 400px;
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: fadeIn 0.5s ease;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 14px;
+      color: #444;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      transition: 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 5px rgba(102,126,234,0.5);
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #28a745, #218838);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      display: none;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    }
+
+    #msg {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .loader {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+      border: 4px solid #ccc;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: auto;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>📩 Admission Enquiry Form</h2>
+
+  <form id="form"></form>
+
+  <button id="submitBtn" onclick="submitForm()">Submit Enquiry</button>
+
+  <p id="msg"></p>
+
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<script>
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAAZOjo-44AUovBLBu95Q7SogfXn2pDWVcUAFpxmkcgZ-9TC6XkYp6cnWow3KDpz8u0A/exec"; // 🔥 replace
+let headers = [];
+
+// 🔹 Load headers dynamically
+async function loadHeaders() {
+  try {
+    document.getElementById("loader").style.display = "block";
+
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "headers" })
+    });
+
+    headers = await res.json();
+
+    createForm(headers);
+
+    document.getElementById("submitBtn").style.display = "block";
+
+  } catch (err) {
+    document.getElementById("msg").innerText = "❌ Failed to load form";
+  } finally {
+    document.getElementById("loader").style.display = "none";
+  }
+}
+
+// 🔹 Create form fields dynamically
+function createForm(headers) {
+  const form = document.getElementById("form");
+
+  headers.forEach(h => {
+    let div = document.createElement("div");
+    div.className = "field";
+
+    let label = document.createElement("label");
+    label.innerText = h;
+
+    let input;
+
+    let key = h.toLowerCase();
+
+    if (key.includes("message") || key.includes("address") || key.includes("query")) {
+      input = document.createElement("textarea");
+    } else if (key.includes("email") || key.includes("mail")) {
+      input = document.createElement("input");
+      input.type = "email";
+    } else if (key.includes("mobile") || key.includes("phone") || key.includes("contact")) {
+      input = document.createElement("input");
+      input.type = "tel";
+    } else {
+      input = document.createElement("input");
+      input.type = "text";
+    }
+
+    input.name = h;
+    input.required = true;
+
+    div.appendChild(label);
+    div.appendChild(input);
+
+    form.appendChild(div);
+  });
+}
+
+// 🔹 Submit form
+async function submitForm() {
+  const form = document.getElementById("form");
+  const formData = new FormData(form);
+
+  let obj = {};
+  formData.forEach((v, k) => obj[k] = v);
+
+  try {
+    document.getElementById("loader").style.display = "block";
+
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "submit",
+        data: obj
+      })
+    });
+
+    await res.json();
+
+    document.getElementById("msg").innerText = "✅ Submitted Successfully!";
+    form.reset();
+
+  } catch (err) {
+    document.getElementById("msg").innerText = "❌ Submission Failed!";
+  } finally {
+    document.getElementById("loader").style.display = "none";
+  }
+}
+
+// 🔹 Start
+loadHeaders();
+
+</script>
+
+</body>
+</html>
