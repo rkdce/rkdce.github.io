@@ -304,12 +304,12 @@
   <section class="contact" id="contact">
     <div class="title">Contact Us</div>
     <div class="contactMenu">
-      <div class="input1">
-        <input type="text" placeholder="Your Name">
-        <input type="email" placeholder="Your Email">
-        <input type="text" placeholder="Your Message">
-        <button>Send Message</button>
-      </div>
+    <div class="input1">
+      <form id="contactForm"></form>
+      <button id="submitBtn" onclick="submitForm()">Send Message</button>
+      <p id="msg" style="margin-top:10px;"></p>
+      <div id="loader" style="display:none;color:white;">Loading...</div>
+    </div>
       <div class="input3">
         <p><strong>Address:</strong> Silchar, Assam, India</p>
         <p><strong>Email:</strong> emailrajeshkumardas@gmail.com</p>
@@ -321,6 +321,114 @@
   <footer>
     <span>© 2023 RKD Computer Education. All rights reserved.</span>
   </footer>
+
+<script>
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAAZOjo-44AUovBLBu95Q7SogfXn2pDWVcUAFpxmkcgZ-9TC6XkYp6cnWow3KDpz8u0A/exec"; // 🔥 replace
+let headers = [];
+
+// 🔹 Load dynamic fields
+async function loadHeaders() {
+  try {
+    document.getElementById("loader").style.display = "block";
+
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "headers" })
+    });
+
+    headers = await res.json();
+    createForm(headers);
+
+    document.getElementById("submitBtn").style.display = "block";
+
+  } catch (err) {
+    document.getElementById("msg").innerText = "❌ Failed to load form";
+  } finally {
+    document.getElementById("loader").style.display = "none";
+  }
+}
+
+// 🔹 Create fields
+function createForm(headers) {
+  const form = document.getElementById("contactForm");
+
+  headers.forEach(h => {
+    let input;
+
+    let key = h.toLowerCase();
+
+    if (key.includes("message") || key.includes("query")) {
+      input = document.createElement("textarea");
+    } else if (key.includes("email")) {
+      input = document.createElement("input");
+      input.type = "email";
+    } else if (key.includes("mobile") || key.includes("phone")) {
+      input = document.createElement("input");
+      input.type = "tel";
+    } else {
+      input = document.createElement("input");
+      input.type = "text";
+    }
+
+    input.name = h;
+    input.placeholder = h;
+    input.required = true;
+
+    form.appendChild(input);
+  });
+}
+
+// 🔹 Submit form
+async function submitForm() {
+  const form = document.getElementById("contactForm");
+
+  // validation
+  for (let el of form.elements) {
+    if (el.value.trim() === "") {
+      document.getElementById("msg").innerText = "❌ Fill all fields";
+      el.focus();
+      return;
+    }
+  }
+
+  let formData = new FormData(form);
+  let obj = {};
+  formData.forEach((v, k) => obj[k] = v);
+
+  try {
+    document.getElementById("loader").style.display = "block";
+
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "submit",
+        data: obj
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.status === "success") {
+      document.getElementById("msg").innerText = "✅ Message Sent!";
+      form.reset();
+    } else {
+      document.getElementById("msg").innerText = "❌ " + data.message;
+    }
+
+  } catch (err) {
+    document.getElementById("msg").innerText = "❌ Error sending";
+  } finally {
+    document.getElementById("loader").style.display = "none";
+  }
+}
+
+// 🔹 Load on page start
+loadHeaders();
+
+</script>
+
+  
 
   <script>
     function openNavbar() {
@@ -345,5 +453,7 @@
       }
     }
   </script>
+
+  
 </body>
 </html>
