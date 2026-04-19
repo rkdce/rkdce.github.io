@@ -440,7 +440,7 @@ async function submitForm() {
     const data = await res.json();
 
     if (data.status === "success") {
-      document.getElementById("msg").innerText = "✅ Message Sent!";
+      document.getElementById("msg").innerHTML = "✅ Message Sent! <br>📩 Please check your email.";
       form.reset();
     } else {
       document.getElementById("msg").innerText = "❌ " + data.message;
