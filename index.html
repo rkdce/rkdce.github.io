@@ -169,18 +169,31 @@
       justify-content: center;
       gap: 2rem;
     }
-    .input1 input,
-    .input1 button {
-      width: 100%;
-      padding: 0.8rem;
-      margin-bottom: 1rem;
-      border: none;
-      border-radius: 5px;
+    .input1 {
+      max-width: 280px;   /* 🔥 reduced width */
     }
+    
+    .input1 input,
+    .input1 textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 8px;
+      border-radius: 5px;
+      border: none;
+      font-size: 13px; /* smaller text */
+    }
+    
+    .input1 textarea {
+      height: 70px; /* smaller height */
+    }
+    
     .input1 button {
-      background: #00c291;
-      color: white;
-      cursor: pointer;
+      padding: 8px;
+      font-size: 14px;
+    }
+    
+    .error {
+      border: 2px solid red !important;
     }
     footer {
       background: #0f172a;
