@@ -239,26 +239,7 @@
       }
     }
 	
- .whatsapp-float {
-      position: fixed;
-      width: 60px;
-      height: 60px;
-    
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: grab;
-      z-index: 1000;
-      bottom: 20px;
-      right: 20px;
-    touch-action: none;
-    }
 
-    .whatsapp-float img {
-      width: 40px;
-      pointer-events: none;
-    }
   </style>
 </head>
 <body>
@@ -386,70 +367,84 @@
   </footer>
 
 <!-- Button -->
-<div class="whatsapp-float" id="dragBtn">
-  <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+<!-- Popup -->
+<div id="popup"
+     style="
+       position: fixed;
+       right: 80px;
+       bottom: 25px;
+       background: white;
+       padding: 10px 15px;
+       border-radius: 10px;
+       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+       display: none;
+       font-size: 14px;
+       z-index: 999;
+       max-width: 200px;
+     ">
 </div>
 
 <script>
-  const btn = document.getElementById("dragBtn");
+	const messages = [
+	  // Mixed universal messages
+	  "🎓 Admission Open! Join our computer classes today!",
+	  "💻 Learn computer skills from basic to advanced!",
+	  "🚀 Start your journey in IT with expert guidance!",
+	  "🔥 Free Demo Class Available – Chat Now!",
+	  "⏳ Limited Seats! New batch starting soon!",
 
-  let isDragging = false;
-  let moved = false;
+	  // Students focus
+	  "👨‍💻 Students: Want to become smart in computers? Join now!",
+	  "🎯 Confused about career? We will guide you step by step!",
+	  "📚 School students can learn AI & computer basics easily!",
 
-  let offsetX, offsetY;
+	  // Parents focus
+	  "👨‍👩‍👧 Parents: Give your child a strong computer foundation",
+	  "📈 Help your child build a bright future in technology",
+	  "👨‍🏫 Safe & practical learning environment for students",
 
-  // Mouse Down / Touch Start
-  btn.addEventListener("mousedown", startDrag);
-  btn.addEventListener("touchstart", startDrag);
+	  // Teachers / advanced learners
+	  "👨‍🏫 Teachers: Upgrade your digital & computer skills",
+	  "📊 Learn modern tools for teaching & career growth",
+	  "🚀 Improve your knowledge with practical training"
+	];
+  const popup = document.getElementById("popup");
 
-  function startDrag(e) {
-    isDragging = true;
-    moved = false;
+	let count = 0;
+	let maxShows = 3;
 
-    const rect = btn.getBoundingClientRect();
+	function showPopup() {
+	  if (count >= maxShows) return;
 
-    offsetX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-    offsetY = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+	  let msg = messages[Math.floor(Math.random() * messages.length)];
+	  popup.innerText = msg;
 
-    btn.style.cursor = "grabbing";
-  }
+	  popup.style.display = "block";
 
-  // Move
-  document.addEventListener("mousemove", drag);
-  document.addEventListener("touchmove", drag);
+	  count++;
 
-  function drag(e) {
-    if (!isDragging) return;
+	  // hide after 5 sec
+	  setTimeout(() => {
+		popup.style.display = "none";
+	  }, 5000);
+	}
 
-    moved = true;
+	// 👉 First show after 6 sec
+	setTimeout(showPopup, 6000);
 
-    const x = (e.touches ? e.touches[0].clientX : e.clientX) - offsetX;
-    const y = (e.touches ? e.touches[0].clientY : e.clientY) - offsetY;
+	// 👉 Repeat every 30 sec (not annoying)
+	let interval = setInterval(() => {
+	  showPopup();
 
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
-    btn.style.right = "auto";
-    btn.style.bottom = "auto";
-  }
+	  if (count >= maxShows) {
+		clearInterval(interval); // stop completely
+	  }
+	}, 30000);
 
-  // Stop Drag
-  document.addEventListener("mouseup", stopDrag);
-  document.addEventListener("touchend", stopDrag);
-
-  function stopDrag() {
-    isDragging = false;
-    btn.style.cursor = "grab";
-  }
-
-  // Click (ONLY if not dragged)
-  btn.addEventListener("click", function() {
-    if (!moved) {
-      let phone = "917002323169";
-      let message = "Hi, I want to join your computer institute";
-      let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
-      window.open(url, "_blank");
-    }
-  });
+	// 👉 Stop if user clicks WhatsApp
+	document.getElementById("waBtn")?.addEventListener("click", () => {
+	  clearInterval(interval);
+	});
 </script>
 
 
