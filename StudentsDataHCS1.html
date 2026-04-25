@@ -436,7 +436,7 @@ for (let i = 1; i < rows.length; i++) {
                         const columns = rows[i];
                         const accordion = document.createElement('button');
                         accordion.className = 'accordion';
-                        accordion.textContent = `${columns[3] || ''} ${columns[5] || ''} Class: ${columns[4] || ''}` || `Item ${i}`;
+                        accordion.textContent = `${columns[2] || ''} ${columns[2] || ''} Class: ${columns[5] || ''}` || `Item ${i}`;
                         accordion.dataset.school = (columns[1] || '').toLowerCase();  // Store column 2
                         accordion.dataset.class = (columns[5] || '').toLowerCase();
 
