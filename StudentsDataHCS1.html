@@ -401,14 +401,14 @@
                     container.innerHTML = '';
                     
                     const rows = parseCSV(csvData);
-                   rows.splice(1, rows.length - 1, ...rows.slice(1).sort((a, b) => (a[4] || '').localeCompare(b[4] || '')));
+                   rows.splice(1, rows.length - 1, ...rows.slice(1).sort((a, b) => (a[5] || '').localeCompare(b[5] || '')));
 
 
                 const classFilter = document.getElementById('classFilter');
 const uniqueClasses = new Set();
 
 for (let i = 1; i < rows.length; i++) {
-    const classVal = (rows[i][4] || '').trim();
+    const classVal = (rows[i][5] || '').trim();
     if (classVal) {
         uniqueClasses.add(classVal);
     }
