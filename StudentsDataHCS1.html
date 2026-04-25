@@ -529,12 +529,11 @@ for (let i = 1; i < rows.length; i++) {
         
         
      
-
-        
-    function filterAccordions() {
-    const selectedSchool = document.getElementById('schoolFilter').value.toLowerCase();
+function filterAccordions() {
+    const selectedSchool = document.getElementById('schoolFilter') ? document.getElementById('schoolFilter').value.toLowerCase() : '';
     const selectedClass = document.getElementById('classFilter').value.toLowerCase();
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
+
     let hasResults = false;
     let visibleCount = 0;   // ⭐ counter added
 
@@ -566,7 +565,7 @@ for (let i = 1; i < rows.length; i++) {
     // ⭐ update count display
     document.getElementById('studentCount').textContent =
         `Total Students: ${visibleCount}`;
-        
+
     const container = document.getElementById('accordionContainer');
     const existingNoResults = document.getElementById('noResults');
     if (existingNoResults) existingNoResults.remove();
@@ -579,6 +578,8 @@ for (let i = 1; i < rows.length; i++) {
         container.appendChild(noResults);
     }
 }
+        
+  
 
     </script>
 </body>
