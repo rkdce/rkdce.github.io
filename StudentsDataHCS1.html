@@ -438,7 +438,7 @@ for (let i = 1; i < rows.length; i++) {
                         accordion.className = 'accordion';
                         accordion.textContent = `${columns[3] || ''} ${columns[5] || ''} Class: ${columns[4] || ''}` || `Item ${i}`;
                         accordion.dataset.school = (columns[1] || '').toLowerCase();  // Store column 2
-                        accordion.dataset.class = (columns[4] || '').toLowerCase();
+                        accordion.dataset.class = (columns[5] || '').toLowerCase();
 
 
                         accordion.dataset.searchContent = columns.join(' ').toLowerCase();
