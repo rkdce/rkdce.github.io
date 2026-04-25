@@ -297,14 +297,22 @@
     
     <h1>Student Data 2025-26 <br>
     
-    <select id="schoolFilter" onchange="filterAccordions()" style="padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 2px solid #d1d5db; font-size: clamp(14px, 4vw, 16px);">
+<!--    <select id="schoolFilter" onchange="filterAccordions()" style="padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 2px solid #d1d5db; font-size: clamp(14px, 4vw, 16px);">
   <option value="">All Schools</option>
   <option value="Silchar">Silchar</option>
   <option value="Masimpur">Masimpur</option>
-</select> 
+</select>  -->
 <select id="classFilter" onchange="filterAccordions()" style="padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 2px solid #d1d5db; font-size: clamp(14px, 4vw, 16px);">
   <option value="">All Classes</option>
 </select>
+<div id="studentCount" style="
+    font-weight: 600;
+    margin: 10px 0;
+    font-size: 16px;
+    color: #4f46e5;
+">
+    Total Students: 0
+</div>
 
     </h1>
     
@@ -544,6 +552,7 @@ for (let i = 1; i < rows.length; i++) {
             accordion.style.display = '';
             panel.style.display = '';
             hasResults = true;
+            visibleCount++;   // ⭐ increase count
         } else {
             accordion.style.display = 'none';
             panel.style.display = 'none';
@@ -553,6 +562,10 @@ for (let i = 1; i < rows.length; i++) {
         }
     });
 
+    // ⭐ update count display
+    document.getElementById('studentCount').textContent =
+        `Total Students: ${visibleCount}`;
+        
     const container = document.getElementById('accordionContainer');
     const existingNoResults = document.getElementById('noResults');
     if (existingNoResults) existingNoResults.remove();
