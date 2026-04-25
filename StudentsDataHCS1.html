@@ -536,6 +536,7 @@ for (let i = 1; i < rows.length; i++) {
     const selectedClass = document.getElementById('classFilter').value.toLowerCase();
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
     let hasResults = false;
+    let visibleCount = 0;   // ⭐ counter added
 
     allAccordions.forEach(item => {
         const accordion = item.button;
