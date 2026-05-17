@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>B.Ed Learning Game Portal</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #dbeafe, #ffffff);
+}
+header {
+  background: #2563eb;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+header h1 {
+  margin: 0;
+}
+.container {
+  width: 90%;
+  margin: auto;
+  padding: 20px;
+}
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.trick {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2563eb;
+  margin: 10px 0;
+}
+ul {
+  padding-left: 20px;
+}
+li {
+  margin-bottom: 8px;
+}
+.quiz {
+  background: #fef9c3;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+button:hover {
+  background: #1d4ed8;
+}
+.answer {
+  display: none;
+  margin-top: 10px;
+  color: green;
+  font-weight: bold;
+}
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: gray;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>B.Ed Learning Game Portal</h1>
+  <p>Learn Fast • Remember Easily • Score Full Marks</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Sociology</h2>
+    <p><b>Definition:</b> Sociology is the scientific study of society and social relationships.</p>
+    <p><b>Conclusion:</b> Sociology helps understand society, behaviour and social development.</p>
+    <div class="trick">SOCIETY</div>
+    <ul>
+      <li>Study of society</li>
+      <li>Social relationship</li>
+      <li>Culture</li>
+      <li>Social interaction</li>
+      <li>Values</li>
+      <li>Social institutions</li>
+      <li>Social change</li>
+      <li>Group behaviour</li>
+      <li>Social development</li>
+      <li>Social adjustment</li>
+      <li>Cooperation</li>
+      <li>Leadership</li>
+      <li>Discipline</li>
+      <li>Unity</li>
+      <li>Education and society</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Socialisation</h2>
+    <p><b>Definition:</b> Socialisation is the process through which a child learns behaviour, culture and values.</p>
+    <p><b>Conclusion:</b> Socialisation develops personality and social adjustment.</p>
+    <div class="trick">SOCIAL</div>
+    <ul>
+      <li>Social adjustment</li>
+      <li>Obedience</li>
+      <li>Culture learning</li>
+      <li>Interaction</li>
+      <li>Attitude formation</li>
+      <li>Life preparation</li>
+      <li>Moral values</li>
+      <li>Leadership</li>
+      <li>Discipline</li>
+      <li>Personality development</li>
+      <li>Responsibility</li>
+      <li>Citizenship</li>
+      <li>Emotional growth</li>
+      <li>Helping attitude</li>
+      <li>Democratic values</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>National Development</h2>
+    <p><b>Definition:</b> National development means overall progress of a nation.</p>
+    <p><b>Conclusion:</b> National development improves education, economy and quality of life.</p>
+    <div class="trick">NATION</div>
+    <ul>
+      <li>National unity</li>
+      <li>Agricultural development</li>
+      <li>Technology</li>
+      <li>Industrial development</li>
+      <li>Overall welfare</li>
+      <li>New opportunities</li>
+      <li>Education</li>
+      <li>Employment</li>
+      <li>Health</li>
+      <li>Infrastructure</li>
+      <li>Economy</li>
+      <li>Scientific attitude</li>
+      <li>Equality</li>
+      <li>Democracy</li>
+      <li>Modernization</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Teacher Role</h2>
+    <p><b>Definition:</b> Teacher plays an important role in teaching, guidance and personality development.</p>
+    <p><b>Conclusion:</b> Teacher helps students become disciplined and responsible citizens.</p>
+    <div class="trick">TEACHER</div>
+    <ul>
+      <li>Teaching</li>
+      <li>Guidance</li>
+      <li>Discipline</li>
+      <li>Motivation</li>
+      <li>Leadership</li>
+      <li>Counselling</li>
+      <li>Role model</li>
+      <li>Values</li>
+      <li>Cooperation</li>
+      <li>Adjustment</li>
+      <li>Development</li>
+      <li>Communication</li>
+      <li>Creativity</li>
+      <li>Responsibility</li>
+      <li>Evaluation</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Environment</h2>
+    <p><b>Definition:</b> Environment includes all living and non-living things around us.</p>
+    <p><b>Conclusion:</b> Environmental protection is necessary for healthy life and ecological balance.</p>
+    <div class="trick">GREEN</div>
+    <ul>
+      <li>Global warming</li>
+      <li>Resources</li>
+      <li>Environment protection</li>
+      <li>Ecological balance</li>
+      <li>Nature conservation</li>
+      <li>Pollution</li>
+      <li>Deforestation</li>
+      <li>Water protection</li>
+      <li>Air protection</li>
+      <li>Soil conservation</li>
+      <li>Climate change</li>
+      <li>Recycling</li>
+      <li>Awareness</li>
+      <li>Biodiversity</li>
+      <li>Population control</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Secular Education</h2>
+    <p><b>Definition:</b> Secular education gives equal respect to all religions.</p>
+    <p><b>Conclusion:</b> Secular education promotes peace, unity and tolerance.</p>
+    <div class="trick">RESPECT</div>
+    <ul>
+      <li>Religious freedom</li>
+      <li>Equality</li>
+      <li>Scientific attitude</li>
+      <li>Peace</li>
+      <li>Emotional unity</li>
+      <li>Cooperation</li>
+      <li>Tolerance</li>
+      <li>Brotherhood</li>
+      <li>National integration</li>
+      <li>Humanism</li>
+      <li>Morality</li>
+      <li>Democratic values</li>
+      <li>Social harmony</li>
+      <li>Inclusive education</li>
+      <li>Unity in diversity</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Quick Quiz Game</h2>
+
+    <div class="quiz">
+      <h3>1. Sociology is the study of?</h3>
+      <button onclick="showAnswer('a1')">Show Answer</button>
+      <div id="a1" class="answer">Society</div>
+    </div>
+
+    <div class="quiz">
+      <h3>2. Socialisation teaches social?</h3>
+      <button onclick="showAnswer('a2')">Show Answer</button>
+      <div id="a2" class="answer">Behaviour</div>
+    </div>
+
+    <div class="quiz">
+      <h3>3. National development means overall?</h3>
+      <button onclick="showAnswer('a3')">Show Answer</button>
+      <div id="a3" class="answer">Progress</div>
+    </div>
+
+    <div class="quiz">
+      <h3>4. Teacher develops moral?</h3>
+      <button onclick="showAnswer('a4')">Show Answer</button>
+      <div id="a4" class="answer">Values</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How to Write Full Mark Answer</h2>
+    <ul>
+      <li>Write Introduction (5-6 lines)</li>
+      <li>Write 15 important points</li>
+      <li>Explain each point in 1 line</li>
+      <li>Use headings and subheadings</li>
+      <li>Write conclusion in 2-3 lines</li>
+      <li>Underline important words</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Caste System</h2>
+    <p><b>Definition:</b> Caste system is a traditional social system based on birth.</p>
+    <p><b>Conclusion:</b> Caste system created social inequality and division.</p>
+    <div class="trick">CASTE</div>
+    <ul>
+      <li>Comes by birth</li>
+      <li>All are not equal</li>
+      <li>Strict rules</li>
+      <li>Traditional occupation</li>
+      <li>Endogamy</li>
+      <li>Untouchability</li>
+      <li>Social discrimination</li>
+      <li>Higher and lower caste</li>
+      <li>Religious influence</li>
+      <li>Rigid system</li>
+      <li>Lack of equality</li>
+      <li>Social division</li>
+      <li>Fixed social status</li>
+      <li>Conservative nature</li>
+      <li>Cultural differences</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Difference Between Caste and Class</h2>
+    <p><b>Definition:</b> Caste is based on birth while class is based on wealth and status.</p>
+    <p><b>Conclusion:</b> Caste is rigid but class is flexible.</p>
+    <div class="trick">BIRTH vs WEALTH</div>
+    <ul>
+      <li>Caste by birth</li>
+      <li>Class by wealth</li>
+      <li>Caste rigid</li>
+      <li>Class flexible</li>
+      <li>Caste closed system</li>
+      <li>Class open system</li>
+      <li>Caste hereditary</li>
+      <li>Class achievement based</li>
+      <li>Caste traditional</li>
+      <li>Class modern</li>
+      <li>Caste less mobility</li>
+      <li>Class more mobility</li>
+      <li>Caste fixed occupation</li>
+      <li>Class skill based occupation</li>
+      <li>Caste social inequality</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Student Unrest</h2>
+    <p><b>Definition:</b> Student unrest means dissatisfaction and indiscipline among students.</p>
+    <p><b>Conclusion:</b> Student unrest affects education and social peace.</p>
+    <div class="trick">STRESS</div>
+    <ul>
+      <li>Stress</li>
+      <li>Teacher problem</li>
+      <li>Ragging</li>
+      <li>Examination fear</li>
+      <li>Social pressure</li>
+      <li>Student politics</li>
+      <li>Unemployment</li>
+      <li>Lack of guidance</li>
+      <li>Drug addiction</li>
+      <li>Frustration</li>
+      <li>Economic problem</li>
+      <li>Family problem</li>
+      <li>Peer pressure</li>
+      <li>Indiscipline</li>
+      <li>Mental tension</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>NCF 2005</h2>
+    <p><b>Definition:</b> NCF 2005 is a framework for improving school education.</p>
+    <p><b>Conclusion:</b> NCF 2005 promotes quality and child-centered education.</p>
+    <div class="trick">QUALITY</div>
+    <ul>
+      <li>Quality education</li>
+      <li>Universal education</li>
+      <li>Activity based learning</li>
+      <li>Learner centered</li>
+      <li>Inclusive education</li>
+      <li>Teacher development</li>
+      <li>Youth development</li>
+      <li>Reduce burden</li>
+      <li>Constructivist learning</li>
+      <li>Value education</li>
+      <li>Environmental education</li>
+      <li>Peace education</li>
+      <li>Critical thinking</li>
+      <li>Flexible curriculum</li>
+      <li>Child friendly learning</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>National Development Indicators</h2>
+    <p><b>Definition:</b> Development indicators show the progress of a nation.</p>
+    <p><b>Conclusion:</b> Indicators help measure educational, social and economic development.</p>
+    <div class="trick">DEVELOPMENT</div>
+    <ul>
+      <li>Education</li>
+      <li>Economy</li>
+      <li>Values</li>
+      <li>Equality</li>
+      <li>Life expectancy</li>
+      <li>Opportunities</li>
+      <li>Poverty reduction</li>
+      <li>Modernization</li>
+      <li>Employment</li>
+      <li>National progress</li>
+      <li>Technology</li>
+      <li>Health</li>
+      <li>Infrastructure</li>
+      <li>Scientific attitude</li>
+      <li>Social justice</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="footer">
+  Made for Easy B.Ed-201 Learning and Full Marks Preparation
+</div>
+
+<script>
+function showAnswer(id) {
+  var x = document.getElementById(id);
+  if (x.style.display === 'block') {
+    x.style.display = 'none';
+  } else {
+    x.style.display = 'block';
+  }
+}
+</script>
+
+</body>
+  <div class="card">
+    <h2>Educational Sociology vs Sociology of Education</h2>
+    <p><b>Definition:</b> Educational Sociology applies sociology in education while Sociology of Education studies education socially.</p>
+    <p><b>Conclusion:</b> One is practical and the other is theoretical.</p>
+    <div class="trick">USE vs STUDY</div>
+    <ul>
+      <li>Educational Sociology = Use</li>
+      <li>Sociology of Education = Study</li>
+      <li>Practical subject</li>
+      <li>Theoretical subject</li>
+      <li>Teacher centered</li>
+      <li>Society centered</li>
+      <li>Application oriented</li>
+      <li>Research oriented</li>
+      <li>Micro approach</li>
+      <li>Macro approach</li>
+      <li>Classroom focus</li>
+      <li>Society focus</li>
+      <li>Educational improvement</li>
+      <li>Educational analysis</li>
+      <li>Social influence on education</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Importance of Sociology of Education</h2>
+    <p><b>Definition:</b> Sociology of Education helps understand education in social context.</p>
+    <p><b>Conclusion:</b> It helps teachers, students and society in development.</p>
+    <div class="trick">HELPERS</div>
+    <ul>
+      <li>Helps teachers</li>
+      <li>Encourages adjustment</li>
+      <li>Learns values</li>
+      <li>Prevents social evils</li>
+      <li>Educational improvement</li>
+      <li>Respect for culture</li>
+      <li>Social development</li>
+      <li>National integration</li>
+      <li>Democratic values</li>
+      <li>Personality development</li>
+      <li>Scientific attitude</li>
+      <li>International understanding</li>
+      <li>Social harmony</li>
+      <li>Leadership quality</li>
+      <li>Emotional maturity</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Sociology and Psychology</h2>
+    <p><b>Definition:</b> Sociology studies society while psychology studies mind and behaviour.</p>
+    <p><b>Conclusion:</b> Both help understand human behaviour and education.</p>
+    <div class="trick">MIND + SOCIETY</div>
+    <ul>
+      <li>Society study</li>
+      <li>Mind study</li>
+      <li>Group behaviour</li>
+      <li>Individual behaviour</li>
+      <li>Social interaction</li>
+      <li>Mental process</li>
+      <li>Personality development</li>
+      <li>Adjustment</li>
+      <li>Values formation</li>
+      <li>Education connection</li>
+      <li>Emotional development</li>
+      <li>Relationship study</li>
+      <li>Classroom behaviour</li>
+      <li>Social process</li>
+      <li>Human development</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Characteristics of Tribe</h2>
+    <p><b>Definition:</b> Tribe is a social group having common culture, language and territory.</p>
+    <p><b>Conclusion:</b> Tribes have simple life and unique cultural identity.</p>
+    <div class="trick">TRIBALS</div>
+    <ul>
+      <li>Traditional life</li>
+      <li>Rural living</li>
+      <li>Independent culture</li>
+      <li>Blood relationship</li>
+      <li>Area common</li>
+      <li>Language same</li>
+      <li>Simple lifestyle</li>
+      <li>Common religion</li>
+      <li>Group unity</li>
+      <li>Traditional occupation</li>
+      <li>Social equality</li>
+      <li>Political organization</li>
+      <li>Common customs</li>
+      <li>Close to nature</li>
+      <li>Distinct identity</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Secular Education</h2>
+    <p><b>Definition:</b> Secular education gives equal respect to all religions.</p>
+    <p><b>Conclusion:</b> Secular education promotes unity, peace and tolerance.</p>
+    <div class="trick">RESPECT</div>
+    <ul>
+      <li>Religious freedom</li>
+      <li>Equality</li>
+      <li>Scientific attitude</li>
+      <li>Peace</li>
+      <li>Emotional unity</li>
+      <li>Cooperation</li>
+      <li>Tolerance</li>
+      <li>National integration</li>
+      <li>Humanism</li>
+      <li>Moral values</li>
+      <li>Brotherhood</li>
+      <li>Social harmony</li>
+      <li>Democratic values</li>
+      <li>Inclusive education</li>
+      <li>Unity in diversity</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Role of Teacher in Removing Casteism</h2>
+    <p><b>Definition:</b> Teacher helps remove caste discrimination through education and values.</p>
+    <p><b>Conclusion:</b> Teacher helps create equal and democratic society.</p>
+    <div class="trick">TEACHERS</div>
+    <ul>
+      <li>Treat all equally</li>
+      <li>Encourage unity</li>
+      <li>Awareness against casteism</li>
+      <li>Create democratic values</li>
+      <li>Help backward students</li>
+      <li>Encourage group activities</li>
+      <li>Remove discrimination</li>
+      <li>Social harmony</li>
+      <li>Respect all religions</li>
+      <li>Develop moral values</li>
+      <li>Promote national integration</li>
+      <li>Inclusive education</li>
+      <li>Remove untouchability</li>
+      <li>Scientific attitude</li>
+      <li>Role model behaviour</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Environmental Problems</h2>
+    <p><b>Definition:</b> Environmental problems are problems that damage nature and human life.</p>
+    <p><b>Conclusion:</b> Environmental protection is necessary for survival and ecological balance.</p>
+    <div class="trick">PAPER</div>
+    <ul>
+      <li>Pollution</li>
+      <li>Air contamination</li>
+      <li>Population growth</li>
+      <li>Environmental destruction</li>
+      <li>Resource depletion</li>
+      <li>Global warming</li>
+      <li>Climate change</li>
+      <li>Water scarcity</li>
+      <li>Deforestation</li>
+      <li>Industrial waste</li>
+      <li>Plastic pollution</li>
+      <li>Soil erosion</li>
+      <li>Loss of biodiversity</li>
+      <li>Noise pollution</li>
+      <li>Urbanization</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Education as Indicator of National Development</h2>
+    <p><b>Definition:</b> Education indicates the progress and development of a nation.</p>
+    <p><b>Conclusion:</b> Education improves economy, equality and national progress.</p>
+    <div class="trick">EDUCATE</div>
+    <ul>
+      <li>Economic growth</li>
+      <li>Democratic values</li>
+      <li>Unity</li>
+      <li>Cultural development</li>
+      <li>Awareness</li>
+      <li>Technical skill</li>
+      <li>Employment</li>
+      <li>Poverty reduction</li>
+      <li>Leadership development</li>
+      <li>Health awareness</li>
+      <li>Modernization</li>
+      <li>Social equality</li>
+      <li>Personality development</li>
+      <li>National progress</li>
+      <li>International understanding</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Education Commission 1964-66</h2>
+    <p><b>Definition:</b> Kothari Commission was formed to improve Indian education system.</p>
+    <p><b>Conclusion:</b> The commission linked education with national development.</p>
+    <div class="trick">DEVELOPMENT</div>
+    <ul>
+      <li>Democratic values</li>
+      <li>Economic development</li>
+      <li>Values and morality</li>
+      <li>Equality</li>
+      <li>Leadership development</li>
+      <li>Occupational efficiency</li>
+      <li>Productivity</li>
+      <li>Modernization</li>
+      <li>Emotional integration</li>
+      <li>National integration</li>
+      <li>Technological progress</li>
+      <li>Social justice</li>
+      <li>Universal education</li>
+      <li>Science education</li>
+      <li>Teacher improvement</li>
+    </ul>
+  </div>
+
+</html>
