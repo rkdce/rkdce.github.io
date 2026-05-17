@@ -1,13 +1,11 @@
-html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Essential for mobile responsiveness -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>BED-201 Sociology of Education</title>
   <style>
-    /* Simple, Mobile-First CSS */
     :root {
       --bg: #f4f6f8;
       --card-bg: #ffffff;
@@ -21,6 +19,10 @@ html
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -61,14 +63,22 @@ html
       gap: 8px;
     }
 
-    .unit-nav a {
+    .unit-nav button {
       background: rgba(255, 255, 255, 0.2);
       color: white;
-      text-decoration: none;
+      border: none;
       padding: 6px 12px;
       border-radius: 20px;
       font-size: 0.85rem;
       font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .unit-nav button.active {
+      background: white;
+      color: var(--primary);
+      font-weight: 600;
     }
 
     /* Main Container */
@@ -78,34 +88,14 @@ html
       margin: 0 auto;
     }
 
-    /* Table of Contents (Collapsible for Mobile) */
-    .toc-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 24px;
+    /* Dynamic Content Container */
+    .unit-content {
+      display: none;
     }
 
-    .toc-card summary {
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: var(--primary);
-      cursor: pointer;
-      list-style: none;
-    }
-    
-    .toc-card summary::-webkit-details-marker { display: none; }
-    
-    .toc-card a {
+    .unit-content.active {
       display: block;
-      padding: 8px 0;
-      color: var(--text);
-      text-decoration: none;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.95rem;
     }
-    .toc-card a:last-child { border-bottom: none; }
 
     /* Unit Headers */
     .unit-header {
@@ -113,7 +103,7 @@ html
       color: white;
       padding: 12px 16px;
       border-radius: 8px;
-      margin: 24px 0 16px;
+      margin: 8px 0 16px;
       font-size: 1.1rem;
     }
 
@@ -123,11 +113,12 @@ html
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 16px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
-    .q-card summary {
+    /* Custom Accordion Title styling */
+    .q-card details summary {
       font-weight: 600;
       font-size: 1.05rem;
       color: var(--text);
@@ -138,14 +129,25 @@ html
       align-items: center;
     }
     
-    .q-card summary::-webkit-details-marker { display: none; }
-    .q-card summary::after {
+    .q-card details summary::-webkit-details-marker { display: none; }
+    
+    .q-card details summary::after {
       content: "▼";
       color: var(--primary);
       font-size: 0.8rem;
+      transition: transform 0.2s;
     }
-    .q-card details[open] summary::after { content: "▲"; }
-    .q-card details[open] summary { margin-bottom: 12px; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    
+    .q-card details[open] summary::after {
+      transform: rotate(180deg);
+    }
+    
+    .q-card details[open] summary {
+      margin-bottom: 12px;
+      color: var(--primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
 
     /* Answer Content Formatting */
     .answer h3 {
@@ -193,749 +195,716 @@ html
 
   <header>
     <h1>BED-201 Sociology of Education</h1>
-    <p>Exam-ready notes, formatted for mobile reading.</p>
+    <p>Select a unit to display its respective exam notes below.</p>
     <div class="unit-nav">
-      <a href="#unit1">Unit I</a>
-      <a href="#unit2">Unit II</a>
-      <a href="#unit3">Unit III</a>
-      <a href="#unit4">Unit IV</a>
-      <a href="#unit5">Unit V</a>
+      <button onclick="switchUnit('unit1', this)" class="active">Unit I</button>
+      <button onclick="switchUnit('unit2', this)">Unit II</button>
+      <button onclick="switchUnit('unit3', this)">Unit III</button>
+      <button onclick="switchUnit('unit4', this)">Unit IV</button>
+      <button onclick="switchUnit('unit5', this)">Unit V</button>
     </div>
   </header>
 
   <main>
-    <!-- Collapsible Mobile TOC -->
-    <details class="toc-card">
-      <summary>View Table of Contents</summary>
-      <div style="margin-top: 12px;">
-        <strong>Unit I – Sociology and Sociology of Education</strong>
-        <a href="#q1">1. Sociology as a Science</a>
-        <a href="#q2">2. Sociology of Education</a>
-        <a href="#q3">3. Sociology and Education</a>
-        <a href="#q4">4. Sociology and Psychology</a>
-        <a href="#q5">5. Sociology and Political Science</a>
-        <a href="#q6">6. Sociology and History</a>
-        <a href="#q7">7. Teaching Sociology</a>
-        <a href="#q8">8. Teacher of Sociology</a>
-        
-        <strong style="display:block; margin-top:12px;">Unit II – Caste, Class, Social Conflict</strong>
-        <a href="#q9">9. Caste</a>
-        <a href="#q10">10. Class</a>
-        <a href="#q11">11. Caste and Class</a>
-        <a href="#q12">12. Social Conflict</a>
-        <a href="#q13">13. Caste, Religion and Economy</a>
-        
-        <strong style="display:block; margin-top:12px;">Unit III – Socialization, Secularism, Democracy</strong>
-        <a href="#q14">14. Socialization</a>
-        <a href="#q15">15. Secularism</a>
-        <a href="#q16">16. Education for Democracy</a>
-        <a href="#q17">17. Positive Discrimination</a>
-        
-        <strong style="display:block; margin-top:12px;">Unit IV – Social Problems</strong>
-        <a href="#q18">18. Corruption</a>
-        <a href="#q19">19. Student Unrest</a>
-        <a href="#q20">20. Higher Education Crisis</a>
-        <a href="#q21">21. Environmental Problems</a>
-        
-        <strong style="display:block; margin-top:12px;">Unit V – National Development</strong>
-        <a href="#q22">22. National Development</a>
-        <a href="#q23">23. Education as Indicator</a>
-        <a href="#q24">24. Education Commission 1964–66</a>
-        <a href="#q25">25. NPE 1986</a>
-        <a href="#q26">26. NCF 2005</a>
-        <a href="#q27">27. NCFTE 2009</a>
+
+    <!-- UNIT I CONTENT -->
+    <div id="unit1" class="unit-content active">
+      <h2 class="unit-header">UNIT I : SOCIOLOGY AND SOCIOLOGY OF EDUCATION</h2>
+
+      <div class="q-card">
+        <details name="unit1-accordions">
+          <summary>1. Sociology as a Science</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Sociology is the scientific study of society, social relationships, social institutions, customs, traditions and human behaviour in groups. The term Sociology was coined by Auguste Comte, who is regarded as the Father of Sociology. Sociology studies society in a systematic and scientific manner.</p>
+            <p>Many scholars consider sociology as a science because it follows scientific methods such as observation, classification, analysis and verification while studying social phenomena.</p>
+            <p><strong>Meaning of Science:</strong> Science means systematic and organized knowledge obtained through observation, experimentation, analysis and verification.</p>
+            <h3>Sociology as a Science</h3>
+            <ol>
+              <li><strong>Systematic Study:</strong> Sociology studies society in an organized and systematic way. It does not depend upon imagination or superstition.</li>
+              <li><strong>Observation Method:</strong> Sociologists collect facts through observation, surveys, interviews and case studies.</li>
+              <li><strong>Cause and Effect Relationship:</strong> Sociology studies causes and consequences of social events. Example: Poverty may lead to crime.</li>
+              <li><strong>Objectivity:</strong> Sociology tries to remain free from personal bias and emotions.</li>
+              <li><strong>Verification of Facts:</strong> Social facts are verified through repeated studies and investigations.</li>
+              <li><strong>Classification of Data:</strong> Collected information is classified and analyzed scientifically.</li>
+              <li><strong>Prediction:</strong> Sociology can predict social behaviour to some extent.</li>
+              <li><strong>Use of Scientific Methods:</strong> Methods like survey, questionnaire, observation and statistical analysis are used.</li>
+              <li><strong>Universal Principles:</strong> Sociology develops certain general laws related to society and social behaviour.</li>
+              <li><strong>Empirical Study:</strong> Sociology depends on real experiences and practical evidence.</li>
+            </ol>
+            <h3>Limitations</h3>
+            <ul>
+              <li>Human behaviour changes constantly.</li>
+              <li>Complete objectivity is difficult.</li>
+              <li>Social experiments cannot be conducted like physical science.</li>
+              <li>Exact prediction is not always possible.</li>
+            </ul>
+            <p><strong>Conclusion:</strong> Although sociology is not an exact science like physics or chemistry, it possesses many scientific characteristics. Therefore, sociology can rightly be called a social science.</p>
+          </div>
+        </details>
       </div>
-    </details>
 
-    <!-- UNIT I -->
-    <h2 class="unit-header" id="unit1">UNIT I : SOCIOLOGY AND SOCIOLOGY OF EDUCATION</h2>
-
-    <div class="q-card" id="q1">
-      <details>
-        <summary>1. Sociology as a Science</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Sociology is the scientific study of society, social relationships, social institutions, customs, traditions and human behaviour in groups. The term Sociology was coined by Auguste Comte, who is regarded as the Father of Sociology. Sociology studies society in a systematic and scientific manner.</p>
-          <p>Many scholars consider sociology as a science because it follows scientific methods such as observation, classification, analysis and verification while studying social phenomena.</p>
-          <p><strong>Meaning of Science:</strong> Science means systematic and organized knowledge obtained through observation, experimentation, analysis and verification.</p>
-          <h3>Sociology as a Science</h3>
-          <ol>
-            <li><strong>Systematic Study:</strong> Sociology studies society in an organized and systematic way. It does not depend upon imagination or superstition.</li>
-            <li><strong>Observation Method:</strong> Sociologists collect facts through observation, surveys, interviews and case studies.</li>
-            <li><strong>Cause and Effect Relationship:</strong> Sociology studies causes and consequences of social events. Example: Poverty may lead to crime.</li>
-            <li><strong>Objectivity:</strong> Sociology tries to remain free from personal bias and emotions.</li>
-            <li><strong>Verification of Facts:</strong> Social facts are verified through repeated studies and investigations.</li>
-            <li><strong>Classification of Data:</strong> Collected information is classified and analyzed scientifically.</li>
-            <li><strong>Prediction:</strong> Sociology can predict social behaviour to some extent.</li>
-            <li><strong>Use of Scientific Methods:</strong> Methods like survey, questionnaire, observation and statistical analysis are used.</li>
-            <li><strong>Universal Principles:</strong> Sociology develops certain general laws related to society and social behaviour.</li>
-            <li><strong>Empirical Study:</strong> Sociology depends on real experiences and practical evidence.</li>
-          </ol>
-          <h3>Limitations</h3>
-          <ul>
-            <li>Human behaviour changes constantly.</li>
-            <li>Complete objectivity is difficult.</li>
-            <li>Social experiments cannot be conducted like physical science.</li>
-            <li>Exact prediction is not always possible.</li>
-          </ul>
-          <p><strong>Conclusion:</strong> Although sociology is not an exact science like physics or chemistry, it possesses many scientific characteristics. Therefore, sociology can rightly be called a social science.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="q-card" id="q2">
-      <details>
-        <summary>2. Meaning, Nature and Scope of Sociology of Education</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Sociology of Education is an important branch of sociology which studies the relationship between education and society. It explains how education influences society and how society influences education.</p>
-          <p>According to Brown, “Sociology of Education is the study of interaction between society and education.”</p>
-          <p><strong>Meaning:</strong> Sociology of Education studies educational institutions, educational processes and social factors affecting education.</p>
-          <ul>
-            <li>School and society</li>
-            <li>Teacher and student relationship</li>
-            <li>Socialization</li>
-            <li>Social change</li>
-            <li>Culture and education</li>
-            <li>Social values and discipline</li>
-          </ul>
-          <h3>Nature</h3>
-          <ol>
-            <li><strong>Social Science:</strong> It studies educational problems from the social point of view.</li>
-            <li><strong>Dynamic Subject:</strong> It changes according to social change.</li>
-            <li><strong>Practical in Nature:</strong> It helps in solving educational and social problems.</li>
-            <li><strong>Scientific Study:</strong> It uses scientific methods to study educational activities.</li>
-            <li><strong>Philosophical and Sociological:</strong> It combines sociology and education.</li>
-            <li><strong>Child-Centered:</strong> It studies the child in social environment.</li>
-          </ol>
-          <h3>Scope</h3>
-          <ol>
-            <li>Study of society and education</li>
-            <li>Socialization process</li>
-            <li>Role of school</li>
-            <li>Study of social institutions</li>
-            <li>Equality in education</li>
-            <li>Culture and education</li>
-            <li>Social change</li>
-            <li>Discipline and moral values</li>
-            <li>National integration</li>
-            <li>Educational problems</li>
-          </ol>
-          <p><strong>Importance:</strong> Helps teachers understand society, creates democratic values, promotes national integration, solves social problems, develops social adjustment, and encourages equality and justice.</p>
-          <p><strong>Conclusion:</strong> Sociology of Education helps us understand the relationship between education and society. It plays an important role in social development, national integration and personality development.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="q-card" id="q3">
-      <details>
-        <summary>3. Relationship between Sociology and Education</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Sociology and Education are closely related to each other. Sociology studies society while education develops individuals according to the needs of society. Education is considered the practical side of sociology.</p>
-          <ol>
-            <li>Education is a social process.</li>
-            <li>Sociology provides basis of education.</li>
-            <li>Education preserves culture.</li>
-            <li>Education brings social change.</li>
-            <li>Sociology helps in understanding child.</li>
-            <li>Education promotes socialization.</li>
-            <li>Education controls social behaviour.</li>
-            <li>Sociology helps educational planning.</li>
-            <li>Both aim at human welfare.</li>
-            <li>Education develops democratic society.</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Sociology and Education are interdependent. Sociology gives the theoretical foundation while education applies those principles in practical life.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="q-card" id="q4">
-      <details>
-        <summary>4. Relationship between Sociology and Psychology</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Sociology and Psychology are closely related sciences. Sociology studies society and group behaviour whereas psychology studies individual behaviour and mental processes.</p>
-          <ol>
-            <li>Both study human behaviour.</li>
-            <li>Social behaviour depends on mental processes.</li>
-            <li>Social environment influences personality.</li>
-            <li>Helpful in education.</li>
-            <li>Socialization process.</li>
-            <li>Social problems.</li>
-            <li>Mutual dependence.</li>
-          </ol>
-          <h3>Difference</h3>
-          <div class="table-container">
-            <table>
-              <tr><th>Sociology</th><th>Psychology</th></tr>
-              <tr><td>Studies society</td><td>Studies individual</td></tr>
-              <tr><td>Group behaviour</td><td>Mental behaviour</td></tr>
-              <tr><td>Social relations</td><td>Human mind</td></tr>
-              <tr><td>Social processes</td><td>Psychological processes</td></tr>
-            </table>
+      <div class="q-card">
+        <details name="unit1-accordions">
+          <summary>2. Meaning, Nature and Scope of Sociology of Education</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Sociology of Education is an important branch of sociology which studies the relationship between education and society. It explains how education influences society and how society influences education.</p>
+            <p>According to Brown, “Sociology of Education is the study of interaction between society and education.”</p>
+            <p><strong>Meaning:</strong> Sociology of Education studies educational institutions, educational processes and social factors affecting education.</p>
+            <ul>
+              <li>School and society</li>
+              <li>Teacher and student relationship</li>
+              <li>Socialization</li>
+              <li>Social change</li>
+              <li>Culture and education</li>
+              <li>Social values and discipline</li>
+            </ul>
+            <h3>Nature</h3>
+            <ol>
+              <li><strong>Social Science:</strong> It studies educational problems from the social point of view.</li>
+              <li><strong>Dynamic Subject:</strong> It changes according to social change.</li>
+              <li><strong>Practical in Nature:</strong> It helps in solving educational and social problems.</li>
+              <li><strong>Scientific Study:</strong> It uses scientific methods to study educational activities.</li>
+              <li><strong>Philosophical and Sociological:</strong> It combines sociology and education.</li>
+              <li><strong>Child-Centered:</strong> It studies the child in social environment.</li>
+            </ol>
+            <h3>Scope</h3>
+            <ol>
+              <li>Study of society and education</li>
+              <li>Socialization process</li>
+              <li>Role of school</li>
+              <li>Study of social institutions</li>
+              <li>Equality in education</li>
+              <li>Culture and education</li>
+              <li>Social change</li>
+              <li>Discipline and moral values</li>
+              <li>National integration</li>
+              <li>Educational problems</li>
+            </ol>
+            <p><strong>Importance:</strong> Helps teachers understand society, creates democratic values, promotes national integration, solves social problems, develops social adjustment, and encourages equality and justice.</p>
+            <p><strong>Conclusion:</strong> Sociology of Education helps us understand the relationship between education and society. It plays an important role in social development, national integration and personality development.</p>
           </div>
-          <p><strong>Conclusion:</strong> Sociology and Psychology are closely connected and complementary to each other.</p>
-        </div>
-      </details>
-    </div>
+        </details>
+      </div>
 
-    <div class="q-card" id="q5">
-      <details>
-        <summary>5. Relationship between Sociology and Political Science</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Sociology and Political Science are closely related social sciences. Sociology studies society whereas Political Science studies state and government.</p>
-          <ol>
-            <li>Both study human society.</li>
-            <li>State is a social institution.</li>
-            <li>Social conditions affect politics.</li>
-            <li>Sociology helps Political Science.</li>
-            <li>Political Science helps Sociology.</li>
-            <li>Both aim at social welfare.</li>
-          </ol>
-          <h3>Difference</h3>
-          <div class="table-container">
-            <table>
-              <tr><th>Sociology</th><th>Political Science</th></tr>
-              <tr><td>Studies society</td><td>Studies state</td></tr>
-              <tr><td>Wider subject</td><td>Narrow subject</td></tr>
-              <tr><td>Social relationships</td><td>Political relationships</td></tr>
-            </table>
+      <div class="q-card">
+        <details name="unit1-accordions">
+          <summary>3. Relationship between Sociology and Education</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Sociology and Education are closely related to each other. Sociology studies society while education develops individuals according to the needs of society. Education is considered the practical side of sociology.</p>
+            <ol>
+              <li>Education is a social process.</li>
+              <li>Sociology provides basis of education.</li>
+              <li>Education preserves culture.</li>
+              <li>Education brings social change.</li>
+              <li>Sociology helps in understanding child.</li>
+              <li>Education promotes socialization.</li>
+              <li>Education controls social behaviour.</li>
+              <li>Sociology helps educational planning.</li>
+              <li>Both aim at human welfare.</li>
+              <li>Education develops democratic society.</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Sociology and Education are interdependent. Sociology gives the theoretical foundation while education applies those principles in practical life.</p>
           </div>
-          <p><strong>Conclusion:</strong> Sociology and Political Science are interrelated subjects that help in understanding society and governance.</p>
-        </div>
-      </details>
-    </div>
+        </details>
+      </div>
 
-    <div class="q-card" id="q6">
-      <details>
-        <summary>6. Relationship between Sociology and History</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Sociology and History are closely related social sciences. History studies past events whereas Sociology studies present social life.</p>
-          <ol>
-            <li>History provides past information.</li>
-            <li>Sociology explains social events.</li>
-            <li>Both study human society.</li>
-            <li>Helpful for social change.</li>
-            <li>Mutual dependence.</li>
-          </ol>
-          <h3>Difference</h3>
-          <div class="table-container">
-            <table>
-              <tr><th>Sociology</th><th>History</th></tr>
-              <tr><td>Studies present society</td><td>Studies past events</td></tr>
-              <tr><td>Analytical</td><td>Descriptive</td></tr>
-              <tr><td>General principles</td><td>Particular events</td></tr>
-            </table>
+      <div class="q-card">
+        <details name="unit1-accordions">
+          <summary>4. Relationship between Sociology and Psychology</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Sociology and Psychology are closely related sciences. Sociology studies society and group behaviour whereas psychology studies individual behaviour and mental processes.</p>
+            <ol>
+              <li>Both study human behaviour.</li>
+              <li>Social behaviour depends on mental processes.</li>
+              <li>Social environment influences personality.</li>
+              <li>Helpful in education.</li>
+              <li>Socialization process.</li>
+              <li>Social problems.</li>
+              <li>Mutual dependence.</li>
+            </ol>
+            <h3>Difference</h3>
+            <div class="table-container">
+              <table>
+                <tr><th>Sociology</th><th>Psychology</th></tr>
+                <tr><td>Studies society</td><td>Studies individual</td></tr>
+                <tr><td>Group behaviour</td><td>Mental behaviour</td></tr>
+                <tr><td>Social relationships</td><td>Human mind</td></tr>
+                <tr><td>Social processes</td><td>Psychological processes</td></tr>
+              </table>
+            </div>
+            <p><strong>Conclusion:</strong> Sociology and Psychology are closely connected and complementary to each other.</p>
           </div>
-          <p><strong>Conclusion:</strong> History and Sociology complement each other and help in understanding human society better.</p>
-        </div>
-      </details>
-    </div>
+        </details>
+      </div>
 
-    <div class="q-card" id="q7">
-      <details>
-        <summary>7. Objectives and Values of Teaching Sociology</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Teaching Sociology of Education helps students understand society, social values and educational problems.</p>
-          <h3>Objectives</h3>
-          <ol>
-            <li>To understand society.</li>
-            <li>To develop social awareness.</li>
-            <li>To promote democratic values.</li>
-            <li>To develop national integration.</li>
-            <li>To develop scientific attitude.</li>
-            <li>To promote social adjustment.</li>
-            <li>To encourage international understanding.</li>
-            <li>To remove social evils.</li>
-          </ol>
-          <h3>Values</h3>
-          <ol>
-            <li>Social value</li>
-            <li>Moral value</li>
-            <li>Cultural value</li>
-            <li>Democratic value</li>
-            <li>National value</li>
-            <li>International value</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Teaching Sociology of Education is important for creating responsible citizens and a progressive society.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="q-card" id="q8">
-      <details>
-        <summary>8. Qualities and Competencies of a Teacher</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> A sociology teacher plays an important role in developing social awareness among students. Therefore, a sociology teacher should possess various qualities and competencies.</p>
-          <h3>Qualities</h3>
-          <ol>
-            <li>Good knowledge of subject</li>
-            <li>Broad-mindedness</li>
-            <li>Scientific attitude</li>
-            <li>Impartial nature</li>
-            <li>Leadership quality</li>
-            <li>Good communication skill</li>
-            <li>Social awareness</li>
-            <li>Democratic attitude</li>
-            <li>Patience and sympathy</li>
-            <li>Moral character</li>
-          </ol>
-          <h3>Competencies</h3>
-          <ol>
-            <li>Classroom management</li>
-            <li>Use of teaching methods</li>
-            <li>Evaluation skill</li>
-            <li>Guidance and counselling</li>
-            <li>Research ability</li>
-            <li>Problem-solving skill</li>
-            <li>Social leadership</li>
-          </ol>
-          <p><strong>Conclusion:</strong> A sociology teacher should be knowledgeable, impartial and socially responsible to guide students towards social development.</p>
-        </div>
-      </details>
-    </div>
-
-    <!-- UNIT II -->
-    <h2 class="unit-header" id="unit2">UNIT II : CASTE, CLASS, SOCIAL CONFLICT</h2>
-
-    <div class="q-card" id="q9">
-      <details>
-        <summary>9. Concept, Nature and Forms of Caste</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Caste is an important feature of Indian society. It is a system of social stratification based on birth.</p>
-          <p>According to Risley, “Caste is a collection of families bearing a common name and following the same occupation.”</p>
-          <p><strong>Meaning:</strong> Caste refers to a hereditary social group where membership is determined by birth.</p>
-          <h3>Characteristics</h3>
-          <ol>
-            <li>Birth-based membership</li>
-            <li>Fixed occupation</li>
-            <li>Endogamy</li>
-            <li>Social restrictions</li>
-            <li>Hierarchy</li>
-            <li>Religious basis</li>
-            <li>Social control</li>
-          </ol>
-          <h3>Forms</h3>
-          <ol>
-            <li>Brahmin</li>
-            <li>Kshatriya</li>
-            <li>Vaishya</li>
-            <li>Shudra</li>
-          </ol>
-          <h3>Merits</h3>
-          <ol>
-            <li>Maintained social order</li>
-            <li>Preserved culture</li>
-            <li>Developed occupational specialization</li>
-          </ol>
-          <h3>Demerits</h3>
-          <ol>
-            <li>Social inequality</li>
-            <li>Untouchability</li>
-            <li>Social conflict</li>
-            <li>National disunity</li>
-            <li>Obstacle to democracy</li>
-          </ol>
-          <p><strong>Conclusion:</strong> The caste system has greatly influenced Indian society, but modern education and democracy are reducing caste discrimination.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="q-card" id="q10">
-      <details>
-        <summary>10. Concept and Forms of Class</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Class is another form of social stratification based on wealth, occupation, education and status.</p>
-          <p><strong>Meaning:</strong> A social class is a group of people having similar economic and social status.</p>
-          <h3>Characteristics</h3>
-          <ol>
-            <li>Economic basis</li>
-            <li>Open system</li>
-            <li>Social mobility</li>
-            <li>Achievement-based</li>
-            <li>Class consciousness</li>
-          </ol>
-          <h3>Forms</h3>
-          <ol>
-            <li>Upper class</li>
-            <li>Middle class</li>
-            <li>Lower class</li>
-          </ol>
-          <h3>Merits</h3>
-          <ol>
-            <li>Encourages competition</li>
-            <li>Promotes hard work</li>
-            <li>Provides social mobility</li>
-          </ol>
-          <h3>Demerits</h3>
-          <ol>
-            <li>Economic inequality</li>
-            <li>Social conflict</li>
-            <li>Exploitation</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Class system influences economic and social life. Education helps reduce class inequality.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="q-card" id="q11">
-      <details>
-        <summary>11. Compare Caste and Class</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Caste and class are systems of social stratification.</p>
-          <div class="table-container">
-            <table>
-              <tr><th>Caste</th><th>Class</th></tr>
-              <tr><td>Based on birth</td><td>Based on wealth and occupation</td></tr>
-              <tr><td>Closed system</td><td>Open system</td></tr>
-              <tr><td>No social mobility</td><td>Social mobility exists</td></tr>
-              <tr><td>Fixed occupation</td><td>Occupation can change</td></tr>
-              <tr><td>Marriage within caste</td><td>No such restriction</td></tr>
-              <tr><td>Religious basis</td><td>Economic basis</td></tr>
-              <tr><td>Hereditary</td><td>Achievement-based</td></tr>
-            </table>
+      <div class="q-card">
+        <details name="unit1-accordions">
+          <summary>5. Relationship between Sociology and Political Science</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Sociology and Political Science are closely related social sciences. Sociology studies society whereas Political Science studies state and government.</p>
+            <ol>
+              <li>Both study human society.</li>
+              <li>State is a social institution.</li>
+              <li>Social conditions affect politics.</li>
+              <li>Sociology helps Political Science.</li>
+              <li>Political Science helps Sociology.</li>
+              <li>Both aim at social welfare.</li>
+            </ol>
+            <h3>Difference</h3>
+            <div class="table-container">
+              <table>
+                <tr><th>Sociology</th><th>Political Science</th></tr>
+                <tr><td>Studies society</td><td>Studies state</td></tr>
+                <tr><td>Wider subject</td><td>Narrow subject</td></tr>
+                <tr><td>Social relationships</td><td>Political relationships</td></tr>
+              </table>
+            </div>
+            <p><strong>Conclusion:</strong> Sociology and Political Science are interrelated subjects that help in understanding society and governance.</p>
           </div>
-          <h3>Similarities</h3>
-          <ol>
-            <li>Both divide society.</li>
-            <li>Both influence social status.</li>
-            <li>Both create social differences.</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Caste is rigid while class is flexible. Modern society is gradually replacing caste with class.</p>
-        </div>
-      </details>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit1-accordions">
+          <summary>6. Relationship between Sociology and History</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Sociology and History are closely related social sciences. History studies past events whereas Sociology studies present social life.</p>
+            <ol>
+              <li>History provides past information.</li>
+              <li>Sociology explains social events.</li>
+              <li>Both study human society.</li>
+              <li>Helpful for social change.</li>
+              <li>Mutual dependence.</li>
+            </ol>
+            <h3>Difference</h3>
+            <div class="table-container">
+              <table>
+                <tr><th>Sociology</th><th>History</th></tr>
+                <tr><td>Studies present society</td><td>Studies past events</td></tr>
+                <tr><td>Analytical</td><td>Descriptive</td></tr>
+                <tr><td>General principles</td><td>Particular events</td></tr>
+              </table>
+            </div>
+            <p><strong>Conclusion:</strong> History and Sociology complement each other and help in understanding human society better.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit1-accordions">
+          <summary>7. Objectives and Values of Teaching Sociology</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Teaching Sociology of Education helps students understand society, social values and educational problems.</p>
+            <h3>Objectives</h3>
+            <ol>
+              <li>To understand society.</li>
+              <li>To develop social awareness.</li>
+              <li>To promote democratic values.</li>
+              <li>To develop national integration.</li>
+              <li>To develop scientific attitude.</li>
+              <li>To promote social adjustment.</li>
+              <li>To encourage international understanding.</li>
+              <li>To remove social evils.</li>
+            </ol>
+            <h3>Values</h3>
+            <ol>
+              <li>Social value</li>
+              <li>Moral value</li>
+              <li>Cultural value</li>
+              <li>Democratic value</li>
+              <li>National value</li>
+              <li>International value</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Teaching Sociology of Education is important for creating responsible citizens and a progressive society.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit1-accordions">
+          <summary>8. Qualities and Competencies of a Teacher</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> A sociology teacher plays an important role in developing social awareness among students. Therefore, a sociology teacher should possess various qualities and competencies.</p>
+            <h3>Qualities</h3>
+            <ol>
+              <li>Good knowledge of subject</li>
+              <li>Broad-mindedness</li>
+              <li>Scientific attitude</li>
+              <li>Impartial nature</li>
+              <li>Leadership quality</li>
+              <li>Good communication skill</li>
+              <li>Social awareness</li>
+              <li>Democratic attitude</li>
+              <li>Patience and sympathy</li>
+              <li>Moral character</li>
+            </ol>
+            <h3>Competencies</h3>
+            <ol>
+              <li>Classroom management</li>
+              <li>Use of teaching methods</li>
+              <li>Evaluation skill</li>
+              <li>Guidance and counselling</li>
+              <li>Research ability</li>
+              <li>Problem-solving skill</li>
+              <li>Social leadership</li>
+            </ol>
+            <p><strong>Conclusion:</strong> A sociology teacher should be knowledgeable, impartial and socially responsible to guide students towards social development.</p>
+          </div>
+        </details>
+      </div>
     </div>
 
-    <div class="q-card" id="q12">
-      <details>
-        <summary>12. Social Conflict (Caste and Class)</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Social conflict means struggle or disagreement among individuals or groups due to differences in interest, status or power.</p>
-          <h3>Causes</h3>
-          <ol>
-            <li>Economic inequality</li>
-            <li>Caste discrimination</li>
-            <li>Religious differences</li>
-            <li>Political competition</li>
-            <li>Lack of education</li>
-            <li>Unemployment</li>
-          </ol>
-          <h3>Effects</h3>
-          <ol>
-            <li>Social disunity</li>
-            <li>Violence</li>
-            <li>Hatred</li>
-            <li>National weakness</li>
-          </ol>
-          <h3>Role of Teacher</h3>
-          <ol>
-            <li>Promote equality</li>
-            <li>Develop democratic values</li>
-            <li>Encourage cooperation</li>
-            <li>Teach moral education</li>
-            <li>Remove prejudice</li>
-            <li>Encourage group activities</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Education and teachers can play a major role in reducing social conflict and creating social harmony.</p>
-        </div>
-      </details>
+    <!-- UNIT II CONTENT -->
+    <div id="unit2" class="unit-content">
+      <h2 class="unit-header">UNIT II : CASTE, CLASS, SOCIAL CONFLICT</h2>
+
+      <div class="q-card">
+        <details name="unit2-accordions">
+          <summary>9. Concept, Nature and Forms of Caste</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Caste is an important feature of Indian society. It is a system of social stratification based on birth.</p>
+            <p>According to Risley, “Caste is a collection of families bearing a common name and following the same occupation.”</p>
+            <p><strong>Meaning:</strong> Caste refers to a hereditary social group where membership is determined by birth.</p>
+            <h3>Characteristics</h3>
+            <ol>
+              <li>Birth-based membership</li>
+              <li>Fixed occupation</li>
+              <li>Endogamy</li>
+              <li>Social restrictions</li>
+              <li>Hierarchy</li>
+              <li>Religious basis</li>
+              <li>Social control</li>
+            </ol>
+            <h3>Forms</h3>
+            <ol>
+              <li>Brahmin</li>
+              <li>Kshatriya</li>
+              <li>Vaishya</li>
+              <li>Shudra</li>
+            </ol>
+            <h3>Merits</h3>
+            <ol>
+              <li>Maintained social order</li>
+              <li>Preserved culture</li>
+              <li>Developed occupational specialization</li>
+            </ol>
+            <h3>Demerits</h3>
+            <ol>
+              <li>Social inequality</li>
+              <li>Untouchability</li>
+              <li>Social conflict</li>
+              <li>National disunity</li>
+              <li>Obstacle to democracy</li>
+            </ol>
+            <p><strong>Conclusion:</strong> The caste system has greatly influenced Indian society, but modern education and democracy are reducing caste discrimination.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit2-accordions">
+          <summary>10. Concept and Forms of Class</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Class is another form of social stratification based on wealth, occupation, education and status.</p>
+            <p><strong>Meaning:</strong> A social class is a group of people having similar economic and social status.</p>
+            <h3>Characteristics</h3>
+            <ol>
+              <li>Economic basis</li>
+              <li>Open system</li>
+              <li>Social mobility</li>
+              <li>Achievement-based</li>
+              <li>Class consciousness</li>
+            </ol>
+            <h3>Forms</h3>
+            <ol>
+              <li>Upper class</li>
+              <li>Middle class</li>
+              <li>Lower class</li>
+            </ol>
+            <h3>Merits</h3>
+            <ol>
+              <li>Encourages competition</li>
+              <li>Promotes hard work</li>
+              <li>Provides social mobility</li>
+            </ol>
+            <h3>Demerits</h3>
+            <ol>
+              <li>Economic inequality</li>
+              <li>Social conflict</li>
+              <li>Exploitation</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Class system influences economic and social life. Education helps reduce class inequality.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit2-accordions">
+          <summary>11. Compare Caste and Class</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Caste and class are systems of social stratification.</p>
+            <div class="table-container">
+              <table>
+                <tr><th>Caste</th><th>Class</th></tr>
+                <tr><td>Based on birth</td><td>Based on wealth and occupation</td></tr>
+                <tr><td>Closed system</td><td>Open system</td></tr>
+                <tr><td>No social mobility</td><td>Social mobility exists</td></tr>
+                <tr><td>Fixed occupation</td><td>Occupation can change</td></tr>
+                <tr><td>Marriage within caste</td><td>No such restriction</td></tr>
+                <tr><td>Religious basis</td><td>Economic basis</td></tr>
+                <tr><td>Hereditary</td><td>Achievement-based</td></tr>
+              </table>
+            </div>
+            <h3>Similarities</h3>
+            <ol>
+              <li>Both divide society.</li>
+              <li>Both influence social status.</li>
+              <li>Both create social differences.</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Caste is rigid while class is flexible. Modern society is gradually replacing caste with class.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit2-accordions">
+          <summary>12. Social Conflict (Caste and Class)</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Social conflict means struggle or disagreement among individuals or groups due to differences in interest, status or power.</p>
+            <h3>Causes</h3>
+            <ol>
+              <li>Economic inequality</li>
+              <li>Caste discrimination</li>
+              <li>Religious differences</li>
+              <li>Political competition</li>
+              <li>Lack of education</li>
+              <li>Unemployment</li>
+            </ol>
+            <h3>Effects</h3>
+            <ol>
+              <li>Social disunity</li>
+              <li>Violence</li>
+              <li>Hatred</li>
+              <li>National weakness</li>
+            </ol>
+            <h3>Role of Teacher</h3>
+            <ol>
+              <li>Promote equality</li>
+              <li>Develop democratic values</li>
+              <li>Encourage cooperation</li>
+              <li>Teach moral education</li>
+              <li>Remove prejudice</li>
+              <li>Encourage group activities</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Education and teachers can play a major role in reducing social conflict and creating social harmony.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit2-accordions">
+          <summary>13. Relationship of Caste with Religion and Economy</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Caste has strong relation with religion and economy in India.</p>
+            <h3>Caste and Religion</h3>
+            <ol>
+              <li>Religious sanction</li>
+              <li>Purity and pollution</li>
+              <li>Rituals and customs</li>
+              <li>Priesthood</li>
+            </ol>
+            <h3>Caste and Economy</h3>
+            <ol>
+              <li>Occupational division</li>
+              <li>Economic inequality</li>
+              <li>Exploitation</li>
+              <li>Modern changes</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Caste has deeply influenced religion and economy in India, but modern education is gradually reducing these barriers.</p>
+          </div>
+        </details>
+      </div>
     </div>
 
-    <div class="q-card" id="q13">
-      <details>
-        <summary>13. Relationship of Caste with Religion and Economy</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Caste has strong relation with religion and economy in India.</p>
-          <h3>Caste and Religion</h3>
-          <ol>
-            <li>Religious sanction</li>
-            <li>Purity and pollution</li>
-            <li>Rituals and customs</li>
-            <li>Priesthood</li>
-          </ol>
-          <h3>Caste and Economy</h3>
-          <ol>
-            <li>Occupational division</li>
-            <li>Economic inequality</li>
-            <li>Exploitation</li>
-            <li>Modern changes</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Caste has deeply influenced religion and economy in India, but modern education is gradually reducing these barriers.</p>
-        </div>
-      </details>
+    <!-- UNIT III CONTENT -->
+    <div id="unit3" class="unit-content">
+      <h2 class="unit-header">UNIT III : SOCIALIZATION, SECULARISM, DEMOCRACY</h2>
+
+      <div class="q-card">
+        <details name="unit3-accordions">
+          <summary>14. Socialization and Role of Education</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Socialization is the process through which an individual learns social behaviour, culture, customs and values.</p>
+            <p>According to Bogardus, “Socialization is the process of working together and developing group responsibility.”</p>
+            <h3>Agencies of Socialization</h3>
+            <ol>
+              <li>Family</li>
+              <li>School</li>
+              <li>Peer group</li>
+              <li>Religion</li>
+              <li>Mass media</li>
+              <li>Society</li>
+            </ol>
+            <h3>Role of Education</h3>
+            <ol>
+              <li>Transmission of culture</li>
+              <li>Development of discipline</li>
+              <li>Development of social values</li>
+              <li>Preparation for social life</li>
+              <li>Personality development</li>
+              <li>National integration</li>
+              <li>Moral development</li>
+              <li>Democratic values</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Education is one of the most important agencies of socialization and helps in developing responsible citizens.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit3-accordions">
+          <summary>15. Secularism and Educational Implications</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Secularism means equal respect for all religions. India is a secular country.</p>
+            <p><strong>Meaning:</strong> Secularism means the state does not favour any religion.</p>
+            <h3>Features</h3>
+            <ol>
+              <li>Religious freedom</li>
+              <li>Equality of religions</li>
+              <li>Tolerance</li>
+              <li>No discrimination</li>
+              <li>Peaceful coexistence</li>
+            </ol>
+            <h3>Educational Implications</h3>
+            <ol>
+              <li>Equal treatment</li>
+              <li>Religious tolerance</li>
+              <li>Moral education</li>
+              <li>National integration</li>
+              <li>Democratic spirit</li>
+              <li>Removal of communalism</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Secular education is necessary for maintaining peace, harmony and national unity.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit3-accordions">
+          <summary>16. Education for Democracy and its Features</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Democracy means government of the people, by the people and for the people. Education for democracy prepares students to become responsible democratic citizens.</p>
+            <h3>Features</h3>
+            <ol>
+              <li>Equality</li>
+              <li>Freedom</li>
+              <li>Cooperation</li>
+              <li>Respect for rights</li>
+              <li>Participation</li>
+              <li>Tolerance</li>
+              <li>Social justice</li>
+            </ol>
+            <h3>Need and Importance</h3>
+            <ol>
+              <li>Creates responsible citizens</li>
+              <li>Strengthens democracy</li>
+              <li>Develops leadership</li>
+              <li>Encourages national integration</li>
+              <li>Promotes peace</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Democratic education is essential for building a peaceful and progressive society.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit3-accordions">
+          <summary>17. Positive Discrimination and Reservation Policy</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Positive discrimination means giving special opportunities to disadvantaged groups. Reservation policy in India aims at social justice and equality.</p>
+            <h3>Objectives of Reservation</h3>
+            <ol>
+              <li>Social equality</li>
+              <li>Educational opportunity</li>
+              <li>Upliftment of weaker sections</li>
+              <li>Reduction of exploitation</li>
+              <li>National integration</li>
+            </ol>
+            <h3>Merits</h3>
+            <ol>
+              <li>Helps backward classes</li>
+              <li>Increases representation</li>
+              <li>Promotes inclusion</li>
+              <li>Reduces inequality</li>
+            </ol>
+            <h3>Demerits</h3>
+            <ol>
+              <li>May reduce merit</li>
+              <li>Creates social tension</li>
+              <li>Political misuse</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Reservation is necessary for social justice but should be implemented properly.</p>
+          </div>
+        </details>
+      </div>
     </div>
 
-    <!-- UNIT III -->
-    <h2 class="unit-header" id="unit3">UNIT III : SOCIALIZATION, SECULARISM, DEMOCRACY</h2>
+    <!-- UNIT IV CONTENT -->
+    <div id="unit4" class="unit-content">
+      <h2 class="unit-header">UNIT IV : SOCIAL PROBLEMS</h2>
 
-    <div class="q-card" id="q14">
-      <details>
-        <summary>14. Socialization and Role of Education</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Socialization is the process through which an individual learns social behaviour, culture, customs and values.</p>
-          <p>According to Bogardus, “Socialization is the process of working together and developing group responsibility.”</p>
-          <h3>Agencies of Socialization</h3>
-          <ol>
-            <li>Family</li>
-            <li>School</li>
-            <li>Peer group</li>
-            <li>Religion</li>
-            <li>Mass media</li>
-            <li>Society</li>
-          </ol>
-          <h3>Role of Education</h3>
-          <ol>
-            <li>Transmission of culture</li>
-            <li>Development of discipline</li>
-            <li>Development of social values</li>
-            <li>Preparation for social life</li>
-            <li>Personality development</li>
-            <li>National integration</li>
-            <li>Moral development</li>
-            <li>Democratic values</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Education is one of the most important agencies of socialization and helps in developing responsible citizens.</p>
-        </div>
-      </details>
+      <div class="q-card">
+        <details name="unit4-accordions">
+          <summary>18. Corruption as a Social Problem</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Corruption means misuse of power for personal gain. It is one of the biggest social problems in India.</p>
+            <h3>Causes</h3>
+            <ol>
+              <li>Lack of moral values</li>
+              <li>Poverty</li>
+              <li>Unemployment</li>
+              <li>Political influence</li>
+              <li>Lack of strict punishment</li>
+            </ol>
+            <h3>Effects</h3>
+            <ol>
+              <li>Economic loss</li>
+              <li>Social injustice</li>
+              <li>Loss of trust</li>
+              <li>Weak democracy</li>
+              <li>National backwardness</li>
+            </ol>
+            <h3>Role of Teacher / Measures to Remove</h3>
+            <ol>
+              <li>Teach moral values and honesty</li>
+              <li>Encourage discipline and citizenship education</li>
+              <li>Create public awareness</li>
+              <li>Strict laws and transparency</li>
+              <li>Employment opportunities</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Corruption weakens society and nation. Education and moral values are essential to remove corruption.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit4-accordions">
+          <summary>19. Student Unrest</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Student unrest refers to indiscipline, dissatisfaction and violent activities among students.</p>
+            <h3>Causes</h3>
+            <ol>
+              <li>Unemployment</li>
+              <li>Political influence</li>
+              <li>Examination pressure</li>
+              <li>Poor educational system</li>
+              <li>Lack of guidance</li>
+              <li>Social and economic problems</li>
+            </ol>
+            <h3>Effects</h3>
+            <ol>
+              <li>Disturbance in education</li>
+              <li>Violence and indiscipline</li>
+              <li>Loss of academic atmosphere</li>
+            </ol>
+            <h3>Measures & Role of Teacher</h3>
+            <ol>
+              <li>Guidance and counselling</li>
+              <li>Employment-oriented education</li>
+              <li>Student participation</li>
+              <li>Friendly behaviour and motivation</li>
+              <li>Value education and democratic attitude</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Student unrest can be reduced through proper guidance, reforms and moral education.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit4-accordions">
+          <summary>20. Crisis and Problems of Higher Education</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Higher education in India faces many problems affecting quality and development.</p>
+            <h3>Problems</h3>
+            <ol>
+              <li>Lack of quality</li>
+              <li>Unemployment</li>
+              <li>Corruption</li>
+              <li>Political interference</li>
+              <li>Shortage of funds</li>
+              <li>Outdated curriculum</li>
+              <li>Lack of research</li>
+              <li>Teacher shortage</li>
+            </ol>
+            <h3>Measures</h3>
+            <ol>
+              <li>Increase funding</li>
+              <li>Improve curriculum</li>
+              <li>Encourage research</li>
+              <li>Use technology</li>
+              <li>Ensure quality education</li>
+              <li>Teacher training</li>
+              <li>Remove corruption</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Reforms are necessary to improve higher education and national development.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="q-card">
+        <details name="unit4-accordions">
+          <summary>21. Environmental Problems in India</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> Environmental problems are increasing rapidly due to industrialization, urbanization and population growth.</p>
+            <h3>Major Problems</h3>
+            <ol>
+              <li>Air pollution</li>
+              <li>Water pollution</li>
+              <li>Deforestation</li>
+              <li>Noise pollution</li>
+              <li>Soil pollution</li>
+              <li>Global warming</li>
+            </ol>
+            <h3>Causes</h3>
+            <ol>
+              <li>Industrialization</li>
+              <li>Population growth</li>
+              <li>Urbanization</li>
+              <li>Deforestation</li>
+              <li>Lack of awareness</li>
+            </ol>
+            <h3>Role of Teachers</h3>
+            <ol>
+              <li>Environmental awareness</li>
+              <li>Tree plantation</li>
+              <li>Cleanliness programmes</li>
+              <li>Environmental education</li>
+              <li>Encourage conservation</li>
+            </ol>
+            <p><strong>Conclusion:</strong> Environmental protection is essential for healthy life and sustainable development.</p>
+          </div>
+        </details>
+      </div>
     </div>
 
-    <div class="q-card" id="q15">
-      <details>
-        <summary>15. Secularism and Educational Implications</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Secularism means equal respect for all religions. India is a secular country.</p>
-          <p><strong>Meaning:</strong> Secularism means the state does not favour any religion.</p>
-          <h3>Features</h3>
-          <ol>
-            <li>Religious freedom</li>
-            <li>Equality of religions</li>
-            <li>Tolerance</li>
-            <li>No discrimination</li>
-            <li>Peaceful coexistence</li>
-          </ol>
-          <h3>Educational Implications</h3>
-          <ol>
-            <li>Equal treatment</li>
-            <li>Religious tolerance</li>
-            <li>Moral education</li>
-            <li>National integration</li>
-            <li>Democratic spirit</li>
-            <li>Removal of communalism</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Secular education is necessary for maintaining peace, harmony and national unity.</p>
-        </div>
-      </details>
-    </div>
+    <!-- UNIT V CONTENT -->
+    <div id="unit5" class="unit-content">
+      <h2 class="unit-header">UNIT V : NATIONAL DEVELOPMENT</h2>
 
-    <div class="q-card" id="q16">
-      <details>
-        <summary>16. Education for Democracy and its Features</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Democracy means government of the people, by the people and for the people. Education for democracy prepares students to become responsible democratic citizens.</p>
-          <h3>Features</h3>
-          <ol>
-            <li>Equality</li>
-            <li>Freedom</li>
-            <li>Cooperation</li>
-            <li>Respect for rights</li>
-            <li>Participation</li>
-            <li>Tolerance</li>
-            <li>Social justice</li>
-          </ol>
-          <h3>Need and Importance</h3>
-          <ol>
-            <li>Creates responsible citizens</li>
-            <li>Strengthens democracy</li>
-            <li>Develops leadership</li>
-            <li>Encourages national integration</li>
-            <li>Promotes peace</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Democratic education is essential for building a peaceful and progressive society.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="q-card" id="q17">
-      <details>
-        <summary>17. Positive Discrimination and Reservation Policy</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Positive discrimination means giving special opportunities to disadvantaged groups. Reservation policy in India aims at social justice and equality.</p>
-          <h3>Objectives of Reservation</h3>
-          <ol>
-            <li>Social equality</li>
-            <li>Educational opportunity</li>
-            <li>Upliftment of weaker sections</li>
-            <li>Reduction of exploitation</li>
-            <li>National integration</li>
-          </ol>
-          <h3>Merits</h3>
-          <ol>
-            <li>Helps backward classes</li>
-            <li>Increases representation</li>
-            <li>Promotes inclusion</li>
-            <li>Reduces inequality</li>
-          </ol>
-          <h3>Demerits</h3>
-          <ol>
-            <li>May reduce merit</li>
-            <li>Creates social tension</li>
-            <li>Political misuse</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Reservation is necessary for social justice but should be implemented properly.</p>
-        </div>
-      </details>
-    </div>
-
-    <!-- UNIT IV -->
-    <h2 class="unit-header" id="unit4">UNIT IV : SOCIAL PROBLEMS</h2>
-
-    <div class="q-card" id="q18">
-      <details>
-        <summary>18. Corruption as a Social Problem</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Corruption means misuse of power for personal gain. It is one of the biggest social problems in India.</p>
-          <h3>Causes</h3>
-          <ol>
-            <li>Lack of moral values</li>
-            <li>Poverty</li>
-            <li>Unemployment</li>
-            <li>Political influence</li>
-            <li>Lack of strict punishment</li>
-          </ol>
-          <h3>Effects</h3>
-          <ol>
-            <li>Economic loss</li>
-            <li>Social injustice</li>
-            <li>Loss of trust</li>
-            <li>Weak democracy</li>
-            <li>National backwardness</li>
-          </ol>
-          <h3>Role of Teacher / Measures to Remove</h3>
-          <ol>
-            <li>Teach moral values and honesty</li>
-            <li>Encourage discipline and citizenship education</li>
-            <li>Create public awareness</li>
-            <li>Strict laws and transparency</li>
-            <li>Employment opportunities</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Corruption weakens society and nation. Education and moral values are essential to remove corruption.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="q-card" id="q19">
-      <details>
-        <summary>19. Student Unrest</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Student unrest refers to indiscipline, dissatisfaction and violent activities among students.</p>
-          <h3>Causes</h3>
-          <ol>
-            <li>Unemployment</li>
-            <li>Political influence</li>
-            <li>Examination pressure</li>
-            <li>Poor educational system</li>
-            <li>Lack of guidance</li>
-            <li>Social and economic problems</li>
-          </ol>
-          <h3>Effects</h3>
-          <ol>
-            <li>Disturbance in education</li>
-            <li>Violence and indiscipline</li>
-            <li>Loss of academic atmosphere</li>
-          </ol>
-          <h3>Measures & Role of Teacher</h3>
-          <ol>
-            <li>Guidance and counselling</li>
-            <li>Employment-oriented education</li>
-            <li>Student participation</li>
-            <li>Friendly behaviour and motivation</li>
-            <li>Value education and democratic attitude</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Student unrest can be reduced through proper guidance, reforms and moral education.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="q-card" id="q20">
-      <details>
-        <summary>20. Crisis and Problems of Higher Education</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Higher education in India faces many problems affecting quality and development.</p>
-          <h3>Problems</h3>
-          <ol>
-            <li>Lack of quality</li>
-            <li>Unemployment</li>
-            <li>Corruption</li>
-            <li>Political interference</li>
-            <li>Shortage of funds</li>
-            <li>Outdated curriculum</li>
-            <li>Lack of research</li>
-            <li>Teacher shortage</li>
-          </ol>
-          <h3>Measures</h3>
-          <ol>
-            <li>Increase funding</li>
-            <li>Improve curriculum</li>
-            <li>Encourage research</li>
-            <li>Use technology</li>
-            <li>Ensure quality education</li>
-            <li>Teacher training</li>
-            <li>Remove corruption</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Reforms are necessary to improve higher education and national development.</p>
-        </div>
-      </details>
-    </div>
-
-    <div class="q-card" id="q21">
-      <details>
-        <summary>21. Environmental Problems in India</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> Environmental problems are increasing rapidly due to industrialization, urbanization and population growth.</p>
-          <h3>Major Problems</h3>
-          <ol>
-            <li>Air pollution</li>
-            <li>Water pollution</li>
-            <li>Deforestation</li>
-            <li>Noise pollution</li>
-            <li>Soil pollution</li>
-            <li>Global warming</li>
-          </ol>
-          <h3>Causes</h3>
-          <ol>
-            <li>Industrialization</li>
-            <li>Population growth</li>
-            <li>Urbanization</li>
-            <li>Deforestation</li>
-            <li>Lack of awareness</li>
-          </ol>
-          <h3>Role of Teachers</h3>
-          <ol>
-            <li>Environmental awareness</li>
-            <li>Tree plantation</li>
-            <li>Cleanliness programmes</li>
-            <li>Environmental education</li>
-            <li>Encourage conservation</li>
-          </ol>
-          <p><strong>Conclusion:</strong> Environmental protection is essential for healthy life and sustainable development.</p>
-        </div>
-      </details>
-    </div>
-
-    <!-- UNIT V -->
-    <h2 class="unit-header" id="unit5">UNIT V : NATIONAL DEVELOPMENT</h2>
-
-    <div class="q-card" id="q22">
-      <details>
-        <summary>22. National Development : Meaning, Scope and Indicators</summary>
-        <div class="answer">
-          <p><strong>Introduction:</strong> National development means the overall progress of a nation in economic, social, political and educational fields.</p>
-          <p><strong>Meaning:</strong> It refers to improvement in quality of life and welfare of people.</p>
-          <h3>Scope</h3>
-          <ol>
-            <li>Economic development</li>
-            <li>Social development</li>
-            <li>Educational development</li>
-            <li>Scientific development</li>
-            <li>Political development</li>
-            <li>Cultural development</li>
+      <div class="q-card">
+        <details name="unit5-accordions">
+          <summary>22. National Development : Meaning, Scope and Indicators</summary>
+          <div class="answer">
+            <p><strong>Introduction:</strong> National development means the overall progress of a nation in economic, social, political and educational fields.</p>
+            <p><strong>Meaning:</strong> It refers to improvement in quality of life and welfare of people.</p>
+            <h3>Scope</h3>
+            <ol>
+              <li>Economic development</li>
+              <li>Social development</li>
+              <li>Educational development</li>
+              <li>Scientific development</li>
+              <li>Political development</li>
+              <li>Cultural development</li>
           </ol>
           <h3>Indicators</h3>
           <ol>
@@ -962,8 +931,8 @@ html
       </details>
     </div>
 
-    <div class="q-card" id="q23">
-      <details>
+    <div class="q-card">
+      <details name="unit5-accordions">
         <summary>23. Education as an Indicator of National Development</summary>
         <div class="answer">
           <p><strong>Introduction:</strong> Education plays a vital role in national development. A developed educational system indicates national progress.</p>
@@ -983,8 +952,8 @@ html
       </details>
     </div>
 
-    <div class="q-card" id="q24">
-      <details>
+    <div class="q-card">
+      <details name="unit5-accordions">
         <summary>24. Education Commission 1964–66</summary>
         <div class="answer">
           <p><strong>Introduction:</strong> The Education Commission (1964–66), also known as Kothari Commission, was established to reform Indian education.</p>
@@ -1017,8 +986,8 @@ html
       </details>
     </div>
 
-    <div class="q-card" id="q25">
-      <details>
+    <div class="q-card">
+      <details name="unit5-accordions">
         <summary>25. Salient Features of NPE 1986</summary>
         <div class="answer">
           <p><strong>Introduction:</strong> National Policy on Education (NPE) 1986 aimed at improving educational quality and equality.</p>
@@ -1038,8 +1007,8 @@ html
       </details>
     </div>
 
-    <div class="q-card" id="q26">
-      <details>
+    <div class="q-card">
+      <details name="unit5-accordions">
         <summary>26. National Curriculum Framework (NCF) 2005</summary>
         <div class="answer">
           <p><strong>Introduction:</strong> NCF 2005 was prepared by NCERT to improve quality education in India.</p>
@@ -1072,8 +1041,8 @@ html
       </details>
     </div>
 
-    <div class="q-card" id="q27">
-      <details>
+    <div class="q-card">
+      <details name="unit5-accordions">
         <summary>27. Salient Features of NCFTE 2009</summary>
         <div class="answer">
           <p><strong>Introduction:</strong> National Curriculum Framework for Teacher Education (NCFTE) 2009 was introduced to improve teacher education.</p>
@@ -1105,12 +1074,52 @@ html
         </div>
       </details>
     </div>
+  </div>
 
   </main>
 
   <footer>
-    <p>Tap on any question to view the answer. Formatted for easy mobile revision.</p>
+    <p>Tap a unit above to load lessons. Only one card remains open at a time.</p>
   </footer>
+
+  <script>
+    // Handles navigation switches between Units
+    function switchUnit(unitId, buttonElement) {
+      // 1. Hide all units
+      const contents = document.querySelectorAll('.unit-content');
+      contents.forEach(content => content.classList.remove('active'));
+
+      // 2. Remove active state from all nav buttons
+      const buttons = document.querySelectorAll('.unit-nav button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      // 3. Show targeted unit notes and update button accent
+      document.getElementById(unitId).classList.add('active');
+      buttonElement.classList.add('active');
+
+      // 4. Close any open accordions inside the new unit section
+      const activeAccordions = document.querySelectorAll(`#${unitId} details`);
+      activeAccordions.forEach(details => details.removeAttribute('open'));
+    }
+
+    // Explicit JS Fallback for handling mutually exclusive accordions
+    // (Ensures cross-browser auto-closing logic across mobile webviews)
+    document.querySelectorAll('details').forEach((el) => {
+      el.addEventListener('toggle', (e) => {
+        if (el.open) {
+          // Find the active group name if available
+          const groupName = el.getAttribute('name');
+          const siblingSelector = groupName ? `details[name="${groupName}"]` : 'details';
+          
+          document.querySelectorAll(siblingSelector).forEach((otherEl) => {
+            if (otherEl !== el && otherEl.open) {
+              otherEl.removeAttribute('open');
+            }
+          });
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
