@@ -1,0 +1,172 @@
+<!-- =========================
+FILE : index.html
+========================= -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>B.Ed Notes Portal</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body{
+    background:linear-gradient(to right,#141e30,#243b55);
+    min-height:100vh;
+    padding:20px;
+    color:white;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+    font-size:40px;
+}
+
+.paper-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.paper{
+    background:#00bcd4;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+
+.paper h2{
+    margin-bottom:15px;
+}
+
+.unit-btn{
+    width:100%;
+    margin:8px 0;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#4caf50;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.unit-btn:hover{
+    background:#2e7d32;
+    transform:scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>B.Ed Notes Portal</h1>
+
+<div class="paper-container">
+
+    <!-- PAPER 201 -->
+    <div class="paper">
+
+        <h2>Paper 201</h2>
+
+        <button class="unit-btn" onclick="openNotes('201','1')">Unit 1</button>
+        <button class="unit-btn" onclick="openNotes('201','2')">Unit 2</button>
+        <button class="unit-btn" onclick="openNotes('201','3')">Unit 3</button>
+        <button class="unit-btn" onclick="openNotes('201','4')">Unit 4</button>
+        <button class="unit-btn" onclick="openNotes('201','5')">Unit 5</button>
+
+    </div>
+
+    <!-- PAPER 202 -->
+    <div class="paper">
+
+        <h2>Paper 202</h2>
+
+        <button class="unit-btn" onclick="openNotes('202','1')">Unit 1</button>
+        <button class="unit-btn" onclick="openNotes('202','2')">Unit 2</button>
+        <button class="unit-btn" onclick="openNotes('202','3')">Unit 3</button>
+        <button class="unit-btn" onclick="openNotes('202','4')">Unit 4</button>
+        <button class="unit-btn" onclick="openNotes('202','5')">Unit 5</button>
+
+    </div>
+
+    <!-- PAPER 203 -->
+    <div class="paper">
+
+        <h2>Paper 203</h2>
+
+        <button class="unit-btn" onclick="openNotes('203','1')">Unit 1</button>
+        <button class="unit-btn" onclick="openNotes('203','2')">Unit 2</button>
+        <button class="unit-btn" onclick="openNotes('203','3')">Unit 3</button>
+        <button class="unit-btn" onclick="openNotes('203','4')">Unit 4</button>
+        <button class="unit-btn" onclick="openNotes('203','5')">Unit 5</button>
+
+    </div>
+
+    <!-- PAPER 204 -->
+    <div class="paper">
+
+        <h2>Paper 204</h2>
+
+        <button class="unit-btn" onclick="openNotes('204','1')">Unit 1</button>
+        <button class="unit-btn" onclick="openNotes('204','2')">Unit 2</button>
+        <button class="unit-btn" onclick="openNotes('204','3')">Unit 3</button>
+        <button class="unit-btn" onclick="openNotes('204','4')">Unit 4</button>
+        <button class="unit-btn" onclick="openNotes('204','5')">Unit 5</button>
+
+    </div>
+
+    <!-- PAPER 205 -->
+    <div class="paper">
+
+        <h2>Paper 205</h2>
+
+        <button class="unit-btn" onclick="openNotes('205','1')">Unit 1</button>
+        <button class="unit-btn" onclick="openNotes('205','2')">Unit 2</button>
+        <button class="unit-btn" onclick="openNotes('205','3')">Unit 3</button>
+        <button class="unit-btn" onclick="openNotes('205','4')">Unit 4</button>
+        <button class="unit-btn" onclick="openNotes('205','5')">Unit 5</button>
+
+    </div>
+
+    <!-- PAPER 206 -->
+    <div class="paper">
+
+        <h2>Paper 206</h2>
+
+        <button class="unit-btn" onclick="openNotes('206','1')">Unit 1</button>
+        <button class="unit-btn" onclick="openNotes('206','2')">Unit 2</button>
+        <button class="unit-btn" onclick="openNotes('206','3')">Unit 3</button>
+        <button class="unit-btn" onclick="openNotes('206','4')">Unit 4</button>
+        <button class="unit-btn" onclick="openNotes('206','5')">Unit 5</button>
+
+    </div>
+
+</div>
+
+<script>
+
+function openNotes(paper,unit){
+
+    window.location.href =
+    "notes.html?paper=" + paper + "&unit=" + unit;
+
+}
+
+</script>
+
+</body>
+</html>
