@@ -312,21 +312,55 @@ function openNotes(paper,unit){
 
 function toggleAccordion(element){
 
-    const content =
+    const allContents =
+    document.querySelectorAll(".accordion-content");
+
+    const allIcons =
+    document.querySelectorAll(".accordion-header span:last-child");
+
+    const currentContent =
     element.nextElementSibling;
 
-    const icon =
+    const currentIcon =
     element.querySelector("span:last-child");
 
-    if(content.style.display==="block"){
+    
+    // CLOSE ALL ACCORDIONS
 
-        content.style.display="none";
-        icon.innerHTML="+";
+    allContents.forEach(content => {
+
+        if(content !== currentContent){
+
+            content.style.display = "none";
+
+        }
+
+    });
+
+    allIcons.forEach(icon => {
+
+        if(icon !== currentIcon){
+
+            icon.innerHTML = "+";
+
+        }
+
+    });
+
+
+    // TOGGLE CURRENT ACCORDION
+
+    if(currentContent.style.display === "block"){
+
+        currentContent.style.display = "none";
+
+        currentIcon.innerHTML = "+";
 
     }else{
 
-        content.style.display="block";
-        icon.innerHTML="-";
+        currentContent.style.display = "block";
+
+        currentIcon.innerHTML = "-";
 
     }
 
