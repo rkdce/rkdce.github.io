@@ -1673,7 +1673,7 @@
     </div>
 <script>
 //const GAS_URL = "https://script.google.com/macros/s/AKfycbw_e1EbY68p5PH1bmBgn6sVd1YfRkExYA8gfqy69ZvGIQqnU-pXf8zYyLbk2GtaK8A/exec";
-const GAS_URL ="https://script.google.com/macros/s/AKfycbzWePKk9d16G4h7H5J8xZ5pjhBfymHM9Mrcye3IGQ24-DyX407ZJbud3zMIOHOHXMaO/exec";
+const GAS_URL = localStorage.getItem("SHEET_URL");
  function hideSearch() {
   // Hide the search button
   document.getElementById('searchButton').style.display = "none";
