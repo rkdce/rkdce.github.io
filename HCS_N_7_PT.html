@@ -1371,24 +1371,24 @@ document.addEventListener('DOMContentLoaded', initializeAccordion);
 		  document.getElementById('photoDisplay').src = imageUrl;
 		}
 		// English
-document.getElementById('englishReadingValue').value = data[11] ;
-document.getElementById('englishReadingGrade').value = data[12] ;
-document.getElementById('englishWritingValue').value = data[13] ;
-document.getElementById('englishWritingGrade').value = data[14] ;
-document.getElementById('englishSpellingValue').value = data[15] ;
-document.getElementById('englishSpellingGrade').value = data[16] ;
-document.getElementById('englishHandwritingValue').value = data[17] ;
-document.getElementById('englishHandwritingGrade').value = data[18] ;
-document.getElementById('englishSpeakingValue').value = data[19] ; // Corrected index
-document.getElementById('englishSpeakingGrade').value = data[20] ; // Corrected index
-document.getElementById('englishListeningValue').value = data[21] ;
-document.getElementById('englishListeningGrade').value = data[22] ;
-document.getElementById('englishTotalValue').value = data[23]  ;
-document.getElementById('englishTotalGrade').value = data[24] ;
-document.getElementById('englishProjectValue').value = data[25] ; // New Project Value
-document.getElementById('englishProjectGrade').value = data[26] ; // New Project Grade
-document.getElementById('englishAssignmentValue').value = data[27] ; // New Assignment Value
-document.getElementById('englishAssignmentGrade').value = data[28] ; // New Assignment Grade
+document.getElementById('englishReadingValue').value = data[11] || '';
+document.getElementById('englishReadingGrade').value = data[12] || '';
+document.getElementById('englishWritingValue').value = data[13] || '';
+document.getElementById('englishWritingGrade').value = data[14] || '';
+document.getElementById('englishSpellingValue').value = data[15] || '';
+document.getElementById('englishSpellingGrade').value = data[16] || '';
+document.getElementById('englishHandwritingValue').value = data[17] || '';
+document.getElementById('englishHandwritingGrade').value = data[18] || '';
+document.getElementById('englishSpeakingValue').value = data[19] || ''; // Corrected index
+document.getElementById('englishSpeakingGrade').value = data[20] || ''; // Corrected index
+document.getElementById('englishListeningValue').value = data[21] || '';
+document.getElementById('englishListeningGrade').value = data[22] || '';
+document.getElementById('englishTotalValue').value = data[23] || '';
+document.getElementById('englishTotalGrade').value = data[24] || '';
+document.getElementById('englishProjectValue').value = data[25] || ''; // New Project Value
+document.getElementById('englishProjectGrade').value = data[26] || ''; // New Project Grade
+document.getElementById('englishAssignmentValue').value = data[27] || ''; // New Assignment Value
+document.getElementById('englishAssignmentGrade').value = data[28] || ''; // New Assignment Grade
 
 // Hindi
 document.getElementById('hindiReadingValue').value = data[29] ;
