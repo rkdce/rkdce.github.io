@@ -1204,7 +1204,8 @@
 <script>
 //const GAS_URL = "https://script.google.com/macros/s/AKfycbzt1h-Lfu71Fvmoy8fCCxkOJHxeBSLlaaVS2yTkdygqRQDNBsITdRtfc8yVWxehuIgk/exec";
 
-	const GAS_URL ="https://script.google.com/macros/s/AKfycbzWePKk9d16G4h7H5J8xZ5pjhBfymHM9Mrcye3IGQ24-DyX407ZJbud3zMIOHOHXMaO/exec";
+ const GAS_UR = localStorage.getItem("SHEET_URL");
+	
  function hideSearch() {
   // Hide the search button
   document.getElementById('searchButton').style.display = "none";
