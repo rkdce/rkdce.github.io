@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Notes Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo">School Notes Hub</div>
+            <div class="nav-links">
+                <select id="classSelect">
+                    <option value="">Select Class</option>
+                </select>
+                <select id="subjectSelect">
+                    <option value="">Select Subject</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search notes...">
+            </div>
+            
+            <div class="notes-container" id="notesContainer">
+                <!-- Notes will be dynamically loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 School Notes Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
