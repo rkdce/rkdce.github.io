@@ -1093,6 +1093,29 @@ document.getElementById('examType').readOnly = false;
 
 
 
+    // ★★★★★ ADDED CODE ★★★★★
+    // This calculates all subjects automatically
+    // after data is loaded from the database.
+
+    function calculateAllSubjects() {
+
+        // Change 10 to your maximum number of subjects
+        for (let subjectNumber = 1; subjectNumber <= 10; subjectNumber++) {
+
+            const subjectName = document.getElementById(
+                `subject${subjectNumber}Name`
+            );
+
+            // Only calculate if this subject exists
+            if (subjectName) {
+                calculateMarksObtained(subjectNumber);
+            }
+        }
+    }
+
+    // ★ END OF ADDED CODE ★
+
+
 function updateAllSubjectHeaders() {
 for (let i = 1; i <= 7; i++) {
 syncSubjectName(i);
