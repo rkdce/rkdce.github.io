@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Counting Calculator</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f1f5f9;
+        margin: 0;
+        padding: 15px;
+    }
+
+    .calculator {
+        max-width: 450px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0 4px 15px #00000015;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 0;
+        color: #1e293b;
+    }
+
+    .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .row label {
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        min-width: 0;
+        padding: 10px 5px;
+        font-size: 16px;
+        text-align: center;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+    }
+
+    .amount {
+        text-align: right;
+        font-weight: bold;
+        color: #334155;
+        overflow-wrap: anywhere;
+    }
+
+    .header {
+        color: #64748b;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .total-box {
+        background: #ecfdf5;
+        padding: 18px;
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .total-box p {
+        margin: 0 0 8px;
+        color: #047857;
+        font-weight: bold;
+    }
+
+    #total {
+        font-size: 30px;
+        font-weight: bold;
+        color: #065f46;
+        overflow-wrap: anywhere;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 15px;
+        padding: 13px;
+        border: none;
+        border-radius: 8px;
+        background: #2563eb;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:active {
+        opacity: 0.8;
+    }
+
+    .reset {
+        background: #64748b;
+    }
+
+    .note {
+        text-align: center;
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 0;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+    <h2>💵 Cash Calculator</h2>
+
+    <div class="row header">
+        <div>Denomination</div>
+        <div>Number</div>
+        <div style="text-align:right">Amount (₹)</div>
+    </div>
+
+    <div id="rows"></div>
+
+    <div class="row">
+        <label for="coins">Remaining Coins (₹)</label>
+        <div>
+            <input type="number" id="coins"
+                   min="0" step="0.01" value="0"
+                   placeholder="Coin total">
+        </div>
+        <div class="amount" id="coinAmount">₹0.00</div>
+    </div>
+
+    <div class="total-box">
+        <p>GRAND TOTAL</p>
+        <div id="total">₹0.00</div>
+    </div>
+
+    <button onclick="resetCalculator()" class="reset">
+        Reset All
+    </button>
+
+    <p class="note">Enter the number of notes in each row.</p>
+</div>
+
+<script>
+const denominations = [500, 200, 100, 50, 20, 10, 5];
+
+const rows = document.getElementById("rows");
+
+denominations.forEach(value => {
+    rows.innerHTML += `
+        <div class="row">
+            <label>₹${value} Notes</label>
+            <input type="number"
+                   id="count${value}"
+                   min="0"
+                   step="1"
+                   value="0"
+                   placeholder="Count">
+            <div class="amount" id="amount${value}">₹0.00</div>
+        </div>
+    `;
+});
+
+function calculate() {
+    let total = 0;
+
+    denominations.forEach(value => {
+        const count = Math.max(
+            0,
+            Math.floor(Number(
+                document.getElementById("count" + value).value
+            ) || 0)
+        );
+
+        const amount = count * value;
+
+        document.getElementById("amount" + value).textContent =
+            "₹" + amount.toLocaleString("en-IN");
+
+        total += amount;
+    });
+
+    const coins = Math.max(
+        0,
+        Number(document.getElementById("coins").value) || 0
+    );
+
+    document.getElementById("coinAmount").textContent =
+        "₹" + coins.toLocaleString("en-IN", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    total += coins;
+
+    document.getElementById("total").textContent =
+        "₹" + total.toLocaleString("en-IN", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+}
+
+function resetCalculator() {
+    denominations.forEach(value => {
+        document.getElementById("count" + value).value = 0;
+    });
+
+    document.getElementById("coins").value = 0;
+    calculate();
+}
+
+document.addEventListener("input", calculate);
+
+calculate();
+</script>
+
+</body>
+</html>
